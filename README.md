@@ -6,3 +6,5 @@ This is the repository for our 11.C85/6.C85 final project. The members of this t
 4. TBD
 
 NOTE FOR TEAM - We should include content from our project plan/write-up in this read me at a later time. 
+
+I am making notes in Kristen's branch to demo how branching works
