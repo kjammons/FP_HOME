@@ -1,20 +1,30 @@
 <script>
   import MapView from './components/MapView.svelte';
-  import ControlPanel from './components/ControlPanel.svelte';
+  import Selection from './components/Selection.svelte';
 </script>
 
 <main>
-  <h1>Middlesex County </h1>
-  <ControlPanel />
-  <MapView />
+  <div class="container">
+    <div class="map">
+      <MapView />
+    </div>
+    <div class="selection-panel">
+      <Selection />
+    </div>
+  </div>
 </main>
 
 <style>
-  main {
-    font-family: sans-serif;
-    padding: 1em;
-    max-width: 1000px;
-    margin: auto;
+  .container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 20px;
+  }
+  .map {
+    flex: 1 1 60%;
+  }
+  .selection-panel {
+    flex: 1 1 35%;
   }
 </style>
-
