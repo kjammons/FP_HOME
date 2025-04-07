@@ -1,4 +1,4 @@
 import { writable } from 'svelte/store';
 
-export const selectedVariable = writable("homeownership");
-export const selectedRegion = writable("Middlesex");
+export const selectedMunicipality = writable('All');
+export const selectedVariable = writable('OWNER HOUSING UNITS');

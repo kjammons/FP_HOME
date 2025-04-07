@@ -6,5 +6,6 @@ export async function loadGeoJSON(path) {
 
 export async function loadDemographicsData(path) {
   const data = await d3.csv(path);
-  return data.map(d => ({ id: d.region_id, ...d }));
+  return data.map(row => ({ ...row, id: row.id }));
 }
+
