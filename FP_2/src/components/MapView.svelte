@@ -13,23 +13,23 @@
   onMount(async () => {
     try {
       // Load GeoJSON from the public folder
-      geoData = await loadGeoJSON('/data/middlesex_geojson.geojson');
+      geoData = await loadGeoJSON('/data/ACSDATA2023SORTED_GeoJSON.geojson');
       console.log('Loaded geoData:', geoData);
       
       // Store the full geoData in a shared store
       geoDataStore.set(geoData);
       
       // Extract the dynamic city list using the identifier "mapc_municipal"
-      let cities = geoData.features.map(f => f.properties.mapc_municipal);
+      let cities = geoData.features.map(f => f.properties.j_CITY_NAME);
       // Remove duplicates
       cities = [...new Set(cities)];
       cityList.set(cities);
       
       // Create a color scale for pop2020
-      const popValues = geoData.features.map(f => +f.properties.pop2020).filter(v => !isNaN(v));
-      const minPop = d3.min(popValues);
-      const maxPop = d3.max(popValues);
-      const colorScale = getPopScale(minPop, maxPop);
+      const homerateValues = geoData.features.map(f => +f.properties.j_OWNER_RATE).filter(v => !isNaN(v));
+      const minrate = d3.min(homerateValues);
+      const maxrate = d3.max(homerateValues);
+      const colorScale = getPopScale(minrate, maxrate);
 
       renderMap(colorScale);
     } catch (error) {
@@ -56,15 +56,15 @@
       .attr('d', path)
       .attr('stroke', '#333')
       .attr('fill', d => {
-        const popVal = +d.properties.pop2020;
+        const popVal = +d.properties.j_OWNER_RATE;
         return isNaN(popVal) ? '#ccc' : colorScale(popVal);
       })
       .on('mouseover', (event, d) => {
-        const city = d.properties.mapc_municipal || "Unknown City";
-        const pop = d.properties.pop2020 || "N/A";
+        const city = d.properties.j_CITY_NAME || "Unknown City";
+        const pop = +( (d.properties.j_OWNER_RATE * 100).toFixed(2) ) || "N/A";
         d3.select(tooltipElement)
           .style('opacity', 1)
-          .html(`<strong>${city}</strong><br/>2020 Pop: ${pop}`)
+          .html(`<strong>${city}</strong><br/>Rate of Homeownership: ${pop}%`)
           .style('left', (event.pageX + 10) + 'px')
           .style('top', (event.pageY + 10) + 'px');
       })
