@@ -1,7 +1,7 @@
 <script>
   import { onMount } from 'svelte';
   import * as d3 from 'd3';
-  import { getPopScale } from '../utils/scales.js';
+  import { createOwnerRateScale } from '../utils/scales.js';
   import { loadGeoJSON } from '../utils/mapUtils.js';
   import { cityList, geoDataStore } from '../stores/state.js';
 
@@ -19,18 +19,15 @@
       // Store the full geoData in a shared store
       geoDataStore.set(geoData);
       
-      // Extract the dynamic city list using the identifier "mapc_municipal"
+      // Extract the dynamic city list using the identifier "j_CITY_NAME"
       let cities = geoData.features.map(f => f.properties.j_CITY_NAME);
       // Remove duplicates
       cities = [...new Set(cities)];
       cityList.set(cities);
       
-      // Create a color scale for pop2020
-      const homerateValues = geoData.features.map(f => +f.properties.j_OWNER_RATE).filter(v => !isNaN(v));
-      const minrate = d3.min(homerateValues);
-      const maxrate = d3.max(homerateValues);
-      const colorScale = getPopScale(minrate, maxrate);
-
+      // Get a color scale based on j_OWNER_RATE using our scales module.
+      const colorScale = createOwnerRateScale(geoData.features);
+  
       renderMap(colorScale);
     } catch (error) {
       console.error('Error loading GeoJSON:', error);
@@ -61,7 +58,8 @@
       })
       .on('mouseover', (event, d) => {
         const city = d.properties.j_CITY_NAME || "Unknown City";
-        const pop = +( (d.properties.j_OWNER_RATE * 100).toFixed(2) ) || "N/A";
+        // Multiply by 100 and round to 2 decimals
+        const pop = +((d.properties.j_OWNER_RATE * 100).toFixed(2)) || "N/A";
         d3.select(tooltipElement)
           .style('opacity', 1)
           .html(`<strong>${city}</strong><br/>Rate of Homeownership: ${pop}%`)

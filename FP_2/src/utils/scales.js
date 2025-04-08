@@ -1,11 +1,21 @@
+// src/utils/scales.js
 import * as d3 from 'd3';
 
 /**
- * Returns a sequential color scale based on population.
- * @param {number} minPop - The minimum population.
- * @param {number} maxPop - The maximum population.
+ * Creates and returns a D3 sequential color scale for owner rate.
+ * The function extracts j_OWNER_RATE from the provided features,
+ * computes the minimum and maximum values, and sets those as the domain.
+ * 
+ * @param {Array} features - Array of GeoJSON feature objects.
+ * @returns {Function} A D3 scaleSequential function using d3.interpolateBlues.
  */
-export function getPopScale(minPop, maxPop) {
-  return d3.scaleSequential(d3.interpolateBlues)
-    .domain([minPop, maxPop]);
+export function createOwnerRateScale(features) {
+  const values = features
+    .map(f => +f.properties.j_OWNER_RATE)
+    .filter(v => !isNaN(v));
+  
+  const min = d3.min(values);
+  const max = d3.max(values);
+  
+  return d3.scaleSequential(d3.interpolateBlues).domain([min, max]);
 }
