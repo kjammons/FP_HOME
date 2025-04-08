@@ -15,12 +15,12 @@
   $: selectedCity.set(currentCity);
 
   // Derived store: get the feature from geoDataStore that matches the currentCity.
-  // (Assumes that each feature's 'mapc_municipal' property is the city identifier.)
+  
   const selectedFeature = derived(
     geoDataStore,
     ($geoDataStore, set) => {
       if ($geoDataStore && currentCity) {
-        const feature = $geoDataStore.features.find(f => f.properties.mapc_municipal === currentCity);
+        const feature = $geoDataStore.features.find(f => f.properties.j_CITY_NAME === currentCity);
         set(feature);
       } else {
         set(null);
