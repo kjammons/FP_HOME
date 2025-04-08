@@ -10,7 +10,6 @@
     let svgEl;
   
     // Use Svelte’s auto-subscription to stores.
-    // Here we use the `$` shorthand so that whenever the store changes, currentFeature is re-calculated.
     // We use .trim() to remove any extra spaces that might prevent matching.
     $: currentFeature = $geoDataStore && $selectedCity
         ? $geoDataStore.features.find(f => f.properties.mapc_municipal.trim() === $selectedCity.trim())
