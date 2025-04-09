@@ -1,7 +1,6 @@
 <script>
   import { onMount } from 'svelte';
   import * as d3 from 'd3';
-  // Import selectedCity in addition to the others
   import { selectedCity, cityList, geoDataStore } from '../stores/state.js';
   import { createOwnerRateScale } from '../utils/MapScales.js';
   import { loadGeoJSON } from '../utils/mapUtils.js';
