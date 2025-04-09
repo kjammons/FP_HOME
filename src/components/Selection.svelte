@@ -138,13 +138,24 @@
   .selection {
     margin-bottom: 20px;
     text-align: center;
+    font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
   }
   label {
     font-size: 1rem;
     margin-right: 10px;
+    font-size: 100%;
+    font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
+  }
+
+  h2{
+    font-size: 1rem;
+    margin-right: 10px;
+    font-size: 150%;
+    font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
   }
   select {
     font-size: 1rem;
+    font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
     padding: 5px;
   }
   .bargraph-container {
@@ -152,5 +163,6 @@
     border: 1px solid #ccc;
     margin-top: 20px;
     text-align: center;
+    font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
   }
 </style>
