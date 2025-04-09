@@ -55,10 +55,11 @@
       })
       .on('mouseover', (event, d) => {
         const city = d.properties.j_CITY_NAME || "Unknown City";
+        const cens = d.properties.NAME;
         const pop = +((d.properties.j_OWNER_RATE * 100).toFixed(2)) || "N/A";
         d3.select(tooltipElement)
           .style('opacity', 1)
-          .html(`<strong>${city}</strong><br/>Homeownership Rate per Census Tract: ${pop}%`)
+          .html(`<strong>${city}</strong><br/>Homeownership Rate Census Tract ${cens}: ${pop}%`)
           .style('left', (event.pageX + 10) + 'px')
           .style('top', (event.pageY + 10) + 'px');
           
