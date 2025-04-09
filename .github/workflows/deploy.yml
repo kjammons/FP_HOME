@@ -20,9 +20,10 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: build
+      - name: Build
         env:
-          BASE_PATH: "/${{ github.event.repository.name }}"
+          # Set VITE_BASE to your repository name with a trailing slash.
+          VITE_BASE: "/${{ github.event.repository.name }}/"
         run: |
           npm run build
 
