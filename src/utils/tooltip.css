@@ -1,13 +1,17 @@
 /* src/styles/tooltip.css */
 .tooltip {
-    position: absolute;
-    pointer-events: none;
-    background: rgba(255, 255, 255, 0.9);
-    border: 1px solid #333;
-    padding: 5px;
-    font-size: 0.9rem;
-    border-radius: 3px;
-    opacity: 0;
-    transition: opacity 0.2s ease;
-  }
-  
+  position: absolute;
+  pointer-events: none;
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid #ddd;
+  padding: 10px 14px;
+  font-size: 0.85rem;
+  font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
+  color: #222;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  opacity: 0;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  transform: translateY(-5px);
+  z-index: 10;
+}

@@ -19,13 +19,14 @@ export function createBarChartScale(features, leftKey, rightKey) {
   const rightValues = features
     .map(f => +f.properties[rightKey])
     .filter(v => !isNaN(v));
-    
+
   // Combine both arrays to compute a joint domain
   const allValues = leftValues.concat(rightValues);
 
   const min = d3.min(allValues);
   const max = d3.max(allValues);
-  
+
   // Create a sequential color scale with the computed domain
-  return d3.scaleSequential(d3.interpolateGreens).domain([min, max]);
+  return d3.scaleOrdinal()
+    .range(['#c2185b','#fb8c00',]); // fixed colors
 }

@@ -1,3 +1,6 @@
+
+<h1>Who lives and Who owns in Middlesex County?</h1>
+
 <script>
   import { onMount } from 'svelte';
   import * as d3 from 'd3';
@@ -16,13 +19,13 @@
       // Load GeoJSON from the public folder
       geoData = await loadGeoJSON('./data/ACSDATA2023SORTED_GeoJSON.geojson');
       console.log('Loaded geoData:', geoData);
-      
+
       // Store geoData in shared store and update city list
       geoDataStore.set(geoData);
       let cities = geoData.features.map(f => f.properties.j_CITY_NAME);
       cities = [...new Set(cities)];
       cityList.set(cities);
-      
+
       // Create a color scale for the map based on j_OWNER_RATE
       const colorScale = createOwnerRateScale(geoData.features);
       renderMap(colorScale);
@@ -35,20 +38,20 @@
     const svg = d3.select(svgContainer)
       .attr('width', width)
       .attr('height', height);
-    
+
     // Clear existing content
     svg.selectAll('*').remove();
-    
+
     // Create a projection and path generator
     const projection = d3.geoMercator().fitSize([width, height], geoData);
     const path = d3.geoPath().projection(projection);
-    
+
     // Draw each municipality
     svg.selectAll('path')
       .data(geoData.features)
       .join('path')
       .attr('d', path)
-      .attr('stroke', '#333')
+      .attr('stroke', '#fafafa')
       .attr('fill', d => {
         const popVal = +d.properties.j_OWNER_RATE;
         return isNaN(popVal) ? '#ccc' : colorScale(popVal);
@@ -59,10 +62,10 @@
         const pop = +((d.properties.j_OWNER_RATE * 100).toFixed(2)) || "N/A";
         d3.select(tooltipElement)
           .style('opacity', 1)
-          .html(`<strong>${city}</strong><br/>Homeownership Rate Census Tract ${cens}: ${pop}%`)
+          .html(`<strong>${city} </strong> <br/> Census Tract: ${cens}<br/>Homeownership Rate: ${pop}%`)
           .style('left', (event.pageX + 10) + 'px')
           .style('top', (event.pageY + 10) + 'px');
-          
+
         // Fade out all other municipalities
         d3.select(svgContainer).selectAll('path')
           .transition()
@@ -89,7 +92,14 @@
         // Set the selected city when a municipality is clicked.
         selectedCity.set(d.properties.j_CITY_NAME);
       });
-    
+
+      svg.append('image')
+    .attr('x', width - 800)  // X position (distance from the right side of the SVG)
+    .attr('y', height - 400) // Y position (distance from the bottom of the SVG)
+    .attr('width', 250)      // Image width
+    .attr('height', 300)     // Image height
+    .attr('href', '/images/image 2.jpeg') // Path to the image
+    .attr('opacity', 0.8);   // Optional opacity effect for the image
     // Draw map legend in lower left corner
     drawMapLegend(colorScale, svg, 20, height - 60, 200, 10);
   }
@@ -125,9 +135,25 @@
 
 <style>
   svg {
-    border: 1px solid #ccc;
+    border: 1px solid white;
     display: block;
     margin: auto;
   }
   /* Tooltip styles are in tooltip.css */
+
+  h1{
+    font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
+    text-align: center;
+  }
+
+  p{
+    font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
+    font-size: 80%;
+    font-weight: lighter;
+    font-style: italic;
+    text-align: left;
+
+  }
 </style>
+
+<p>Source: Social Explorer ACS data 2018-2023 (census tract level)</p>
