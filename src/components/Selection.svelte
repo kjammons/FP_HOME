@@ -92,7 +92,7 @@
     g.append('rect')
       .attr('x', centerX)
       .attr('y', barY)
-      .attr('width', rightBarWidth)
+      .attr('width', centerX + rightBarWidth)
       .attr('height', barHeight)
       .attr('fill', barChartColorScale(whiteVal));
     
@@ -162,6 +162,7 @@
     const centerX = halfWidth;
     const leftBarWidth = xScale(nonWhitePop);
     const rightBarWidth = xScale(whitePop);
+
     
     // Draw left bar representing Non-White Population
     g.append('rect')
@@ -175,7 +176,7 @@
     g.append('rect')
       .attr('x', centerX)
       .attr('y', barY)
-      .attr('width', rightBarWidth)
+      .attr('width', centerX + rightBarWidth)
       .attr('height', barHeight)
       .attr('fill', '#cab2d6');
     
@@ -187,13 +188,9 @@
       .attr('y2', innerHeight)
       .attr('stroke', centerLineStyle.stroke);
     
-    // Calculate percentages.
-    const totalPop = whitePop + nonWhitePop;
-    const whitePct = totalPop === 0 ? 0 : Math.floor((whitePop / totalPop) * 100 * 100) / 100;
-    const nonWhitePct = totalPop === 0 ? 0 : Math.floor((nonWhitePop / totalPop) * 100 * 100) / 100;
     
-    const nonWhiteLabel = `Non-White Population: ${nonWhitePct.toFixed(2)}%`;
-    const whiteLabel = `White Population: ${whitePct.toFixed(2)}%`;
+    const nonWhiteLabel = `Non-White Population: ${(nonWhitePop*100).toFixed(2)}%`;
+    const whiteLabel = `White Population: ${(whitePop*100).toFixed(2)}%`;
     
     g.append('text')
       .attr('x', centerX - leftBarWidth * 1.1)

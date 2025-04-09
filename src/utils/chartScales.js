@@ -27,5 +27,5 @@ export function createBarChartScale(features, leftKey, rightKey) {
   const max = d3.max(allValues);
   
   // Create a sequential color scale with the computed domain
-  return d3.scaleSequential(d3.interpolateReds).domain([min, max]);
+  return d3.scaleSequential(d3.interpolateGreens).domain([min, max]);
 }
