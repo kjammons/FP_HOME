@@ -8,9 +8,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@ampproject/remapping": "^2.3.0",
     "@sveltejs/vite-plugin-svelte": "^3.1.2",
     "d3": "^7.9.0",
     "svelte": "^4.2.19",
-    "vite": "^4.5.11"
+    "vite": "^5.4.17"
   }
 }
