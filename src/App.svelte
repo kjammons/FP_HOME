@@ -1,6 +1,9 @@
 <script>
   import MapView from './components/MapView.svelte';
   import Selection from './components/Selection.svelte';
+  import TextBox from './components/TextBox.svelte'; 
+
+
 </script>
 
 <main>
@@ -10,6 +13,7 @@
     </div>
     <div class="selection-panel">
       <Selection />
+      <TextBox   />
     </div>
   </div>
 </main>
