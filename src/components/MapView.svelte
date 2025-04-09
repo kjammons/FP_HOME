@@ -89,6 +89,14 @@
         selectedCity.set(d.properties.j_CITY_NAME);
       });
 
+      svg.append('image')
+      .attr('x', width- 850)  // X position (distance from the left of the SVG)
+      .attr('y', height - 400)  // Y position (distance from the bottom of the SVG)
+      .attr('width', 300)   // Image width
+      .attr('height', 300)  // Image height
+      .attr('href', 'images/image 2.jpeg')  // Path to the image (relative to the public folder)
+      .attr('opacity', 0.8); // Optional opacity effect for the image
+
     // Draw map legend in lower left corner
     drawMapLegend(colorScale, svg, 20, height - 60, 200, 10);
   }
