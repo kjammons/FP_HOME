@@ -1,7 +1,7 @@
 <!-- src/components/TextBox.svelte -->
 <script>
     
-    export let text = "This map displays various municipalities along with their homeownership rates. Hover over a municipality for details.";
+    export let text = "Emilia to add descriptive content";
   </script>
   
   <div class="text-box">
