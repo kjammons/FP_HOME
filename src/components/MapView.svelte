@@ -1,9 +1,10 @@
 <script>
   import { onMount } from 'svelte';
   import * as d3 from 'd3';
+  // Import selectedCity in addition to the others
+  import { selectedCity, cityList, geoDataStore } from '../stores/state.js';
   import { createOwnerRateScale } from '../utils/MapScales.js';
   import { loadGeoJSON } from '../utils/mapUtils.js';
-  import { cityList, geoDataStore } from '../stores/state.js';
   import '../utils/tooltip.css';
 
   let svgContainer;
@@ -58,9 +59,17 @@
         const pop = +((d.properties.j_OWNER_RATE * 100).toFixed(2)) || "N/A";
         d3.select(tooltipElement)
           .style('opacity', 1)
-          .html(`<strong>${city}</strong><br/>Rate of Homeownership: ${pop}%`)
+          .html(`<strong>${city}</strong><br/>Homeownership Rate per Census Tract: ${pop}%`)
           .style('left', (event.pageX + 10) + 'px')
           .style('top', (event.pageY + 10) + 'px');
+          
+        // Fade out all other municipalities
+        d3.select(svgContainer).selectAll('path')
+          .transition()
+          .duration(200)
+          .style('opacity', function() {
+            return (this === event.currentTarget) ? 1 : 0.3;
+          });
       })
       .on('mousemove', (event) => {
         d3.select(tooltipElement)
@@ -70,6 +79,15 @@
       .on('mouseout', () => {
         d3.select(tooltipElement)
           .style('opacity', 0);
+        // Reset opacity of all municipalities
+        d3.select(svgContainer).selectAll('path')
+          .transition()
+          .duration(200)
+          .style('opacity', 1);
+      })
+      .on('click', (event, d) => {
+        // Set the selected city when a municipality is clicked.
+        selectedCity.set(d.properties.j_CITY_NAME);
       });
     
     // Draw map legend in lower left corner
@@ -81,7 +99,7 @@
     const legendGroup = svg.append('g')
       .attr('transform', `translate(${x}, ${y})`);
 
-    // Generate tick values for the legend
+    // Generate tick values for the legend.
     const ticks = scale.ticks ? scale.ticks(5) : d3.ticks(scale.domain()[0], scale.domain()[1], 5);
     const rectWidth = legendWidth / ticks.length;
 
@@ -97,7 +115,7 @@
         .attr('y', legendHeight + 15)
         .attr('text-anchor', 'middle')
         .style('font-size', '10px')
-        .text((d*100).toFixed(0)+'%');
+        .text((d * 100).toFixed(0) + '%');
     });
   }
 </script>
