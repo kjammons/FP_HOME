@@ -11,7 +11,7 @@
   // Load GeoJSON once component mounts
   onMount(async () => {
     try {
-      const data = await d3.json('/data/ACSDATA2023SORTED_GeoJSON.geojson');
+      const data = await d3.json('./data/ACSDATA2023SORTED_GeoJSON.geojson');
       geoDataStore.set(data);
       const cities = data.features.map(f => f.properties.j_CITY_NAME);
       cityList.set([...new Set(cities)]);

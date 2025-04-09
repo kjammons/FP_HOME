@@ -17,18 +17,14 @@
       geoData = await loadGeoJSON('./data/ACSDATA2023SORTED_GeoJSON.geojson');
       console.log('Loaded geoData:', geoData);
       
-      // Store the full geoData in a shared store
+      // Store geoData in shared store and update city list
       geoDataStore.set(geoData);
-      
-      // Extract the dynamic city list using the identifier "j_CITY_NAME"
       let cities = geoData.features.map(f => f.properties.j_CITY_NAME);
-      // Remove duplicates
       cities = [...new Set(cities)];
       cityList.set(cities);
       
-      // Get a color scale based on j_OWNER_RATE using our scales module.
+      // Create a color scale for the map based on j_OWNER_RATE
       const colorScale = createOwnerRateScale(geoData.features);
-  
       renderMap(colorScale);
     } catch (error) {
       console.error('Error loading GeoJSON:', error);
@@ -40,13 +36,13 @@
       .attr('width', width)
       .attr('height', height);
     
-    // Clear any previous drawings
+    // Clear existing content
     svg.selectAll('*').remove();
     
-    // Create a projection to fit the GeoJSON data
+    // Create a projection and path generator
     const projection = d3.geoMercator().fitSize([width, height], geoData);
     const path = d3.geoPath().projection(projection);
-
+    
     // Draw each municipality
     svg.selectAll('path')
       .data(geoData.features)
@@ -59,7 +55,6 @@
       })
       .on('mouseover', (event, d) => {
         const city = d.properties.j_CITY_NAME || "Unknown City";
-        // Multiply by 100 and round to 2 decimals
         const pop = +((d.properties.j_OWNER_RATE * 100).toFixed(2)) || "N/A";
         d3.select(tooltipElement)
           .style('opacity', 1)
@@ -76,6 +71,34 @@
         d3.select(tooltipElement)
           .style('opacity', 0);
       });
+    
+    // Draw map legend in lower left corner
+    drawMapLegend(colorScale, svg, 20, height - 60, 200, 10);
+  }
+
+  // Helper function to draw a legend for the map color scale.
+  function drawMapLegend(scale, svg, x, y, legendWidth, legendHeight) {
+    const legendGroup = svg.append('g')
+      .attr('transform', `translate(${x}, ${y})`);
+
+    // Generate tick values for the legend
+    const ticks = scale.ticks ? scale.ticks(5) : d3.ticks(scale.domain()[0], scale.domain()[1], 5);
+    const rectWidth = legendWidth / ticks.length;
+
+    ticks.forEach((d, i) => {
+      legendGroup.append('rect')
+        .attr('x', i * rectWidth)
+        .attr('y', 0)
+        .attr('width', rectWidth)
+        .attr('height', legendHeight)
+        .attr('fill', scale(d));
+      legendGroup.append('text')
+        .attr('x', i * rectWidth + rectWidth / 2)
+        .attr('y', legendHeight + 15)
+        .attr('text-anchor', 'middle')
+        .style('font-size', '10px')
+        .text((d*100).toFixed(0)+'%');
+    });
   }
 </script>
 
@@ -88,5 +111,5 @@
     display: block;
     margin: auto;
   }
-  /* The tooltip CSS was moved to src/styles/tooltip.css */
+  /* Tooltip styles are in tooltip.css */
 </style>
