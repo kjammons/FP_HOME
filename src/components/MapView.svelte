@@ -14,7 +14,7 @@
   onMount(async () => {
     try {
       // Load GeoJSON from the public folder
-      geoData = await loadGeoJSON('/data/ACSDATA2023SORTED_GeoJSON.geojson');
+      geoData = await loadGeoJSON('./data/ACSDATA2023SORTED_GeoJSON.geojson');
       console.log('Loaded geoData:', geoData);
       
       // Store the full geoData in a shared store

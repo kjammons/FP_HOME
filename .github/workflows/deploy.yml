@@ -22,7 +22,6 @@ jobs:
 
       - name: Build
         env:
-          # Set VITE_BASE to your repository name with a trailing slash.
           VITE_BASE: "/${{ github.event.repository.name }}/"
         run: |
           npm run build
