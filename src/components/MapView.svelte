@@ -16,13 +16,13 @@
       // Load GeoJSON from the public folder
       geoData = await loadGeoJSON('./data/ACSDATA2023SORTED_GeoJSON.geojson');
       console.log('Loaded geoData:', geoData);
-      
+
       // Store geoData in shared store and update city list
       geoDataStore.set(geoData);
       let cities = geoData.features.map(f => f.properties.j_CITY_NAME);
       cities = [...new Set(cities)];
       cityList.set(cities);
-      
+
       // Create a color scale for the map based on j_OWNER_RATE
       const colorScale = createOwnerRateScale(geoData.features);
       renderMap(colorScale);
@@ -35,14 +35,14 @@
     const svg = d3.select(svgContainer)
       .attr('width', width)
       .attr('height', height);
-    
+
     // Clear existing content
     svg.selectAll('*').remove();
-    
+
     // Create a projection and path generator
     const projection = d3.geoMercator().fitSize([width, height], geoData);
     const path = d3.geoPath().projection(projection);
-    
+
     // Draw each municipality
     svg.selectAll('path')
       .data(geoData.features)
@@ -61,7 +61,7 @@
           .html(`<strong>${city}</strong><br/>Homeownership Rate per Census Tract: ${pop}%`)
           .style('left', (event.pageX + 10) + 'px')
           .style('top', (event.pageY + 10) + 'px');
-          
+
         // Fade out all other municipalities
         d3.select(svgContainer).selectAll('path')
           .transition()
@@ -88,7 +88,7 @@
         // Set the selected city when a municipality is clicked.
         selectedCity.set(d.properties.j_CITY_NAME);
       });
-    
+
     // Draw map legend in lower left corner
     drawMapLegend(colorScale, svg, 20, height - 60, 200, 10);
   }
@@ -122,6 +122,7 @@
 <svg bind:this={svgContainer}></svg>
 <div bind:this={tooltipElement} class="tooltip"></div>
 
+
 <style>
   svg {
     border: 1px solid #ccc;
@@ -129,4 +130,5 @@
     margin: auto;
   }
   /* Tooltip styles are in tooltip.css */
+
 </style>
