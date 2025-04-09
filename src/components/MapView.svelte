@@ -1,9 +1,10 @@
 <script>
   import { onMount } from 'svelte';
   import * as d3 from 'd3';
-  import { createOwnerRateScale } from '../utils/scales.js';
+  import { createOwnerRateScale } from '../utils/MapScales.js';
   import { loadGeoJSON } from '../utils/mapUtils.js';
   import { cityList, geoDataStore } from '../stores/state.js';
+  import '../utils/tooltip.css';
 
   let svgContainer;
   let tooltipElement;
@@ -87,15 +88,5 @@
     display: block;
     margin: auto;
   }
-  .tooltip {
-    position: absolute;
-    pointer-events: none;
-    background: rgba(255,255,255,0.9);
-    border: 1px solid #333;
-    padding: 5px;
-    font-size: 0.9rem;
-    border-radius: 3px;
-    opacity: 0;
-    transition: opacity 0.2s ease;
-  }
+  /* The tooltip CSS was moved to src/styles/tooltip.css */
 </style>
