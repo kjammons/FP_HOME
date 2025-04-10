@@ -98,7 +98,7 @@
     .attr('y', height - 400) // Y position (distance from the bottom of the SVG)
     .attr('width', 250)      // Image width
     .attr('height', 300)     // Image height
-    .attr('href', './images/image 2.jpeg') // Path to the image
+    .attr('href', './images/image_2.jpeg') // Path to the image
     .attr('opacity', 0.8);   // Optional opacity effect for the image
     // Draw map legend in lower left corner
     drawMapLegend(colorScale, svg, 20, height - 60, 200, 10);
