@@ -8,3 +8,5 @@ const app = new App({
 
 export default app;
 
+// global.js write code for nav bar here, do it in html
+
