@@ -62,8 +62,4 @@
             color: black;
         }
         
-        select {
-            font-family: Helvetica;
-            font-size: 80%;
-        }
         </style>
