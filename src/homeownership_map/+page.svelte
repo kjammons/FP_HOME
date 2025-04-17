@@ -1,7 +1,7 @@
 <script>
-  import MapView from './components/MapView.svelte';
-  import Selection from './components/Selection.svelte';
-  import TextBox from './components/TextBox.svelte'; 
+  import MapView from '../components/MapView.svelte';
+  import Selection from '../components/Selection.svelte';
+  import TextBox from '../components/TextBox.svelte'; 
 
 
 </script>
