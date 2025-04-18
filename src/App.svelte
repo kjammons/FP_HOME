@@ -9,8 +9,9 @@
 <main>
   <div class="container">
     <div class="map">
-      <MapView />
       <OverlayMap />
+      <MapView />
+      
     </div>
     <div class="selection-panel">
       <Selection />
