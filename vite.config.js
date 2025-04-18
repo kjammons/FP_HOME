@@ -6,3 +6,8 @@ export default defineConfig({
   plugins: [svelte()],
   base: process.env.VITE_BASE,
 });
+export default {
+  optimizeDeps: {
+    include: ['pdfjs-dist/build/pdf.worker'],
+  },
+};
