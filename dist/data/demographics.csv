@@ -1,0 +1,11 @@
+region_id,region_name,homeownership,housing_value,housing_type,white_population_percentage,black_population_percentage
+1,Dracut,54.35,214000.0,Multi-Family,97.03,7.7
+2,Lowell,91.8,879000.0,Multi-Family,67.07,7.99
+3,Wilmington,77.58,783000.0,Condo,89.88,20.81
+4,Malden,68.91,349000.0,Multi-Family,79.46,18.69
+5,Littleton,40.14,327000.0,Condo,66.13,25.16
+6,Cambridge,40.14,328000.0,Condo,40.77,6.03
+7,Somerville,33.78,413000.0,Multi-Family,94.65,12.34
+8,Medford,86.3,567000.0,Condo,72.67,6.28
+9,Woburn,69.07,502000.0,Multi-Family,62.35,22.91
+10,Lexington,76.02,404000.0,Multi-Family,40.93,13.33

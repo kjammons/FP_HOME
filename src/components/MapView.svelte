@@ -1,5 +1,5 @@
 
-<h1>Who lives and Who owns in Middlesex County?</h1>
+<h1>Home Ownership and Demographics in Middlesex County?</h1>
 
 <script>
   import { onMount } from 'svelte';

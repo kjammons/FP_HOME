@@ -1,7 +1,7 @@
 <script>
   import { onMount } from "svelte";
   import * as pdfjsLib from "pdfjs-dist";
-
+  
   // ✅ Point to the local worker file manually
   pdfjsLib.GlobalWorkerOptions.workerSrc = "/pdf.worker.min.js";
 
@@ -9,8 +9,10 @@
   let svgContainer;
 
   onMount(async () => {
+    console.log("🧭 OverlayMap mounted");
     try {
       const loadingTask = pdfjsLib.getDocument("/map.pdf");
+      console.log("📥 loading map.pdf...");
       const pdf = await loadingTask.promise;
       const page = await pdf.getPage(1);
       const viewport = page.getViewport({ scale: 0.7 });
@@ -57,6 +59,7 @@ svg.style.left = "0";
     width: 1498.224px;
     height: 742.56px;
     margin: auto;
+    background: lightgray;
   }
 
   canvas, .svg-overlay {
