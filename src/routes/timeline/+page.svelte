@@ -5,7 +5,7 @@
     const decades = [1920, 1930, 1940, 1950, 1960, 1970, 1980, 1990, 2000, 2010, 2020];
   </script>
 
-  <h1>Racial Demographics by Decade</h1>
+  <h1>Timeline</h1>
 
   <select bind:value={selectedYear}>
     {#each decades as d}
