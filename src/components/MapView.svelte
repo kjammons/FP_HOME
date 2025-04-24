@@ -1,3 +1,6 @@
+
+<h1>Home Ownership and Demographics in Middlesex County?</h1>
+
 <script>
   import { onMount } from 'svelte';
   import * as d3 from 'd3';
