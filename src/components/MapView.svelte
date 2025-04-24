@@ -1,6 +1,3 @@
-
-<h1>Home Ownership and Demographics in Middlesex County?</h1>
-
 <script>
   import { onMount } from 'svelte';
   import * as d3 from 'd3';
@@ -17,7 +14,7 @@
   onMount(async () => {
     try {
       // Load GeoJSON from the public folder
-      geoData = await loadGeoJSON('./data/ACSDATA2023SORTED_GeoJSON.geojson');
+      geoData = await loadGeoJSON('/data/ACSDATA2023SORTED_GeoJSON.geojson');
       console.log('Loaded geoData:', geoData);
 
       // Store geoData in shared store and update city list
@@ -130,6 +127,9 @@
   }
 </script>
 
+<h1>Home Ownership and Demographics in Middlesex County?</h1>
+<p>Source: Social Explorer ACS data 2018-2023 (census tract level)</p>
+
 <svg bind:this={svgContainer}></svg>
 <div bind:this={tooltipElement} class="tooltip"></div>
 
@@ -155,5 +155,3 @@
 
   }
 </style>
-
-<p>Source: Social Explorer ACS data 2018-2023 (census tract level)</p>
