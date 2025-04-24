@@ -3,7 +3,7 @@
     import * as d3 from 'd3';
 
     export let year = 1920;
-    export let csvPath = './data/race_by_decade.csv';
+    export let csvPath = './data/home_ownership_by_decade.csv';
     let data = [];
 
     // Load the CSV file and store it in the data variable
@@ -34,7 +34,7 @@
       const height = 500;
       const margin = { top: 40, right: 20, bottom: 30, left: 60 };
 
-      const svg = d3.select('#race-chart')
+      const svg = d3.select('#homeown-chart')
         .attr('width', width)
         .attr('height', height);
 
@@ -93,5 +93,5 @@
 
   </style>
 
-    <h2>Racial Distribution - {year}</h2>
-    <svg id="race-chart"></svg>
+    <h2>Homeownership - {year}</h2>
+    <svg id="homeown-chart"></svg>
