@@ -10,8 +10,8 @@
     onMount(async () => {
       const csv = await d3.csv(csvPath, d => ({
         year: +d.YEAR,
-        category: d.category,
-        value: +d.value
+        category: d.Category,
+        value: +d.Value
       }));
 
       console.log("Loaded CSV:", csv);
