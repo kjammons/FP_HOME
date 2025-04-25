@@ -18,12 +18,12 @@
   // On mount, load GeoJSON data, update the shared store, and populate the dropdown.
   onMount(async () => {
     try {
-      const data = await d3.json('src/lib/assets/data/acs_2023.geojson');
+      const data = await d3.json('src/lib/assets/data/SB_ACSDATA_2.geojson');
       geoDataStore.set(data);
       geoData = data;
 
       // Extract unique city names, sorted alphabetically.
-      const cities = data.features.map(f => f.properties.j_CITY_NAME);
+      const cities = data.features.map(f => f.properties.TOWN20);
       const uniqueCities = [...new Set(cities)].sort((a, b) => a.localeCompare(b));
       cityList.set(uniqueCities);
     } catch (error) {
@@ -41,7 +41,7 @@
   $: currentFeature =
     $geoDataStore && $selectedCity
       ? $geoDataStore.features.find(f =>
-            f.properties.j_CITY_NAME.trim() === $selectedCity.trim())
+            f.properties.TOWN20.trim() === $selectedCity.trim())
       : null;
 
   // When a city is selected and the SVGs are present, draw the two charts.
@@ -132,22 +132,38 @@
     const asianKey = "j_PROP_POP ASIAN";
     const indianKey = "j_PROP_POP AMERICAN INDIAN";
     const hawaiianKey = "j_PROP_POP NATIVE HAWAIIAN";
+    const otherKey = "j_PROP_POP OTHER";
 
-    const whitePop = +feature.properties[whiteKey] || 0;
-    const blackPop = +feature.properties[blackKey] || 0;
-    const asianPop = +feature.properties[asianKey] || 0;
-    const indianPop = +feature.properties[indianKey] || 0;
-    const hawaiianPop = +feature.properties[hawaiianKey] || 0;
+    const values = [
+  { race: "White", pop: +feature.properties[whiteKey] || 0 },
+  { race: "Black", pop: +feature.properties[blackKey] || 0 },
+  { race: "Asian", pop: +feature.properties[asianKey] || 0 },
+  { race: "American Indian", pop: +feature.properties[indianKey] || 0 },
+  { race: "Native Hawaiian", pop: +feature.properties[hawaiianKey] || 0 },
+  { race: "Other", pop: +feature.properties[otherKey] || 0 }
 
-    // Compute nonWhite population by summing the four values.
-    const nonWhitePop = blackPop + asianPop + indianPop + hawaiianPop;
-    const maxVal = d3.max([whitePop, nonWhitePop]);
+];
+console.log('Population values:', values);
+
+const raceColors = {
+  "White": "#42a5f5",         // Blue
+  "Black": "#66bb6a",         // Green
+  "Asian": "#ffa726",         // Orange
+  "American Indian": "#ab47bc", // Purple
+  "Native Hawaiian": "#ef5350", // Red
+  "Other": "#8d6e63"          // Brown
+};
+
+    const maxVal = d3.max(values, d => d.pop);
 
     const innerWidth = width - margin.left - margin.right;
     const innerHeight = height - margin.top - margin.bottom;
     const halfWidth = innerWidth / 2;
     const { barHeight, labelOffset } = barStyle;
     const barY = (innerHeight - barHeight) / 2;
+
+    const barPadding = 2; // ✨ Add this
+
 
     const xScale = d3.scaleLinear()
       .domain([0, maxVal])
@@ -159,55 +175,26 @@
       .append('g')
       .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
-    const centerX = halfWidth;
-    const leftBarWidth = xScale(nonWhitePop);
-    const rightBarWidth = xScale(whitePop);
+  
+      g.selectAll('rect')
+  .data(values)
+  .join('rect')
+  .attr('x', 0)
+  .attr('y', (d, i) => i * (barHeight + barPadding))
+  .attr('width', d => xScale(d.pop))
+  .attr('height', barHeight)
+  .attr('fill', d => raceColors[d.race] || "#ccc");  // Different color
 
-
-    // Draw left bar representing Non-White Population
-    g.append('rect')
-      .attr('x', centerX - leftBarWidth)
-      .attr('y', barY)
-      .attr('width', leftBarWidth)
-      .attr('height', barHeight)
-      .attr('fill', '#c2185b');
-
-    // Draw right bar representing White Population
-    g.append('rect')
-      .attr('x', centerX)
-      .attr('y', barY)
-      .attr('width', centerX + rightBarWidth)
-      .attr('height', barHeight)
-      .attr('fill', "#fb8c00");
-
-    // Draw center divider
-    g.append('line')
-      .attr('x1', centerX)
-      .attr('x2', centerX)
-      .attr('y1', 0)
-      .attr('y2', innerHeight)
-      .attr('stroke', centerLineStyle.stroke);
-
-
-    const nonWhiteLabel = `Non-White Population: ${(nonWhitePop*100).toFixed(2)}%`;
-    const whiteLabel = `White Population: ${(whitePop*100).toFixed(2)}%`;
-
-    g.append('text')
-      .attr('x', margin.left + 75)
-      .attr('y', innerHeight-10)
-      .attr('text-anchor', textStyle.textAnchor)
-      .attr('fill', textStyle.fill)
-      .style('font-size', textStyle.fontSize)
-      .text(nonWhiteLabel);
-
-    g.append('text')
-      .attr('x', innerWidth-margin.right -85)
-      .attr('y', innerHeight-10)
-      .attr('text-anchor', textStyle.textAnchor)
-      .attr('fill', textStyle.fill)
-      .style('font-size', textStyle.fontSize)
-      .text(whiteLabel);
+g.selectAll('text')
+  .data(values)
+  .join('text')
+  .attr('x', d => xScale(d.pop) + 5)
+  .attr('y', (d, i) => i * (barHeight + barPadding) + barHeight / 2 + 5)
+  .attr('fill', textStyle.fill)
+  .style('font-size', textStyle.fontSize)
+  .text(d => `${d.race}: ${(d.pop * 100).toFixed(2)}%`);
   }
+  
 </script>
 
 <!-- City Selector -->
@@ -226,12 +213,12 @@
   {#if currentFeature}
     <div class="charts-container">
       <div class="population-chart-container">
-        <h2>Racial Demographics for {currentFeature.properties.j_CITY_NAME}</h2>
+        <h2>Racial Demographics for {currentFeature.properties.TOWN20}</h2>
         <svg bind:this={svgPopulation} width={width} height={height}></svg>
       </div>
     </div>
       <div class="bargraph-container">
-        <h2>Homeownership Demographics for {currentFeature.properties.j_CITY_NAME} </h2>
+        <h2>Homeownership Demographics for {currentFeature.properties.TOWN20} </h2>
         <svg bind:this={svgHomeownership} width={width} height={height}></svg>
       </div>
   {:else}
