@@ -1,7 +1,7 @@
 <script>
   import { onMount } from 'svelte';
   import * as d3 from 'd3';
-  import { selectedCity, geoDataStore, cityList } from '../stores/state.js';
+  import { selectedCity, geoDataStore, cityList } from '../../stores/state.js';
   import { createBarChartScale } from '../utils/chartScales.js';
   import { chartDimensions, barStyle, centerLineStyle, textStyle } from '../utils/chartStyles.js';
   import { loadGeoJSON } from '../utils/mapUtils.js';
@@ -18,7 +18,7 @@
   // On mount, load GeoJSON data, update the shared store, and populate the dropdown.
   onMount(async () => {
     try {
-      const data = await d3.json('./data/ACSDATA2023SORTED_GeoJSON.geojson');
+      const data = await d3.json('src/lib/assets/data/acs_2023.geojson');
       geoDataStore.set(data);
       geoData = data;
 

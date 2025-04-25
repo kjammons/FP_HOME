@@ -1,9 +1,6 @@
 <script>
   import { onMount } from "svelte";
   import * as pdfjsLib from "pdfjs";
-  
-  // ✅ Point to the local worker file manually
-  pdfjsLib.GlobalWorkerOptions.workerSrc = "/pdf.worker.min.js";
 
   let canvasEl;
   let svgContainer;
@@ -11,7 +8,7 @@
   onMount(async () => {
     console.log("🧭 OverlayMap mounted");
     try {
-      const loadingTask = pdfjsLib.getDocument("./map.pdf");
+      const loadingTask = pdfjsLib.getDocument("src/lib/assets/map.pdf");
       console.log("📥 loading map.pdf...");
       const pdf = await loadingTask.promise;
       const page = await pdf.getPage(1);
