@@ -1,9 +1,9 @@
 <script>
 
-  import MapView from '../../components/MapView.svelte';
-  import Selection from '../../components/Selection.svelte';
-  import TextBox from '../../components/TextBox.svelte'; 
-  import OverlayMap from '../../components/OverlayMap.svelte';
+  import MapView from '../../lib/components/MapView.svelte';
+  import Selection from '../../lib/components/Selection.svelte';
+  import TextBox from '../../lib/components/TextBox.svelte'; 
+  import OverlayMap from '../../lib/components/OverlayMap.svelte';
   
 </script>
 

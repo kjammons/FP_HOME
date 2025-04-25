@@ -1,7 +1,7 @@
 <script>
   import { onMount } from 'svelte';
   import * as d3 from 'd3';
-  import { selectedCity, cityList, geoDataStore } from '../stores/state.js';
+  import { selectedCity, cityList, geoDataStore } from '../../stores/state.js';
   import { createOwnerRateScale } from '../utils/MapScales.js';
   import { loadGeoJSON } from '../utils/mapUtils.js';
   import '../utils/tooltip.css';
@@ -14,7 +14,7 @@
   onMount(async () => {
     try {
       // Load GeoJSON from the public folder
-      geoData = await loadGeoJSON('/data/ACSDATA2023SORTED_GeoJSON.geojson');
+      geoData = await loadGeoJSON('src/lib/assets/data/acs_2023.geojson');
       console.log('Loaded geoData:', geoData);
 
       // Store geoData in shared store and update city list
@@ -95,7 +95,7 @@
     .attr('y', height - 400) // Y position (distance from the bottom of the SVG)
     .attr('width', 250)      // Image width
     .attr('height', 300)     // Image height
-    .attr('href', './images/image_2.jpeg') // Path to the image
+    // .attr('href', 'src/lib/assets/images/image_2.jpeg') // Path to the image
     .attr('opacity', 0.8);   // Optional opacity effect for the image
     // Draw map legend in lower left corner
     drawMapLegend(colorScale, svg, 20, height - 60, 200, 10);
