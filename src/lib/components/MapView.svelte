@@ -18,6 +18,15 @@ let projection;
 
   onMount(async () => {
     try {
+    const response = await fetch('/data/ACSDATA2023SORTED_GeoJSON.geojson');
+    if (!response.ok) throw new Error('HTTP error: ' + response.status);
+    geoData = await response.json();
+    console.log("Loaded geoData:", geoData);
+  } catch (error) {
+    console.error('Error loading GeoJSON:', error);
+  }
+  
+  try {
       // Load GeoJSON from the public folder
       geoData = await loadGeoJSON('src/lib/assets/data/SB_ACSDATA_2.geojson');
       console.log('Loaded geoData:', geoData);
