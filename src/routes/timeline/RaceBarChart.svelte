@@ -83,16 +83,5 @@
 
 
 
-<style>
-	.bar {
-		background: steelblue;
-		padding: 3px;
-		margin: 1px;
-		text-align: right;
-		color: white;
-	}
-
-</style>
-
   <h2>Racial Distribution - {year}</h2>
   <svg id="race-chart"></svg>
