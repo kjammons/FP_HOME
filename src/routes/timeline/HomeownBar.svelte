@@ -3,7 +3,7 @@
     import * as d3 from 'd3';
 
     export let year = 1920;
-    export let csvPath = './data/home_ownership_by_decade.csv';
+    export let csvPath = 'src/lib/assets/data/home_ownership_by_decade.csv';
     let data = [];
 
     // Load the CSV file and store it in the data variable
