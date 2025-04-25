@@ -74,4 +74,8 @@ YEAR,category,value
 1990,Two or more races ,
 2000,Two or more races ,
 2010,Two or more races ,38242
+<<<<<<< HEAD
 2020,Two or more races ,134739
+=======
+2020,Two or more races ,134739
+>>>>>>> ae04bc4b0f6780acb1c80b80b09a757588497238
