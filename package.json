@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@ampproject/remapping": "^2.3.0",
+    "@sveltejs/kit": "^2.20.7",
     "@sveltejs/vite-plugin-svelte": "^3.1.2",
     "d3": "^7.9.0",
     "debug": "^4.4.0",
