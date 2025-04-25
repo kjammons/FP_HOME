@@ -1,6 +1,6 @@
 <script>
   import { onMount } from "svelte";
-  import * as pdfjsLib from "pdfjs-dist";
+  import * as pdfjsLib from "pdfjs";
   
   // ✅ Point to the local worker file manually
   pdfjsLib.GlobalWorkerOptions.workerSrc = "/pdf.worker.min.js";
@@ -11,7 +11,7 @@
   onMount(async () => {
     console.log("🧭 OverlayMap mounted");
     try {
-      const loadingTask = pdfjsLib.getDocument("/map.pdf");
+      const loadingTask = pdfjsLib.getDocument("./map.pdf");
       console.log("📥 loading map.pdf...");
       const pdf = await loadingTask.promise;
       const page = await pdf.getPage(1);
@@ -25,25 +25,23 @@
       await page.render({ canvasContext: context, viewport }).promise;
 
       // Load and insert the SVG
-const response = await fetch("/overlay.svg");
-const svgText = await response.text();
-svgContainer.innerHTML = svgText;
+      const response = await fetch("/overlay.svg");
+      const svgText = await response.text();
+      svgContainer.innerHTML = svgText;
 
-const svg = svgContainer.querySelector("svg");
+      const svg = svgContainer.querySelector("svg");
 
-// Match dimensions
-svg.setAttribute("width", 1498.224);
-svg.setAttribute("height", 742.56);
-svg.setAttribute("viewBox", "0 0 1498.224 742.56");
-svg.style.position = "absolute";
-svg.style.top = "0";
-svg.style.left = "0";
-
+      // Match dimensions
+      svg.setAttribute("width", 1498.224);
+      svg.setAttribute("height", 742.56);
+      svg.setAttribute("viewBox", "0 0 1498.224 742.56");
+      svg.style.position = "absolute";
+      svg.style.top = "0";
+      svg.style.left = "0";
 
       console.log("✅ PDF rendered");
     } catch (err) {
       console.error("🚨 PDF render error:", err);
-      
     }
   });
 </script>
