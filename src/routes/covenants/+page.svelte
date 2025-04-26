@@ -1,6 +1,7 @@
 <script>
     import { onMount } from "svelte";
 
+
     // Define the deeds array with bounding box (bbox) coordinates and alert messages
     const deeds = [
         {
@@ -8,7 +9,7 @@
             name: "Covenant 1",
             description: "Grantor: Arathusa F. Dyar. Date Recorded: May 06, 1878. Location: East Chelmsford, MA",
             bbox: [[147, 1533], [1388, 1594]], // Bounding box coordinates
-            image: "public/images/covenant_1.jpg",
+            image: "./src/lib/assets/images/covenant_1.jpg", // Path to the image
             alertMessage: "This deed reads: “He shall keep the premises hereby leased neat and orderly and allow no liquor drunk or disorderly conduct upon the premises.” We are not interpreting this as a restrictive covenant, but it illustrates the stucture that covenants will be added to."
         },
         {
@@ -16,7 +17,7 @@
             name: "Covenant 2",
             description: "Grantor: Charles D. Wild. Date Recorded: June 22, 1880. Location: Wilmington, MA",
             bbox: [[168, 1454], [1514, 1571]],
-            image: "public/images/covenant_2.jpg",
+            image: "./src/lib/assets/images/covenant_2.jpg",
             alertMessage: "You found a restrictive covenant! This deed reads: “That said premises are to be used as a place of residence only and are not to be occupied or conveyed to any Negroes or Irish or any person or persons that would be considered disorderly people."
         },
         {
@@ -24,7 +25,7 @@
             name: "Covenant 3",
             description: "Grantor: Maria M. Lenfest and Granville S. Lenfest. Date Recorded: May 10, 1924. Location: Wilmington, MA",
             bbox: [[367, 2087], [1808, 2220]],
-            image: "public/images/covenant_3.jpg",
+            image: "./src/lib/assets/images/covenant_3.jpg",
             alertMessage: "You found a restrictive covenant! This deed reads: “that, the said premises are to be used as a place of residence only and are not to be occupied or conveyed to any Negroes or any person or persons that would be considered disorderly people.”"
         },
         {
@@ -32,7 +33,7 @@
             name: "Covenant 4",
             description: "Grantors: Fred E. Kroker, Ethel W. Kroker. Date Recorded: November 28, 1939. Location: Dracut, MA",
             bbox: [[490, 2157], [1964, 2332]],
-            image: "public/images/covenant_4.jpg",
+            image: "./src/lib/assets/images/covenant_4.jpg",
             alertMessage: "You found a restrictive covenant! This deed reads: “That no part of the land hereby conveyed, or the improvements thereon, shall ever be sold, leased, traded, rented or donated to any one other than the Caucasian race.”"
         },
         {
@@ -40,7 +41,7 @@
             name: "Covenant 5",
             description: "Grantors: E. Gaston Campbell, Frank J. Rochette, and Thomas Rochette. Date Recorded: April 7, 195. Location: Dracut, MA",
             bbox: [[265, 1713], [2442, 1872]],
-            image: "public/images/covenant_5.jpg",
+            image: "./src/lib/assets/images/covenant_5.jpg",
             alertMessage: "You found a restrictive covenant! This deed reads: “No part of the land hereby conveyed shall ever be conveyed, leased, traded, rented or donated to anyone who is not a member of the caucasian race.”"
         }
     ];
