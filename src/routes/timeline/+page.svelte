@@ -1,175 +1,239 @@
 <!-- src/routes/timeline/+page.svelte -->
 <script>
-    import mapPreview from '$lib/assets/images/map.png';
-    import { onMount } from 'svelte';
-  
-    const years = [1920, 1930, 1940, 1950, 1960, 1970, 1980, 1990, 2000, 2010, 2020];
-    let currentIndex = 0;
-    let stepEls = [];
-    let observer;
-  
-    function collect(el, idx) {
-      stepEls[idx] = el;
-      if (observer) observer.observe(el);
-      return {
-        destroy() {
-          if (observer) observer.unobserve(el);
-          stepEls[idx] = null;
-        }
-      };
+  import { onMount } from 'svelte';
+  import RaceBarChart from './RaceBarChart.svelte';
+  import HomeownBar    from './HomeownBar.svelte';
+  import mapPreview    from '$lib/assets/images/map.png';
+
+  // decades
+  const years = [1920,1930,1940,1950,1960,1970,1980,1990,2000,2010,2020];
+  let currentIndex = 0;
+  let selectedYear = years[0];
+
+  // collect step elements for IntersectionObserver
+  let stepEls = [];
+  let observer;
+  function collect(el,i) {
+    stepEls[i] = el;
+    observer?.observe(el);
+    return {
+      destroy() {
+        observer?.unobserve(el);
+        stepEls[i] = null;
+      }
     }
-  
-    onMount(() => {
-      observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach(entry => {
-            if (entry.isIntersecting) {
-              const idx = stepEls.indexOf(entry.target);
-              if (idx !== -1) currentIndex = idx;
+  }
+
+  onMount(() => {
+    observer = new IntersectionObserver(
+      entries => {
+        entries.forEach(e => {
+          if (e.isIntersecting) {
+            const idx = stepEls.indexOf(e.target);
+            if (idx !== -1) {
+              currentIndex = idx;
+              selectedYear = years[idx];
             }
-          });
-        },
-        { threshold: 0.8 }
-      );
-      stepEls.forEach(el => el && observer.observe(el));
-      return () => observer.disconnect();
-    });
-  
-    const descriptions = {
-      1920: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-      1930: 'Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-      1940: 'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.',
-      1950: 'Duis aute irure dolor in reprehenderit in voluptate velit esse.',
-      1960: 'Excepteur sint occaecat cupidatat non proident.',
-      1970: 'Sunt in culpa qui officia deserunt mollit anim id est laborum.',
-      1980: 'Curabitur pretium tincidunt lacus. Nulla gravida orci a odio.',
-      1990: 'Nullam varius, turpis et commodo pharetra.',
-      2000: 'Donec vitae sapien ut libero venenatis faucibus.',
-      2010: 'Vestibulum ante ipsum primis in faucibus orci luctus et.',
-      2020: 'Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi.'
-    };
-  </script>
-  
-  <style>
-    /* Parchment background */
-    :global(body) {
-      margin: 0;
-      padding: 0;
-      font-family: 'Georgia', serif;
-      background: #faf3e0;
-      color: #333;
-    }
-  
-    /* Scroll container with subtle edges */
-    .container {
-      overscroll-behavior-y: contain;  /* prevent accidental over-scroll beyond container */
-      max-width: 900px;
-      margin: 2rem auto;
-      padding: 0 1rem;
-      height: 100vh;
-      overflow-y: auto;
-      scroll-snap-type: y mandatory;
-      scroll-padding-top: 30vh; /* pause higher on scroll */
-      background: #faf3e0;
-    }
-  
-    /* Year badge styled like an old label */
-    .year-display {
-      position: fixed;
-      top: 50%;
-      right: 2rem;
-      transform: translateY(-50%);
-      font-size: 3.5rem;
-      font-variant: small-caps;
-      font-weight: bold;
-      text-align: center;
-      background: rgba(250, 243, 224, 0.9);
-      padding: 0.5rem 1rem;
-      border: 2px solid #d4b97f;
-      border-radius: 4px;
-      z-index: 10;
-      box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
-    }
-  
-    /* Popup inherits parchment tone */
-    .popup {
-      position: fixed;
-      top: calc(50% + 3.5rem);
-      right: 2rem;
-      background: rgba(250, 243, 224, 0.95);
-      padding: 1rem;
-      border: 1px solid #d4b97f;
-      border-radius: 4px;
-      text-align: center;
-      box-shadow: 2px 2px 8px rgba(0,0,0,0.15);
-      z-index: 9;
-      line-height: 1.4;
-    }
-    .popup p {
-      margin: 0.5rem 0;
-      font-style: italic;
-    }
-    .popup img {
-      max-width: 150px;
-      margin-top: 0.5rem;
-      cursor: pointer;
-      border-radius: 2px;
-      border: 1px solid #d4b97f;
-      box-shadow: 1px 1px 4px rgba(0,0,0,0.1);
-    }
-  
-    /* Each step snaps into view */
-    .step {
-      scroll-snap-align: start;
-      scroll-snap-stop: always;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      opacity: 0.3;
-      transition: opacity 0.5s ease;
-      padding: 2rem 0;
-    }
-    .step.active {
-      opacity: 1;
-    }
-    .step.active {
-      opacity: 1;
-    }
-  
-    /* Centered description with decorative left border */
-    .description {
-      max-width: 600px;
-      font-size: 1.2rem;
-      text-align: center;
-      line-height: 1.6;
-      padding-left: 1rem;
-      border-left: 4px solid #d4b97f;
-      background: rgba(250, 243, 224, 0.8);
-      box-shadow: 1px 1px 4px rgba(0,0,0,0.05);
-    }
-  </style>
-  
-  <div class="container">
-    <div class="year-display">{years[currentIndex]}</div>
-  
-    {#if currentIndex === years.length - 1}
-      <div class="popup">
-        <p>Explore who lives and owns in Middlesex County today:</p>
-        <a href="/homeownership">
-          <img src={mapPreview} alt="Middlesex County Homeownership Map" />
-        </a>
-        <p><small>Click the preview continue your journey.</small></p>
-      </div>
-    {/if}
-  
-    {#each years as year, i}
-      <section use:collect={i} class="step" class:active={i === currentIndex}>
+          }
+        });
+      },
+      { threshold: 0.4 }  // 40% into view to activate
+    );
+    stepEls.forEach(el => el && observer.observe(el));
+    return () => observer.disconnect();
+  });
+
+  // full bullet list for each decade
+  const descriptions = {
+    1920: [
+      'Racially restrictive covenants everywhere, upheld by Corrigan v. Buckley (1926).',
+      'Real estate boards push covenants nationwide; by 1940 ~80% of urban properties excluded Black families.',
+      'Boston neighborhoods also used these clauses to keep areas exclusively white.'
+    ],
+    1930: [
+      'Redlining institutionalized via HOLC & FHA “security” maps; Roxbury, Dorchester, Hyde Park marked high‐risk.',
+      'FHA policies favor all‐white suburbs and label mixed areas “inharmonious,” driving white residents outward.',
+      'Public housing under the 1937 Housing Act built segregated projects via local control & low‐income caps.'
+    ],
+    1940: [
+      'GI Bill mortgages open vets—but Black veterans in MA often shut out by discriminatory lending.',
+      'White families build suburban wealth, while many Black families remain renters in segregated neighborhoods.',
+      'MA Chapter 151B (1946) passes, and Shelley v. Kraemer (1948) makes covenants unenforceable.'
+    ],
+    1950: [
+      'Postwar boom & Route 128/I-495 spur white flight to suburbs like Lincoln & Weston.',
+      'Exclusionary zoning (large‐lot, single‐family) soars home prices and bars minority families.',
+      '1958 West End urban renewal demolishes “slums,” displacing thousands into already-crowded, segregated areas.'
+    ],
+    1960: [
+      'Open-housing marches held in Mattapan & Hyde Park as Black migration north continues.',
+      '70% of Black Bostonians confined to a few neighborhoods amid intensifying white flight.',
+      'Federal Fair Housing Act (1968) bans discrimination—but enforcement remains weak.'
+    ],
+    1970: [
+      '1974 court-ordered busing triggers violent protests & accelerates white exodus; suburbs become ~98% white.',
+      'Chapter 40B (1969) anti-snob zoning enables affordable units in resistant towns.',
+      'Home Mortgage Disclosure Act (1975) & CRA (1977) begin chipping away at redlining.'
+    ],
+    1980: [
+      '1988 NAACP lawsuit forces BHA to integrate waiting lists and compensate excluded applicants.',
+      'Fair Housing Act amendments (1988) add familial & disability protections and strengthen enforcement.',
+      'MA aligns earlier state sex, marital status & age protections with federal law.'
+    ],
+    1990: [
+      'HUD finds systemic discrimination in Boston public housing after forced integration fallout.',
+      'HMDA data (1992) expose mortgage‐denial gaps; community reinvestment agreements follow.',
+      'Despite efforts, the Black-white homeownership gap remains wide by decade’s end.'
+    ],
+    2000: [
+      'Chapter 40B (MA Affordable Housing Act) expands low-income units across resistant towns.',
+      'Housing bubble doubles prices from 1995 to 2000, displacing working-class residents.',
+      'Roxbury & Dorchester see state-led affordable-housing redevelopment efforts.'
+    ],
+    2010: [
+      'Post-2008 crash recovery stabilizes home prices—but gentrification displaces longtime residents.',
+      'Dodd-Frank tightens MA lending standards after surge in foreclosures.',
+      'Inclusionary zoning & anti-displacement task forces emerge amid persistent segregation.'
+    ],
+    2020: [
+      'Housing Choice law (Jan 2021) lowers zoning vote thresholds & mandates multifamily near MBTA stations.',
+      'COVID-19 eviction moratorium protects minority renters in Boston & across MA.',
+      'Ongoing reforms push inclusive development & stronger fair housing enforcement.'
+    ]
+  };
+</script>
+
+<style>
+  :global(body) {
+    margin: 0; padding: 0;
+    font-family: serif;
+    background: #faf3e0;
+    color: #333;
+  }
+
+  .wrapper {
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+/* ── Left Sidebar ── */
+.sidebar {
+  flex: none;
+  width: 35%;
+  background: #fff;
+  padding: 2rem 1rem;
+  box-shadow: 2px 0 6px rgba(0,0,0,0.05);
+  overflow-y: auto;
+  position: sticky;
+  top: 0;
+
+  /* stack charts with consistent gap */
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+.sidebar :global(.chart-container) {
+  height: 220px;      /* slightly taller so everything fits */
+  margin: 0;          /* we’re now using the flex gap, so no bottom margin needed */
+}
+
+  /* ── Right Timeline ── */
+  .timeline {
+    flex: 1;
+    overflow-y: auto;
+    scroll-snap-type: y mandatory;
+    scroll-padding-top: 30vh;
+    padding: 1rem 2rem;
+  }
+  section {
+    scroll-snap-align: start;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 2rem 0;
+    opacity: 0.3;
+    transition: opacity 0.4s ease;
+  }
+  section.active {
+    opacity: 1;
+  }
+  .description {
+    max-width: 600px;
+    background: rgba(250,243,224,0.8);
+    padding: 1.5rem;
+    border-left: 4px solid #d4b97f;
+    box-shadow: 1px 1px 4px rgba(0,0,0,0.05);
+  }
+  .description h2 {
+    margin-top: 0;
+    font-variant: small-caps;
+    font-size: 2rem;
+  }
+  .description ul {
+    margin: 1rem 0 0 1rem;
+  }
+
+  /* ── Popup in last step ── */
+  .popup {
+    margin-top: 2rem;
+    background: rgba(250,243,224,0.95);
+    padding: 1rem;
+    border: 1px solid #d4b97f;
+    border-radius: 4px;
+    box-shadow: 2px 2px 8px rgba(0,0,0,0.15);
+    max-width: 240px;
+    text-align: center;
+  }
+  .popup p {
+    margin: 0.5rem 0;
+    font-style: italic;
+  }
+  .popup img {
+    display: block;
+    margin: 0.5rem auto;
+    width: 100%;
+    border: 1px solid #d4b97f;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+</style>
+
+<div class="wrapper">
+  <!-- Left column: always-visible charts -->
+  <aside class="sidebar">
+    <RaceBarChart year={selectedYear} />
+    <HomeownBar   year={selectedYear} />
+  </aside>
+
+  <!-- Right column: scrollable timeline -->
+  <main class="timeline">
+    {#each years as yr, i}
+      <section
+        use:collect={i}
+        class:active={i === currentIndex}
+      >
         <div class="description">
-          <h2>{year}</h2>
-          <p>{descriptions[year]}</p>
+          <h2>{yr}</h2>
+          <ul>
+            {#each descriptions[yr] as bullet}
+              <li>{bullet}</li>
+            {/each}
+          </ul>
+
+          {#if i === years.length - 1}
+            <!-- popup only on 2020 step -->
+            <div class="popup">
+              <p>Explore who lives and who owns in Middlesex County today:</p>
+              <a href="/white_homeownership">
+                <img src={mapPreview} alt="Homeownership Map">
+              </a>
+              <p><small>Click the map to continue your journey.</small></p>
+            </div>
+          {/if}
         </div>
       </section>
     {/each}
-  </div>
-  
+  </main>
+</div>
