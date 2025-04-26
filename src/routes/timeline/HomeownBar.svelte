@@ -57,11 +57,18 @@
       .domain([0, 1])   // keep 0–1 scale
       .range([innerH, 0]);
 
-    const colorMap = {
-      'Total': "#AEAAAA",
+      const colorMap = {
       'White': '#F97B72',
       'Black': '#F2B701',
-      // etc…
+      'Black or African American': '#F2B701',
+      'Other Race': '#3969AC',
+      'Indian, Chinese, Japanese or Other Race': '#11A579',
+      'Asian and Pacific Islander': '#11A579',
+      'Asian': '#11A579',
+      'American Indian, Eskimo, Aleut': '#CA73C6',
+      'American Indian and Alaska Native': '#CA73C6',
+      'Two or more races': '#7F3C8D',
+      'Native Hawaiian and Other Pacific Islander': '#D05D02'
     };
 
     const g = svg.append('g')
