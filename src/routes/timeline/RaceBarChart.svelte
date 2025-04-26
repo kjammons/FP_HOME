@@ -1,227 +1,151 @@
+<!-- src/lib/components/RaceBarChart.svelte -->
 <script>
-
   import { onMount } from 'svelte';
   import * as d3 from 'd3';
 
   export let year = 1920;
   export let csvPath = 'src/lib/assets/data/race_by_decade.csv';
-  let data = [];
 
-  // Load the CSV file and store it in the data variable
+  let container;
+  let svgElement;
+  let data = [];
+  let width = 0;
+  let height = 0;
+
+  // increased bottom margin to make room for 45° labels
+  const margin = { top: 20, right: 20, bottom: 80, left: 60 };
+
   onMount(async () => {
     const csv = await d3.csv(csvPath, d => ({
       year: +d.YEAR,
       category: d.category,
       value: +d.value
     }));
-
-    console.log("Loaded CSV:", csv);
-
-    // Store the loaded CSV data in the data array
     data = csv;
-
-    // Call drawChart when data is loaded
-    drawChart();
+    updateDimensions();
+    window.addEventListener('resize', updateDimensions);
   });
 
-  // This reactive statement filters the data based on the selected year
-  $: filteredData = data.filter(d => d.year === year && d.value>0);
+  $: filteredData = data.filter(d => d.year === year && d.value > 0);
+  $: if (filteredData.length && width && height) {
+    drawChart();
+  }
 
-  // Function to draw the chart based on filtered data
+  function updateDimensions() {
+    if (!container) return;
+    const rect = container.getBoundingClientRect();
+    width = rect.width;
+    height = rect.height;
+  }
+
   function drawChart() {
-    if (filteredData.length === 0) return;  // No data for selected year
+    if (!svgElement || !filteredData.length) return;
 
-    const width = 1500;
-    const height = 500;
-    const margin = { top: 40, right: 20, bottom: 30, left: 60 };
-
-    const svg = d3.select('#race-chart')
+    const svg = d3.select(svgElement)
       .attr('width', width)
       .attr('height', height);
 
-    svg.selectAll('*').remove(); // Clear old chart
+    svg.selectAll('*').remove();
 
-    // Set up the X scale using the filtered data
+    const innerWidth  = width  - margin.left - margin.right;
+    const innerHeight = height - margin.top  - margin.bottom;
+
+    // X scale
     const x = d3.scaleBand()
-      .domain(filteredData.map(d => d.category)) // Using filtered data for categories
-      .range([margin.left, width - margin.right])
+      .domain(filteredData.map(d => d.category))
+      .range([0, innerWidth])
       .padding(0.1);
 
-    // Set up the Y scale based on the filtered data's values
+    // Y scale fixed 0 → 1,500,000
     const y = d3.scaleLinear()
-      .domain([0, d3.max(filteredData, d => d.value)]).nice()
-      .range([height - margin.bottom, margin.top]);
+      .domain([0, 1500000])     // ← fixed top
+      .range([innerHeight, 0]);
 
-      const colorMap = {
-  'White': '#F97B72',
-  'Black': '#F2B701',
-  'None-White': '#F2B701',
-  'Black or African American': '#F2B701',
+    const colorMap = {
+      'White': '#F97B72',
+      'Black': '#F2B701',
+      'Black or African American': '#F2B701',
+      'Other Race': '#3969AC',
+      'Indian, Chinese, Japanese or Other Race': '#11A579',
+      'Asian and Pacific Islander': '#11A579',
+      'Asian': '#11A579',
+      'American Indian, Eskimo, Aleut': '#CA73C6',
+      'American Indian and Alaska Native': '#CA73C6',
+      'Two or more races': '#7F3C8D',
+      'Native Hawaiian and Other Pacific Islander': '#D05D02'
+    };
 
-  'Other Race': '#3969AC',
-  "Indian, Chinese, Japanese or Other Race ": '#11A579',
-  "Indian, Chinese, Japanese or Filipino": '#11A579',
-  'Asian and Pacific Islander': '#11A579',
-  'Asian': '#11A579',
-  'American Indian, Eskimo, Aleut': '#CA73C6',
-  'American Indian and Alaska Native': '#CA73C6',
-  "Two or more races ": '#7F3C8D',
-  'Native Hawaiian and Other Pacific Islander' : '#D05D02',
-};
-svg.append('g')
-    .selectAll('.grid')
-    .data(y.ticks(6)) // Adjust the number of gridlines
-    .join('line')
-      .attr('class', 'grid')
-      .attr('x1', margin.left)
-      .attr('x2', width - margin.right)
-      .attr('y1', d => y(d))
-      .attr('y2', d => y(d))
-      .attr('stroke', '#ddd')
-      .attr('stroke-dasharray', '2,2');
+    const g = svg.append('g')
+      .attr('transform', `translate(${margin.left},${margin.top})`);
 
+    // horizontal gridlines
+    g.append('g')
+      .selectAll('line')
+      .data(y.ticks(6))
+      .join('line')
+        .attr('class', 'grid')
+        .attr('x1', 0)
+        .attr('x2', innerWidth)
+        .attr('y1', d => y(d))
+        .attr('y2', d => y(d));
 
-      const tooltip = d3.select('body').append('div')
-    .attr('class', 'tooltip')
-    .style('position', 'absolute')
-    .style('visibility', 'hidden')
-    .style('background-color', 'rgba(0, 0, 0, 0.7)')
-    .style('color', '#fff')
-    .style('padding', '5px')
-    .style('border-radius', '5px')
-    .style('pointer-events', 'none');
-
-    // Draw the bars using the filtered data
-    svg.selectAll('rect')
+    // bars
+    g.append('g')
+      .selectAll('rect')
       .data(filteredData)
       .join('rect')
         .attr('x', d => x(d.category))
         .attr('y', d => y(d.value))
-        .attr('height', d => y(0) - y(d.value))
         .attr('width', x.bandwidth())
-        .attr('fill', d =>colorMap[d.category] || '#000000')
-        .on('mouseover', function(event, d) {
-        tooltip.style('visibility', 'visible')
-          .text(`${d.category}: ${d.value} people`);
+        .attr('height', d => innerHeight - y(d.value))
+        .attr('fill', d => colorMap[d.category] || '#888');
 
-            // Position the tooltip next to the bar
-        tooltip.style('left', `${event.pageX + 5}px`)
-          .style('top', `${event.pageY - 30}px`);
-      })
-      // On mouseout, hide the tooltip
-      .on('mouseout', function() {
-        tooltip.style('visibility', 'hidden');
-      });
+    // X axis + 45° labels
+    g.append('g')
+      .attr('transform', `translate(0,${innerHeight})`)
+      .call(d3.axisBottom(x))
+      .selectAll('text')
+        .attr('transform', 'rotate(-45)')
+        .style('text-anchor', 'end')
+        .attr('dx', '-0.5em')
+        .attr('dy', '0.25em');
 
-          const xAxis = svg.append('g')
-    .attr('transform', `translate(0,${height - margin.bottom})`)
-    .call(d3.axisBottom(x));
-
-  // Add X axis labels with rotation if needed
-  xAxis.selectAll('text')
-    .style('text-anchor', 'middle')
-    .style('font-size', '12px')
-    .attr('transform', 'rotate')
-    .attr('dx', '-10') // Adjust spacing for rotated text
-    .attr('dy', '10');
-
-  // Add Y axis with labels
-  const yAxis = svg.append('g')
-    .attr('transform', `translate(${margin.left}, 0)`)
-    .call(d3.axisLeft(y).ticks(6));
-
-  // Add Y axis labels (optional for the Y axis)
-  yAxis.selectAll('text')
-    .style('font-size', '12px');
-
-  // Optional: Add a label for the Y-axis (vertical)
-  svg.append('text')
-  .attr('x', width / 18)  // Position the label horizontally in the center of the chart
-  .attr('y', margin.top-10)  // Position the label above the axis
-  .style('text-anchor', 'middle')  // Center the label horizontally
-  .style('font-size', '14px')  // Optional: adjust the font size
-  .text('Total Population');
-
-
-}
-  // Watch for changes in filteredData and trigger chart redraw
-  $: {
-    if (filteredData.length > 0) {
-      drawChart();
-    }
+    // Y axis
+    g.append('g')
+      .call(d3.axisLeft(y).ticks(6));
   }
 </script>
 
-
- <!-- Container for the chart -->
- <div class="chart-container">
-  <h2 class="chart-title"> Racial Demographics for {year} in Middlesex County</h2>
-  <svg id="race-chart"></svg> <!-- D3.js will render the chart here -->
+<div bind:this={container} class="chart-container">
+  <svg bind:this={svgElement}></svg>
 </div>
 
 <style>
-  /* Chart container */
   .chart-container {
     width: 100%;
-    margin: 30px auto;
-    padding: 20px;
-    box-sizing: border-box;
-    background-color: #f9f9f9;
+    height: 350px;             /* give more vertical room */
+    padding: 0.5rem;
+    background: #fff;
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    text-align: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    box-sizing: border-box;
   }
 
-  /* Title for the chart */
-  .chart-title {
-    font-size: 1.5rem;
-    color: #333;
-    margin-bottom: 15px;
-  }
-
-  /* SVG element to render D3 chart */
-  #race-chart {
+  :global(svg) {
     width: 100%;
     height: 100%;
-    max-width: 1500px; /* Limit the width of the chart */
-    margin: 0 auto;
     display: block;
-    background-color: #fff; /* White background for the chart */
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
 
-  h2{
-    font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
-    text-align: center;
+  :global(.grid) {
+    stroke: #eee;
   }
 
-  /* Add margins and padding for better visual spacing */
-  svg g {
-    fill: none;
-    stroke: #333;
+  :global(rect) {
+    transition: fill 0.3s;
   }
 
-  /* Style the bars in the chart */
-  rect {
-    transition: fill 0.3s ease;
-  }
-
-  rect:hover {
-    fill: #388E3C; /* Darker green on hover */
-  }
-
-  /* Style the axis ticks and labels */
-  .domain {
-    stroke: #aaa;
-  }
-
-  .tick line {
-    stroke: #aaa;
-  }
-
-  .tick text {
-    font-size: 12px;
-    fill: #555;
+  :global(rect:hover) {
+    fill: #388E3C;
   }
 </style>
