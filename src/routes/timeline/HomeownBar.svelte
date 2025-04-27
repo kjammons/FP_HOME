@@ -14,6 +14,7 @@
   // give extra bottom room for rotated labels
   const margin = { top: 20, right: 20, bottom: 60, left: 60 };
 
+
   onMount(async () => {
     const csv = await d3.csv(csvPath, d => ({
       year: +d.YEAR,
@@ -67,12 +68,14 @@
       'Asian': '#11A579',
       'American Indian, Eskimo, Aleut': '#CA73C6',
       'American Indian and Alaska Native': '#CA73C6',
+      'American Indian': '#CA73C6',
       'Two or more races': '#7F3C8D',
-      'Native Hawaiian and Other Pacific Islander': '#D05D02'
+      'Native Hawaiian and Other Pacific Islander ': '#D05D02'
     };
 
     const g = svg.append('g')
       .attr('transform', `translate(${margin.left},${margin.top})`);
+
 
     // horizontal gridlines
     g.append('g')
@@ -85,6 +88,22 @@
         .attr('y2', d => y(d))
         .attr('stroke', '#eee');
 
+
+        const tooltip = d3.select('body')
+  .append('div')
+  .attr('class', 'tooltip')
+  .style('position', 'absolute')
+  .style('opacity', 0)  // Set initial opacity to 0 (invisible)
+  .style('background-color', 'rgba(0, 0, 0, 0.85)')  // Slightly darker background
+  .style('color', '#fff')
+  .style('padding', '10px 15px')  // Increased padding for better readability
+  .style('border-radius', '8px')  // Rounded corners
+  .style('font-size', '14px')     // Larger font size for better readability
+  .style('font-family', '"Segoe UI", "Helvetica Neue", sans-serif')  // Modern font family
+  .style('box-shadow', '0 4px 6px rgba(0, 0, 0, 0.2)')  // Subtle shadow
+  .style('transition', 'opacity 0.2s ease')  // Smooth opacity transition for fade-in/out
+  .style('pointer-events', 'none');
+
     // bars
     g.selectAll('rect')
       .data(filteredData)
@@ -93,7 +112,24 @@
         .attr('y', d => y(d.value))
         .attr('width', x.bandwidth())
         .attr('height', d => innerH - y(d.value))
-        .attr('fill', d => colorMap[d.category] || '#888');
+        .attr('fill', d => colorMap[d.category] || '#888')
+        .on('mouseover', function(event, d) {
+          tooltip.transition()
+            .duration(200)
+            .style('opacity', 1);  // Make tooltip visible
+          tooltip.html(`${d.category}: ${d.value * 100}%`)  // Show percentage
+            .style('left', (event.pageX + 5) + 'px')  // Position tooltip to the right of the mouse
+            .style('top', (event.pageY + 5) + 'px');  // Position tooltip below the mouse
+        })
+        .on('mousemove', function(event) {
+          tooltip.style('left', (event.pageX + 5) + 'px')
+            .style('top', (event.pageY + 5) + 'px');  // Update tooltip position with the mouse
+        })
+        .on('mouseout', function() {
+          tooltip.transition()
+            .duration(200)
+            .style('opacity', 0);  // Hide tooltip on mouseout
+        });
 
     // x-axis with 45° labels
     g.append('g')
@@ -116,6 +152,7 @@
 </script>
 
 <div bind:this={container} class="chart-container">
+  <h1>Homeownership Rate by Race in Middlesex County for {year}</h1>
   <svg bind:this={svgElement}></svg>
 </div>
 
@@ -132,4 +169,12 @@
   svg {
     display: block;
   }
+
+  h1{
+    font-size: 1rem;
+    margin-right: 10px;
+    font-size: 120%;
+    font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
+  }
+
 </style>

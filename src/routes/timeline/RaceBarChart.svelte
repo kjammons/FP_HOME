@@ -15,6 +15,8 @@
   // increased bottom margin to make room for 45° labels
   const margin = { top: 20, right: 20, bottom: 80, left: 60 };
 
+
+
   onMount(async () => {
     const csv = await d3.csv(csvPath, d => ({
       year: +d.YEAR,
@@ -71,7 +73,8 @@
       'Asian': '#11A579',
       'American Indian, Eskimo, Aleut': '#CA73C6',
       'American Indian and Alaska Native': '#CA73C6',
-      'Two or more races': '#7F3C8D',
+      'American Indian ': '#CA73C6',
+      'Two or more races ': '#7F3C8D',
       'Native Hawaiian and Other Pacific Islander': '#D05D02'
     };
 
@@ -89,6 +92,23 @@
         .attr('y1', d => y(d))
         .attr('y2', d => y(d));
 
+    //tooltip
+
+        const tooltip = d3.select('body')
+  .append('div')
+  .attr('class', 'tooltip')
+  .style('position', 'absolute')
+  .style('opacity', 0)  // Set initial opacity to 0 (invisible)
+  .style('background-color', 'rgba(0, 0, 0, 0.85)')  // Slightly darker background
+  .style('color', '#fff')
+  .style('padding', '10px 15px')  // Increased padding for better readability
+  .style('border-radius', '8px')  // Rounded corners
+  .style('font-size', '14px')     // Larger font size for better readability
+  .style('font-family', '"Roboto", sans-serif')  // Modern font family
+  .style('box-shadow', '0 4px 6px rgba(0, 0, 0, 0.2)')  // Subtle shadow
+  .style('transition', 'opacity 0.2s ease')  // Smooth opacity transition for fade-in/out
+  .style('pointer-events', 'none');
+
     // bars
     g.append('g')
       .selectAll('rect')
@@ -98,7 +118,24 @@
         .attr('y', d => y(d.value))
         .attr('width', x.bandwidth())
         .attr('height', d => innerHeight - y(d.value))
-        .attr('fill', d => colorMap[d.category] || '#888');
+        .attr('fill', d => colorMap[d.category] || '#888')
+        .on('mouseover', function(event, d) {
+          tooltip.transition()
+            .duration(200)
+            .style('opacity', 1);  // Make tooltip visible
+          tooltip.html(`${d.category}: ${d.value}`)  // Show percentage
+            .style('left', (event.pageX + 5) + 'px')  // Position tooltip to the right of the mouse
+            .style('top', (event.pageY + 5) + 'px');  // Position tooltip below the mouse
+        })
+        .on('mousemove', function(event) {
+          tooltip.style('left', (event.pageX + 5) + 'px')
+            .style('top', (event.pageY + 5) + 'px');  // Update tooltip position with the mouse
+        })
+        .on('mouseout', function() {
+          tooltip.transition()
+            .duration(200)
+            .style('opacity', 0);  // Hide tooltip on mouseout
+        });
 
     // X axis + 45° labels
     g.append('g')
@@ -113,10 +150,19 @@
     // Y axis
     g.append('g')
       .call(d3.axisLeft(y).ticks(6));
+
+      svg.append('text')
+  .attr('x', - (height /2000))  // Position the label at the center of the Y axis (adjust the positioning)
+  .attr('y', margin.left-50)  // Positioning the label at the top of the Y axis (above the axis)
+  .style('text-anchor', 'right')
+  .style('font-size', '12px')
+  .text('Total Population');
+
   }
 </script>
 
 <div bind:this={container} class="chart-container">
+  <h1>Racial Demographics in Middlesex County for {year}</h1>
   <svg bind:this={svgElement}></svg>
 </div>
 
@@ -146,6 +192,52 @@
   }
 
   :global(rect:hover) {
-    fill: #388E3C;
+  /* Adding a shadow effect on hover */
+  filter: drop-shadow(0 4px 6px rgba(37, 37, 37, 0.3));  /* Shadow effect */
+  stroke: #faf2f2;  /* Border color */
+  stroke-width: 2px;  /* Border thickness */
+  opacity: 1;  /* Full opacity on hover */
+  transition: opacity 0.2s ease, transform 0.2s ease;  /* Smooth transition */
+}
+
+:global(rect) {
+  opacity: 0.7;  /* Default opacity for other bars */
+  transition: opacity 0.2s ease;
+}
+
+:global(rect.hover) {
+  opacity: 2;  /* Full opacity for the hovered bar */
+}
+
+  :global(.tooltip) {
+    pointer-events: none;
+    position: absolute;
+    opacity: 0;
+    background-color: rgba(126, 123, 123, 0.85);
+    color: #fff;
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
+    box-shadow: 0 4px 6px rgba(190, 48, 48, 0.2);
+    transition: opacity 0.2s ease;
+  }
+
+  :global(.tooltip::before) {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: rgba(0, 0, 0, 0.85) transparent transparent transparent;
+  }
+
+  h1{
+    font-size: 1rem;
+    margin-right: 10px;
+    font-size: 120%;
+    font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
   }
 </style>
