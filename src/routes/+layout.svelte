@@ -2,10 +2,20 @@
     import { page } from "$app/stores";
 
     let pages = [
+<<<<<<< HEAD
         { url: "/", title: "Home", position: { x: 50, y: 50, width: 150, height: 50 } },
         { url: "/covenants", title: "Covenants", position: { x: 220, y: 100, width: 150, height: 50 } },
         { url: "/timeline", title: "Timeline", position: { x: 400, y: 200, width: 150, height: 50 } },
         { url: "/white_homeownership", title: "Homeownership Map", position: { x: 600, y: 300, width: 150, height: 50 } },
+=======
+        { url: "/", title: "Home" },
+        { url: "/covenants", title: "Covenants" },
+        { url: "/timeline", title: "Timeline" },
+        { url: "/white_homeownership", title: "Homeownership Map" },
+        { url: "/reading_list", "title": "Reading List" },
+        { url: "https://dusp.mit.edu/projects/massachusetts-covenants-project#:~:text=This%20research%20project%20is%20systematically,the%20United%20States%3A%20restrictive%20covenants.", "title": "Get Involved" },
+
+>>>>>>> daebbf509e0a44a18a3cb0daa43ad464018aa541
     ];
 
 </script>
