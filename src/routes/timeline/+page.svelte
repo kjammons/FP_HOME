@@ -111,31 +111,22 @@
     color: #333;
   }
 
-  .wrapper {
-    display: flex;
-    height: 100vh;
-    overflow: hidden;
-  }
 
 /* ── Left Sidebar ── */
 .sidebar {
   flex: none;
-  width: 35%;
-  background: #fff;
+  width: 40%;
+  background: rgba(0, 0, 0, 0.9);  /* Semi-transparent black background (50% opacity) */
   padding: 2rem 1rem;
   box-shadow: 2px 0 6px rgba(0,0,0,0.05);
   overflow-y: auto;
   position: sticky;
   top: 0;
-
-  /* stack charts with consistent gap */
-  display: flex;
-  flex-direction: column;
-  gap: 2.5rem;
+  z-index: 1;  /* Make sure sidebar stays above the background */
 }
 
 .sidebar :global(.chart-container) {
-  height: 220px;      /* slightly taller so everything fits */
+  height: 380px;      /* slightly taller so everything fits */
   margin: 0;          /* we’re now using the flex gap, so no bottom margin needed */
 }
 
@@ -161,18 +152,24 @@
   }
   .description {
     max-width: 600px;
-    background: rgba(250,243,224,0.8);
+    background: rgba(0, 0, 0, 0.82);
     padding: 1.5rem;
-    border-left: 4px solid #d4b97f;
+    border-left: 4px solid #f5d262;
     box-shadow: 1px 1px 4px rgba(0,0,0,0.05);
   }
   .description h2 {
     margin-top: 0;
     font-variant: small-caps;
     font-size: 2rem;
+    font-size: 120%;
+    font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
+    color: #fff ;
   }
   .description ul {
     margin: 1rem 0 0 1rem;
+    font-size: 120%;
+    font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
+    color: #fff;
   }
 
   /* ── Popup in last step ── */
@@ -198,6 +195,18 @@
     border-radius: 4px;
     cursor: pointer;
   }
+
+  .wrapper {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+  background-image: url('src/lib/assets/data/image background.png'); /* Path to your background image */
+  background-size: cover;  /* Make sure the image covers the entire area */
+  background-position: center center; /* Center the background image */
+  background-repeat: no-repeat;  /* Prevent the image from repeating */
+}
+
+
 </style>
 
 <div class="wrapper">

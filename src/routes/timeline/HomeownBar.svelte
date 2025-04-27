@@ -49,6 +49,22 @@
     const innerW = width - margin.left - margin.right;
     const innerH = height - margin.top - margin.bottom;
 
+    const yearData = data.filter(d => d.year === year);
+
+// Check if data is available for the selected year
+if (yearData.length === 0) {
+  // If no data, display a message
+  svg.append('text')
+    .attr('x', innerWidth / 2)
+    .attr('y', innerHeight / 2)
+    .style('text-anchor', 'middle')
+    .style('font-size', '16px')
+    .style('fill', '#fff')
+    .style('font-family', '"Roboto", sans-serif')
+    .text(`No census data was collected on homeownership for the ${year} year at the Middlesex County level`);
+  return; // Stop further processing
+}
+
     const x = d3.scaleBand()
       .domain(filteredData.map(d => d.category))
       .range([0, innerW])
@@ -70,7 +86,8 @@
       'American Indian and Alaska Native': '#CA73C6',
       'American Indian': '#CA73C6',
       'Two or more races': '#7F3C8D',
-      'Native Hawaiian and Other Pacific Islander ': '#D05D02'
+      'Native Hawaiian and Other Pacific Islander ': '#D05D02',
+      'Total':'#92A0AD'
     };
 
     const g = svg.append('g')
@@ -79,14 +96,17 @@
 
     // horizontal gridlines
     g.append('g')
-      .selectAll('line')
-      .data(y.ticks(6))
-      .join('line')
-        .attr('x1', 0)
-        .attr('x2', innerW)
-        .attr('y1', d => y(d))
-        .attr('y2', d => y(d))
-        .attr('stroke', '#eee');
+  .selectAll('line')
+  .data(y.ticks(6))
+  .join('line')
+    .attr('x1', 0)
+    .attr('x2', innerWidth)
+    .attr('y1', d => y(d))
+    .attr('y2', d => y(d))
+    .attr('stroke', '#E5E5E5')  // Light grey for grid lines
+    .attr('stroke-opacity', 0.3)  // Reduce opacity for softer lines
+    .attr('stroke-width', 1)  // Thin lines for a subtle effect
+    .attr('stroke-dasharray', '2,2');
 
 
         const tooltip = d3.select('body')
@@ -102,7 +122,8 @@
   .style('font-family', '"Segoe UI", "Helvetica Neue", sans-serif')  // Modern font family
   .style('box-shadow', '0 4px 6px rgba(0, 0, 0, 0.2)')  // Subtle shadow
   .style('transition', 'opacity 0.2s ease')  // Smooth opacity transition for fade-in/out
-  .style('pointer-events', 'none');
+  .style('pointer-events', 'none')
+  .style('z-index', '10');
 
     // bars
     g.selectAll('rect')
@@ -138,16 +159,23 @@
       .selectAll('text')
         .attr('transform', 'rotate(-45)')
         .style('text-anchor', 'end')
+        .style('font-size', '12px') // Set font size for x-axis labels
+        .style('font-family', '"Roboto", sans-serif')
+        .style('fill', '#fff')
         .attr('dx', '-0.5em')
         .attr('dy', '0.5em');
 
     // y-axis as percentages
     g.append('g')
-      .call(
-        d3.axisLeft(y)
-          .ticks(6)
-          .tickFormat(d3.format(".0%"))
-      );
+  .call(
+    d3.axisLeft(y)
+      .ticks(6)
+      .tickFormat(d3.format(".0%"))
+  )
+  .selectAll('text')  // Select all the text elements in the axis
+  .style('fill', '#fff')  // Set the text color to white
+  .style('font-size', '12px')  // Optional: adjust font size if needed
+  .style('font-family', '"Roboto", sans-serif');
   }
 </script>
 
@@ -175,6 +203,7 @@
     margin-right: 10px;
     font-size: 120%;
     font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
+    color: aliceblue;
   }
 
 </style>

@@ -56,7 +56,7 @@
     const x = d3.scaleBand()
       .domain(filteredData.map(d => d.category))
       .range([0, innerWidth])
-      .padding(0.1);
+      .padding(0.1)
 
     // Y scale fixed 0 → 1,500,000
     const y = d3.scaleLinear()
@@ -69,6 +69,7 @@
       'Black or African American': '#F2B701',
       'Other Race': '#3969AC',
       'Indian, Chinese, Japanese or Other Race': '#11A579',
+      'Indian, Chinese, Japanese or Filipino':'#11A579',
       'Asian and Pacific Islander': '#11A579',
       'Asian': '#11A579',
       'American Indian, Eskimo, Aleut': '#CA73C6',
@@ -83,14 +84,17 @@
 
     // horizontal gridlines
     g.append('g')
-      .selectAll('line')
-      .data(y.ticks(6))
-      .join('line')
-        .attr('class', 'grid')
-        .attr('x1', 0)
-        .attr('x2', innerWidth)
-        .attr('y1', d => y(d))
-        .attr('y2', d => y(d));
+  .selectAll('line')
+  .data(y.ticks(6))
+  .join('line')
+    .attr('x1', 0)
+    .attr('x2', innerWidth)
+    .attr('y1', d => y(d))
+    .attr('y2', d => y(d))
+    .attr('stroke', '#E5E5E5')  // Light grey for grid lines
+    .attr('stroke-opacity', 0.3)  // Reduce opacity for softer lines
+    .attr('stroke-width', 1)  // Thin lines for a subtle effect
+    .attr('stroke-dasharray', '2,2');
 
     //tooltip
 
@@ -107,7 +111,8 @@
   .style('font-family', '"Roboto", sans-serif')  // Modern font family
   .style('box-shadow', '0 4px 6px rgba(0, 0, 0, 0.2)')  // Subtle shadow
   .style('transition', 'opacity 0.2s ease')  // Smooth opacity transition for fade-in/out
-  .style('pointer-events', 'none');
+  .style('pointer-events', 'none')
+  .style('z-index', '10');
 
     // bars
     g.append('g')
@@ -144,18 +149,28 @@
       .selectAll('text')
         .attr('transform', 'rotate(-45)')
         .style('text-anchor', 'end')
+        .style('font-size', '12px') // Set font size for x-axis labels
+        .style('font-family', '"Roboto", sans-serif')
+        .style('fill', '#fff')
         .attr('dx', '-0.5em')
         .attr('dy', '0.25em');
 
     // Y axis
     g.append('g')
-      .call(d3.axisLeft(y).ticks(6));
+      .call(d3.axisLeft(y).ticks(6))
+      .selectAll('text')
+        .style('font-size', '10px') // Set font size for y-axis labels
+        .style('font-family', '"Roboto", sans-serif')
+        .style('fill', '#fff')
+
 
       svg.append('text')
   .attr('x', - (height /2000))  // Position the label at the center of the Y axis (adjust the positioning)
   .attr('y', margin.left-50)  // Positioning the label at the top of the Y axis (above the axis)
   .style('text-anchor', 'right')
   .style('font-size', '12px')
+  .style('font-family', '"Roboto", sans-serif')
+  .style('fill', '#fff')
   .text('Total Population');
 
   }
@@ -169,11 +184,9 @@
 <style>
   .chart-container {
     width: 100%;
-    height: 350px;             /* give more vertical room */
+    height: 300px;             /* give more vertical room */
     padding: 0.5rem;
-    background: #fff;
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     box-sizing: border-box;
   }
 
@@ -239,5 +252,6 @@
     margin-right: 10px;
     font-size: 120%;
     font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
+    color: #eee;
   }
 </style>
