@@ -14,6 +14,7 @@
   // give extra bottom room for rotated labels
   const margin = { top: 20, right: 20, bottom: 60, left: 60 };
 
+
   onMount(async () => {
     const csv = await d3.csv(csvPath, d => ({
       year: +d.YEAR,
@@ -48,6 +49,22 @@
     const innerW = width - margin.left - margin.right;
     const innerH = height - margin.top - margin.bottom;
 
+    const yearData = data.filter(d => d.year === year);
+
+// Check if data is available for the selected year
+if (yearData.length === 0) {
+  // If no data, display a message
+  svg.append('text')
+    .attr('x', innerWidth / 2)
+    .attr('y', innerHeight / 2)
+    .style('text-anchor', 'middle')
+    .style('font-size', '16px')
+    .style('fill', '#fff')
+    .style('font-family', '"Roboto", sans-serif')
+    .text(`No census data was collected on homeownership for the ${year} year at the Middlesex County level`);
+  return; // Stop further processing
+}
+
     const x = d3.scaleBand()
       .domain(filteredData.map(d => d.category))
       .range([0, innerW])
@@ -57,26 +74,56 @@
       .domain([0, 1])   // keep 0–1 scale
       .range([innerH, 0]);
 
-    const colorMap = {
-      'Total': "#AEAAAA",
+      const colorMap = {
       'White': '#F97B72',
       'Black': '#F2B701',
-      // etc…
+      'Black or African American': '#F2B701',
+      'Other Race': '#3969AC',
+      'Indian, Chinese, Japanese or Other Race': '#11A579',
+      'Asian and Pacific Islander': '#11A579',
+      'Asian': '#11A579',
+      'American Indian, Eskimo, Aleut': '#CA73C6',
+      'American Indian and Alaska Native': '#CA73C6',
+      'American Indian': '#CA73C6',
+      'Two or more races': '#7F3C8D',
+      'Native Hawaiian and Other Pacific Islander ': '#D05D02',
+      'Total':'#92A0AD'
     };
 
     const g = svg.append('g')
       .attr('transform', `translate(${margin.left},${margin.top})`);
 
+
     // horizontal gridlines
     g.append('g')
-      .selectAll('line')
-      .data(y.ticks(6))
-      .join('line')
-        .attr('x1', 0)
-        .attr('x2', innerW)
-        .attr('y1', d => y(d))
-        .attr('y2', d => y(d))
-        .attr('stroke', '#eee');
+  .selectAll('line')
+  .data(y.ticks(6))
+  .join('line')
+    .attr('x1', 0)
+    .attr('x2', innerWidth)
+    .attr('y1', d => y(d))
+    .attr('y2', d => y(d))
+    .attr('stroke', '#E5E5E5')  // Light grey for grid lines
+    .attr('stroke-opacity', 0.3)  // Reduce opacity for softer lines
+    .attr('stroke-width', 1)  // Thin lines for a subtle effect
+    .attr('stroke-dasharray', '2,2');
+
+
+        const tooltip = d3.select('body')
+  .append('div')
+  .attr('class', 'tooltip')
+  .style('position', 'absolute')
+  .style('opacity', 0)  // Set initial opacity to 0 (invisible)
+  .style('background-color', 'rgba(0, 0, 0, 0.85)')  // Slightly darker background
+  .style('color', '#fff')
+  .style('padding', '10px 15px')  // Increased padding for better readability
+  .style('border-radius', '8px')  // Rounded corners
+  .style('font-size', '14px')     // Larger font size for better readability
+  .style('font-family', '"Segoe UI", "Helvetica Neue", sans-serif')  // Modern font family
+  .style('box-shadow', '0 4px 6px rgba(0, 0, 0, 0.2)')  // Subtle shadow
+  .style('transition', 'opacity 0.2s ease')  // Smooth opacity transition for fade-in/out
+  .style('pointer-events', 'none')
+  .style('z-index', '10');
 
     // bars
     g.selectAll('rect')
@@ -86,7 +133,24 @@
         .attr('y', d => y(d.value))
         .attr('width', x.bandwidth())
         .attr('height', d => innerH - y(d.value))
-        .attr('fill', d => colorMap[d.category] || '#888');
+        .attr('fill', d => colorMap[d.category] || '#888')
+        .on('mouseover', function(event, d) {
+          tooltip.transition()
+            .duration(200)
+            .style('opacity', 1);  // Make tooltip visible
+          tooltip.html(`${d.category}: ${d.value * 100}%`)  // Show percentage
+            .style('left', (event.pageX + 5) + 'px')  // Position tooltip to the right of the mouse
+            .style('top', (event.pageY + 5) + 'px');  // Position tooltip below the mouse
+        })
+        .on('mousemove', function(event) {
+          tooltip.style('left', (event.pageX + 5) + 'px')
+            .style('top', (event.pageY + 5) + 'px');  // Update tooltip position with the mouse
+        })
+        .on('mouseout', function() {
+          tooltip.transition()
+            .duration(200)
+            .style('opacity', 0);  // Hide tooltip on mouseout
+        });
 
     // x-axis with 45° labels
     g.append('g')
@@ -95,20 +159,28 @@
       .selectAll('text')
         .attr('transform', 'rotate(-45)')
         .style('text-anchor', 'end')
+        .style('font-size', '12px') // Set font size for x-axis labels
+        .style('font-family', '"Roboto", sans-serif')
+        .style('fill', '#fff')
         .attr('dx', '-0.5em')
         .attr('dy', '0.5em');
 
     // y-axis as percentages
     g.append('g')
-      .call(
-        d3.axisLeft(y)
-          .ticks(6)
-          .tickFormat(d3.format(".0%"))
-      );
+  .call(
+    d3.axisLeft(y)
+      .ticks(6)
+      .tickFormat(d3.format(".0%"))
+  )
+  .selectAll('text')  // Select all the text elements in the axis
+  .style('fill', '#fff')  // Set the text color to white
+  .style('font-size', '12px')  // Optional: adjust font size if needed
+  .style('font-family', '"Roboto", sans-serif');
   }
 </script>
 
 <div bind:this={container} class="chart-container">
+  <h1>Homeownership Rate by Race in Middlesex County for {year}</h1>
   <svg bind:this={svgElement}></svg>
 </div>
 
@@ -125,4 +197,13 @@
   svg {
     display: block;
   }
+
+  h1{
+    font-size: 1rem;
+    margin-right: 10px;
+    font-size: 120%;
+    font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
+    color: aliceblue;
+  }
+
 </style>
