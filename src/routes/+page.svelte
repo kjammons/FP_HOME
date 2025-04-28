@@ -1,5 +1,5 @@
 <script>
-    import OverlayMap from '../lib/components/OverlayMap.svelte';
+    import OverlayMap from './white_homeownership/OverlayMap.svelte';
   </script>
   
   <h1>Massachusetts Covenants Project</h1>

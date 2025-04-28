@@ -1,11 +1,17 @@
 <script>
+  import MapView from './MapView.svelte';
+  import Selection from './Selection.svelte';
+  import TextBox from './TextBox.svelte'; 
+  import OverlayMap from './OverlayMap.svelte';
+  import '$lib/utils/tooltip.css';
 
-  import MapView from '../../lib/components/MapView.svelte';
-  import Selection from '../../lib/components/Selection.svelte';
-  import TextBox from '../../lib/components/TextBox.svelte'; 
-  import OverlayMap from '../../lib/components/OverlayMap.svelte';
-  
+  import { base } from '$app/paths';
 </script>
+
+<!-- (ideally move this into src/routes/+layout.svelte so all pages inherit it) -->
+<svelte:head>
+  <base href="{base}/" />
+</svelte:head>
 
 <main>
   <div class="container">
