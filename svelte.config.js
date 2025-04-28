@@ -8,7 +8,7 @@ export default {
       fallback: 'index.html'
     }),
     paths: {
-      base: process.env.VITE_BASE || ''
+      base: base = process.env.VITE_BASE?.replace(/\/$/, '') || ''
     }
   }
 };
