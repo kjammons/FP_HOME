@@ -1,9 +1,12 @@
 <!-- src/routes/timeline/+page.svelte -->
 <script>
-  import { onMount } from 'svelte';
-  import RaceBarChart from './RaceBarChart.svelte';
-  import HomeownBar    from './HomeownBar.svelte';
-  import mapPreview    from '$lib/assets/images/map.png';
+import { onMount } from 'svelte';
+import { base } from '$app/paths';
+import RaceBarChart from './RaceBarChart.svelte';
+import HomeownBar from './HomeownBar.svelte';
+import mapPreview from '$lib/assets/images/map.png';
+
+const backgroundUrl = `${base}/data/1226-454.jpg`;  // <-- FIX here
 
   // decades
   const years = [1920,1930,1940,1950,1960,1970,1980,1990,2000,2010,2020];
@@ -215,7 +218,7 @@
   }
 </style>
 
-<div class="wrapper">
+<div class="wrapper" style="background-image: url('{backgroundUrl}')">
   <aside class="sidebar">
     <RaceBarChart year={selectedYear} />
     <HomeownBar year={selectedYear} />

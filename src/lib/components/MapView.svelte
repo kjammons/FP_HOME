@@ -16,6 +16,16 @@
 let colorScale;
 let projection; 
 
+const rateTypeLabels = {
+  "j_OWNER_RATE": "Overall Homeownership Rate",
+  "j_WHITE HOMEOWNERSHIP RATE (AS OF TOTAL)": "White Homeownership Rate",
+  "j_BLACK HOME OWNERSHIP RATE": "Black Homeownership Rate",
+  "j_ASIAN HOMEOWNERSHIP_RATE": "Asian Homeownership Rate",
+  "j_AMERICAN INDIAN HOMEOWNERSHIP_RATE": "American Indian Homeownership Rate",
+  "j_NATIVE HAWAIIAN HOMEOWNERSHIP_RATE": "Native Hawaiian Homeownership Rate",
+  "j_OTHER RACE HOMEOWNERSHIP RATE": "Other Race Homeownership Rate"
+};
+
   onMount(async () => {
     try {
     const response = await fetch('/data/ACSDATA2023SORTED_GeoJSON.geojson');
@@ -38,8 +48,8 @@ let projection;
       cityList.set(cities);
 
       // Create a color scale for the map based on j_OWNER_RATE
-      const colorScale = createOwnerRateScale(geoData.features, selectedRateType);
-      renderMap(colorScale);
+     // const colorScale = createOwnerRateScale(geoData.features, selectedRateType);
+     // renderMap(colorScale);
     } catch (error) {
       console.error('Error loading GeoJSON:', error);
     }
@@ -81,15 +91,36 @@ const projection = d3.geoMercator()
         return isNaN(popVal) ? '#ccc' : colorScale(popVal);
       })
       .attr('opacity', d => (selectedFeature && d.properties.TOWN20 === selectedFeature.properties.TOWN20) ? 1 : 0.3)
+      .each(function(d) {
+    if (selectedFeature && d.properties.TOWN20 === selectedFeature.properties.TOWN20) {
+      const [x, y] = path.centroid(d);
+      const svgRect = svgContainer.getBoundingClientRect();
+
+      const city = d.properties.TOWN20 || "Unknown City";
+     // const overallRate = +(d.properties['j_OWNER_RATE'] * 100).toFixed(2);
+      const selectedValue = +(d.properties[selectedRateType] * 100).toFixed(2);
+    const rateLabel = rateTypeLabels[selectedRateType] || "Homeownership Rate";
+
+      d3.select(tooltipElement)
+        .style('opacity', 1)
+        .html(`<strong>${city}</strong><br/><br/>${rateLabel}: ${isNaN(selectedValue) ? "N/A" : selectedValue + "%"}`)
+        //.html(`<strong>${city}</strong><br/><br/>Overall Homeownership Rate: ${isNaN(overallRate) ? "N/A" : overallRate + "%"}`)
+        .style('left', (svgRect.left + x - 120) + 'px')
+        .style('top', (svgRect.top + y - 100) + 'px');
+    }
+  })
 
       .on('mouseover', (event, d) => {
-        const city = d.properties.TOWN20 || "Unknown City";
-        const pop = +((d.properties.j_OWNER_RATE * 100).toFixed(2)) || "N/A";
-        d3.select(tooltipElement)
-          .style('opacity', 1)
-          .html(`<strong>${city} </strong> <br/><br/>Homeownership Rate: ${pop}%`)
-          .style('left', (event.pageX + 10) + 'px')
-          .style('top', (event.pageY + 10) + 'px');
+  const city = d.properties.TOWN20 || "Unknown City";
+  const popVal = +(d.properties[selectedRateType] * 100).toFixed(2);
+  const rateLabel = rateTypeLabels[selectedRateType] || "Homeownership Rate";
+
+  d3.select(tooltipElement)
+    .style('opacity', 1)
+    .html(`<strong>${city}</strong><br/><br/>${rateLabel}: ${isNaN(popVal) ? "N/A" : popVal + "%"}`)
+    .style('left', (event.pageX + 10) + 'px')
+    .style('top', (event.pageY + 10) + 'px');
+
 
         // Fade out all other municipalities
         d3.select(svgContainer).selectAll('path')
@@ -118,12 +149,22 @@ const projection = d3.geoMercator()
         // Set the selected city when a municipality is clicked.
         selectedCity.set(d.properties.TOWN20);
         selectedFeature = d;    // Save the clicked city
-  renderMap(colorScale);  // Redraw the map to highlight it
-      });
+        renderMap(colorScale);
+
+      //   const city = d.properties.TOWN20 || "Unknown City";
+      // const overallRate = +(d.properties['j_OWNER_RATE'] * 100).toFixed(2);
+
+      // d3.select(tooltipElement)
+      //   .style('opacity', 1)
+      //   .html(`<strong>${city}</strong><br/><br/>Overall Homeownership Rate: ${isNaN(overallRate) ? "N/A" : overallRate + "%"}`)
+      //   .style('left', (event.pageX + 10) + 'px')
+      //   .style('top', (event.pageY - 30) + 'px');
+    });
 
       svg.on('click', (event) => {
   selectedFeature = null;
   renderMap(colorScale);
+  d3.select(tooltipElement).style('opacity', 0);
 });
 
       svg.append('image')
@@ -173,34 +214,42 @@ const projection = d3.geoMercator()
   }
 }
 
-$: if (geoData && colorScale && svgContainer) {
+$: if (geoData && svgContainer && selectedRateType) {
   colorScale = createOwnerRateScale(geoData.features, selectedRateType);
   renderMap(colorScale);
 }
 
 </script>
 
-<h1>Home Ownership and Demographics in Middlesex County?</h1>
+<h1>Exploring the dynamics between Racial Demographics and Home Ownership in Middlesex County</h1>
 
 <div class="rate-toggle">
   <label for="rate-select">Select:</label>
   <select id="rate-select" bind:value={selectedRateType}>
     <option value="j_OWNER_RATE">Overall Homeownership Rate</option>
-    <option value="j_NON-WHITE HOMEOWNERSHIP RATE">Non-White Homeownership Rate</option>
-    <option value="j_WHITE HOMEOWNERSHIP RATE">White Homeownership Rate</option>
+    <option value="j_WHITE HOMEOWNERSHIP RATE (AS OF TOTAL)">White Homeownership Rate</option>
+    <option value="j_BLACK HOME OWNERSHIP RATE">Black Homeownership Rate</option>
+    <option value="j_ASIAN HOMEOWNERSHIP_RATE">Asian Homeownership Rate</option>
+    <option value="j_AMERICAN INDIAN HOMEOWNERSHIP_RATE">American Indian Homeownership Rate</option>
+    <option value="j_NATIVE HAWAIIAN HOMEOWNERSHIP_RATE">Native Hawaiian Homeownership Rate</option>
+    <option value="j_OTHER RACE HOMEOWNERSHIP RATE">Other Race Homeownership Rate</option>
+    
   </select>
 </div>
 
-<p>Source: Social Explorer ACS data 2018-2023 (census tract level)</p>
 
 <svg bind:this={svgContainer}></svg>
 <div bind:this={tooltipElement} class="tooltip"></div>
+<p>Source: Social Explorer ACS data 2018-2023 (census tract level)</p>
+
 
 <style>
   svg {
-    border: 1px solid white;
     display: block;
     margin: auto;
+    height: 650px; /* ✨ manually shrink visible height */
+  width: 800px;  /* keep the width same */
+  object-fit: contain; /* ✨ keeps the map inside */
   }
   /* Tooltip styles are in tooltip.css */
 
