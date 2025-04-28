@@ -245,7 +245,7 @@ const backgroundUrl = `${base}/data/1226-454.jpg`;  // <-- FIX here
           {#if i === years.length - 1}
             <div class="popup">
               <p>Explore who lives and who owns in Middlesex County today:</p>
-              <a href="/white_homeownership">
+              <a href="white_homeownership">
                 <img src={mapPreview} alt="Homeownership Map">
               </a>
               <p><small>Click the map to continue your journey.</small></p>
