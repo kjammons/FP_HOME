@@ -2,7 +2,6 @@
 <script>
   import { onMount } from 'svelte';
   import * as d3 from 'd3';
-  import { base } from '$app/paths';
 
   export let year = 1920;
   export let csvPath = 'src/lib/assets/data/home_ownership_by_decade.csv';

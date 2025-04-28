@@ -1,7 +1,6 @@
 <script>
   import { onMount } from "svelte";
   import * as pdfjsLib from "pdfjs";
-  import { base } from '$app/paths';
 
   let canvasEl;
   let svgContainer;

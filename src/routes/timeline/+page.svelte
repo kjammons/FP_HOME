@@ -4,7 +4,6 @@
   import RaceBarChart from './RaceBarChart.svelte';
   import HomeownBar    from './HomeownBar.svelte';
   import mapPreview    from '$lib/assets/images/map.png';
-  import { base } from '$app/paths';
 
   // decades
   const years = [1920,1930,1940,1950,1960,1970,1980,1990,2000,2010,2020];
