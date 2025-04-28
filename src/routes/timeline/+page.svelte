@@ -37,7 +37,7 @@
           }
         });
       },
-      { threshold: 0.4 }  // 40% into view to activate
+      { threshold: 0.5 }
     );
     stepEls.forEach(el => el && observer.observe(el));
     return () => observer.disconnect();
@@ -98,48 +98,47 @@
     2020: [
       'Housing Choice law (Jan 2021) lowers zoning vote thresholds & mandates multifamily near MBTA stations.',
       'COVID-19 eviction moratorium protects minority renters in Boston & across MA.',
-      'Ongoing reforms push inclusive development & stronger fair housing enforcement.'
+      'Ongoing reforms push inclusive development & stronger fair housing enforcement.',
+      'Over the past few decades, while homeownership rates for both the general population and white residents in Middlesex County have steadily risen— from 37% to 62% overall, and from 47% to 67% for white residents—the Black homeownership rate has remained stagnant at around 30%. Despite increased access to mortgage loans for minority groups, the disparity in homeownership rates between minority groups, particularly Black people, and white residents persists, underscoring the enduring legacy of historical injustices. This trend is also linked to the historically small Black population in Middlesex County, which totaled 84,670 residents in 2020. Our project aims to highlight the intergenerational impacts of restrictive covenants, which systematically excluded people of color from the wealth-building opportunities that white homeowners were able to benefit from through home equity.'
     ]
   };
 </script>
 
 <style>
   :global(body) {
-    margin: 0; padding: 0;
+    margin: 0;
+    padding: 0;
     font-family: serif;
     background: #faf3e0;
     color: #333;
   }
 
+  .sidebar {
+    flex: none;
+    width: 40%;
+    background: rgba(0, 0, 0, 0.9);
+    padding: 2rem 1rem;
+    box-shadow: 2px 0 6px rgba(0, 0, 0, 0.05);
+    overflow-y: auto;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+  }
 
-/* ── Left Sidebar ── */
-.sidebar {
-  flex: none;
-  width: 40%;
-  background: rgba(0, 0, 0, 0.9);  /* Semi-transparent black background (50% opacity) */
-  padding: 2rem 1rem;
-  box-shadow: 2px 0 6px rgba(0,0,0,0.05);
-  overflow-y: auto;
-  position: sticky;
-  top: 0;
-  z-index: 1;  /* Make sure sidebar stays above the background */
-}
+  .sidebar :global(.chart-container) {
+    height: 380px;
+    margin: 0;
+  }
 
-.sidebar :global(.chart-container) {
-  height: 380px;      /* slightly taller so everything fits */
-  margin: 0;          /* we’re now using the flex gap, so no bottom margin needed */
-}
-
-  /* ── Right Timeline ── */
   .timeline {
     flex: 1;
     overflow-y: auto;
-    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
     scroll-padding-top: 30vh;
     padding: 1rem 2rem;
   }
+
   section {
-    scroll-snap-align: start;
     min-height: 100vh;
     display: flex;
     align-items: center;
@@ -147,46 +146,55 @@
     opacity: 0.3;
     transition: opacity 0.4s ease;
   }
-  section.active {
+
+  section.active,
+  section.intro {
     opacity: 1;
   }
+
   .description {
     max-width: 600px;
-    background: rgba(0, 0, 0, 0.82);
+    background-color: rgba(0, 0, 0, 0.85);
+    color: white;
     padding: 1.5rem;
     border-left: 4px solid #f5d262;
-    box-shadow: 1px 1px 4px rgba(0,0,0,0.05);
+    box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.05);
+    border-radius: 8px;
+    margin-bottom: 2rem;
   }
+
   .description h2 {
     margin-top: 0;
     font-variant: small-caps;
     font-size: 2rem;
     font-size: 120%;
     font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
-    color: #fff ;
+    color: #fff;
   }
-  .description ul {
-    margin: 1rem 0 0 1rem;
+
+  .description p {
+    margin: 1rem 0 0 0;
     font-size: 120%;
     font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
     color: #fff;
   }
 
-  /* ── Popup in last step ── */
   .popup {
     margin-top: 2rem;
-    background: rgba(250,243,224,0.95);
+    background: rgba(250, 243, 224, 0.95);
     padding: 1rem;
     border: 1px solid #d4b97f;
     border-radius: 4px;
-    box-shadow: 2px 2px 8px rgba(0,0,0,0.15);
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.15);
     max-width: 240px;
     text-align: center;
   }
+
   .popup p {
     margin: 0.5rem 0;
     font-style: italic;
   }
+
   .popup img {
     display: block;
     margin: 0.5rem auto;
@@ -197,42 +205,41 @@
   }
 
   .wrapper {
-  display: flex;
-  height: 100vh;
-  overflow: hidden;
-  background-image: url('src/lib/assets/data/image background.png'); /* Path to your background image */
-  background-size: cover;  /* Make sure the image covers the entire area */
-  background-position: center center; /* Center the background image */
-  background-repeat: no-repeat;  /* Prevent the image from repeating */
-}
-
-
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+    background-image: url('src/lib/assets/data/1226-454.jpg');
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+  }
 </style>
 
 <div class="wrapper">
-  <!-- Left column: always-visible charts -->
   <aside class="sidebar">
     <RaceBarChart year={selectedYear} />
-    <HomeownBar   year={selectedYear} />
+    <HomeownBar year={selectedYear} />
   </aside>
 
-  <!-- Right column: scrollable timeline -->
   <main class="timeline">
+    <section class="intro">
+      <div class="description">
+        <h2>Introduction</h2>
+        <p>Let’s take a look at how racial demographics and homeownership by race has evolved overtime in Middlesex County! <br><br>
+          *Note how the category names have changed from one decade to the next in a reflection of past and current politics, science and public attitudes. 
+          </p>
+      </div>
+    </section>
+
     {#each years as yr, i}
-      <section
-        use:collect={i}
-        class:active={i === currentIndex}
-      >
+      <section use:collect={i} class:active={i === currentIndex}>
         <div class="description">
           <h2>{yr}</h2>
-          <ul>
-            {#each descriptions[yr] as bullet}
-              <li>{bullet}</li>
-            {/each}
-          </ul>
+          {#each descriptions[yr] as bullet}
+            <p>{bullet}</p>
+          {/each}
 
           {#if i === years.length - 1}
-            <!-- popup only on 2020 step -->
             <div class="popup">
               <p>Explore who lives and who owns in Middlesex County today:</p>
               <a href="/white_homeownership">

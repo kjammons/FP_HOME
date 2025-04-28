@@ -1,0 +1,66 @@
+<!DOCTYPE qgis PUBLIC 'http://mrcc.com/qgis.dtd' 'SYSTEM'>
+<qgis version="3.34.10-Prizren">
+  <identifier>CENSUS2020TOWNS_POLY</identifier>
+  <parentidentifier></parentidentifier>
+  <language>ENG</language>
+  <type>dataset</type>
+  <title>Census 2020 Towns (County Subdivisions)</title>
+  <abstract>In Massachusetts, cities and towns are recognized and recorded as “county subdivisions” by the Census Bureau. County subdivisions are the primary divisions of counties and their equivalent entities for the reporting of decennial census data. A 5-character FIPS code (recorded in COUSUBFP) is used to uniquely identify each county subdivision. Census towns have linework that is often identical to the linework found in MassGIS' munipality boundaries, but also contains many minor discrepancies, particularly along hydrologic and coastal features. The annual Boundary and Annexation Survey (BAS) program attempts to reconcile significant differences in linework (typically discrepancies of 30 feet or more) between Census county subdivisions and the authoritative record, especially where populations are involved. Census towns have been processed and made available to provide a city and town reference for mapping that should align better than the MassGIS municipality boundaries with other Census-derived geographies, including voting districts. Some of the attributes from the MassGIS municipality boundaries have been transcribed into the Census towns attributes.
+Town population counts from 1970 to 2010 were obtained from the “City and Town Sortable Rankings” tables provided by the UMass Amherst Donahue Instituteon this Secretary of the Commonwealth’s website. 1960 town population counts were obtained and transcribed from this reportpublished on this state library archives webpageby the Massachusetts Department of Commerce and Development, Bureau of Research and Statistics.
+
+
+2020 Census towns are a representation of the towns and cities in Massachusetts with linework that aligns with other Census-derived geographies.</abstract>
+  <keywords vocabulary="Search keys">
+    <keyword>2020 Census Bureau towns cities county subdivisions</keyword>
+  </keywords>
+  <contact>
+    <contactAddress>
+      <type>both</type>
+      <address>4600 Silver Hill Road</address>
+      <city>Washington D.C.</city>
+      <administrativearea></administrativearea>
+      <postalcode>20233</postalcode>
+      <country>US</country>
+    </contactAddress>
+    <name></name>
+    <organization>United States Census Bureau</organization>
+    <position></position>
+    <voice>1-800-923-8282</voice>
+    <fax></fax>
+    <email>geo.geography@census.gov</email>
+    <role></role>
+  </contact>
+  <links/>
+  <history>Original Census Data was processed by MassGIS to standardize and add value for GIS data users in Massachusetts and elsewhere.</history>
+  <dates>
+    <date value="2021-02-01T00:00:00" type="Published"/>
+    <date value="2022-11-16T00:00:00" type="Revised"/>
+  </dates>
+  <fees></fees>
+  <constraints type="Limitations of use">No warranty, expressed or implied, is made with regard to the accuracy of the data in the TIGER/Line Shapefiles, and no liability is assumed by the United States Government in general, or the Census Bureau specifically, as to the positional or attribute accuracy of the data. The boundary information in the TIGER/Line Shapefiles is for statistical data collection and tabulation purposes only. Their depiction and designation for statistical purposes does not constitute a determination of jurisdictional authority or rights of ownership or entitlement and are not legal land descriptions. TIGER/Line® is a registered trademark of the Census Bureau. TIGER/Line cannot be used as or within the proprietary product names of any commercial product including or otherwise relevant to Census Bureau data and may only be used to refer to the nature of such a product.</constraints>
+  <rights>US Census Bureau 2020 TIGER/Line data from MAF/TIGER database (MTDB).&#xd;
+Massachusetts Bureau of Geographic Information (MassGIS), Executive Office of Technology Services and Security (EOTSS)</rights>
+  <encoding></encoding>
+  <crs>
+    <spatialrefsys nativeFormat="Wkt">
+      <wkt>PROJCRS["NAD83 / Massachusetts Mainland",BASEGEOGCRS["NAD83",DATUM["North American Datum 1983",ELLIPSOID["GRS 1980",6378137,298.257222101,LENGTHUNIT["metre",1]]],PRIMEM["Greenwich",0,ANGLEUNIT["degree",0.0174532925199433]],ID["EPSG",4269]],CONVERSION["SPCS83 Massachusetts Mainland zone (meters)",METHOD["Lambert Conic Conformal (2SP)",ID["EPSG",9802]],PARAMETER["Latitude of false origin",41,ANGLEUNIT["degree",0.0174532925199433],ID["EPSG",8821]],PARAMETER["Longitude of false origin",-71.5,ANGLEUNIT["degree",0.0174532925199433],ID["EPSG",8822]],PARAMETER["Latitude of 1st standard parallel",42.6833333333333,ANGLEUNIT["degree",0.0174532925199433],ID["EPSG",8823]],PARAMETER["Latitude of 2nd standard parallel",41.7166666666667,ANGLEUNIT["degree",0.0174532925199433],ID["EPSG",8824]],PARAMETER["Easting at false origin",200000,LENGTHUNIT["metre",1],ID["EPSG",8826]],PARAMETER["Northing at false origin",750000,LENGTHUNIT["metre",1],ID["EPSG",8827]]],CS[Cartesian,2],AXIS["easting (X)",east,ORDER[1],LENGTHUNIT["metre",1]],AXIS["northing (Y)",north,ORDER[2],LENGTHUNIT["metre",1]],USAGE[SCOPE["Engineering survey, topographic mapping."],AREA["United States (USA) - Massachusetts onshore - counties of Barnstable; Berkshire; Bristol; Essex; Franklin; Hampden; Hampshire; Middlesex; Norfolk; Plymouth; Suffolk; Worcester."],BBOX[41.46,-73.5,42.89,-69.86]],ID["EPSG",26986]]</wkt>
+      <proj4>+proj=lcc +lat_0=41 +lon_0=-71.5 +lat_1=42.6833333333333 +lat_2=41.7166666666667 +x_0=200000 +y_0=750000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs</proj4>
+      <srsid>2357</srsid>
+      <srid>26986</srid>
+      <authid>EPSG:26986</authid>
+      <description>NAD83 / Massachusetts Mainland</description>
+      <projectionacronym>lcc</projectionacronym>
+      <ellipsoidacronym>EPSG:7019</ellipsoidacronym>
+      <geographicflag>false</geographicflag>
+    </spatialrefsys>
+  </crs>
+  <extent>
+    <spatial maxx="-69.89860000000000184" minz="0" crs="EPSG:26986" maxz="0" minx="-73.533299999999997" maxy="42.88830000000000098" miny="41.23140000000000072" dimensions="2"/>
+    <temporal>
+      <period>
+        <start>2021-02-01T10:00:00Z</start>
+        <end></end>
+      </period>
+    </temporal>
+  </extent>
+</qgis>
