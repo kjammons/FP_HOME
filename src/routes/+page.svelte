@@ -5,8 +5,6 @@
   const backgroundUrl = `${base}/images/landing_static.jpeg`;
 </script>
 
-<h1>Constructing Whiteness in Middlesex County, MA: Racial Covenants & Geographies of Inequality</h1>
-
 <main>
   <!-- full-width responsive image -->
   <img 
