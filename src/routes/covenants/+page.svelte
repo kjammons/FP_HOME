@@ -1,6 +1,6 @@
 <script>
     import { onMount } from "svelte";
-
+    import { base } from '$app/paths';
 
     // Define the deeds array with bounding box (bbox) coordinates and alert messages
     const deeds = [
@@ -9,7 +9,7 @@
             name: "Covenant recorded on May 6, 1878 in East Chelmesford, MA",
             description: "According to the record, this 1878 property deed was conveyed by Arathusa F. Dyar. This early covenant does not explicitly invoke race. Instead, the language focuses on behavioral norms such as cleanliness, orderliness, and sobriety as conditions for tenancy. However, even at this early stage, ideas about respectability and moral conduct were overtly racialized. Such clauses laid groundwork for later racial exclusions by linking property ownership with specific, encoded standards of belonging and power.",
             bbox: [[147, 1506.6], [1388, 1620.4]], // Bounding box coordinates
-            image: "./src/lib/assets/images/covenant_1.jpg", // Path to the image
+            image: `${base}/images/covenant_1.jpg`, // Path to the image
             alertMessage: "This deed reads: “He shall keep the premises hereby leased neat and orderly and allow no liquor drunk or disorderly conduct upon the premises.” We are not interpreting this as a restrictive covenant, but it illustrates the stucture that covenants will be added to."
         },
         {
@@ -17,7 +17,7 @@
             name: "Covenant recorded on June 22, 1880 in Wilmington, MA",
             description: "According to the record, this 1880 property deed was conveyed by Charles D. Wild. This covenant explicitly excludes both Black people and Irish immigrants, inserted within the framework of the familiar “disorderly” language. At this time, Irish Americans occupied a tenuous racial position, being not fully accepted as white. This document captures the fluidity and evolution of racial boundaries, showing how whiteness was actively under social construction. ",
             bbox: [[168, 1437.2], [1514, 1587.8]],
-            image: "./src/lib/assets/images/covenant_2.jpg",
+            image: `${base}/images/covenant_2.jpg`,
             alertMessage: "You found a restrictive covenant! This deed reads: “That said premises are to be used as a place of residence only and are not to be occupied or conveyed to any Negroes or Irish or any person or persons that would be considered disorderly people."
         },
         {
@@ -25,7 +25,7 @@
             name: "Covenant recorded on May 10, 1924 in Wilmington, MA",
             description: "According to the record, this 1924 property deed was conveyed by Maria M. Lenfest and Granville S. Lenfest. By the 1920s, Irish residents of Massachusetts had largely been assimilated into whiteness. Here, the covenants' racial exclusions narrow, targeting specifically Black residents. The repetition of the disorderly people clause suggests that behavioral justifications for exclusion persisted, but the racial line had hardened. This covenant reflects a suburbanizing Massachusetts increasingly structured around maintaining structures of white spatial dominance.",
             bbox: [[367, 2087], [1808, 2220]],
-            image: "./src/lib/assets/images/covenant_3.jpg",
+            image: `${base}/images/covenant_3.jpg`,
             alertMessage: "You found a restrictive covenant! This deed reads: “that, the said premises are to be used as a place of residence only and are not to be occupied or conveyed to any Negroes or any person or persons that would be considered disorderly people.”"
         },
         {
@@ -33,7 +33,7 @@
             name: "Covenant recorded November 28, 1939 in Dracut, MA",
             description: "According to the record, this 1939 property deed was conveyed by Fred E. Kroker and Ethel W. Kroker. By 1939, the language of exclusion became explicitly “biological” and pseudo-scientific. 'Caucasian' is a term borrowed from racial anthropology and which entered into common legal usage to define who property access. This reflects the growing normalization of “whiteness,” nebulously defined, as a legally enforceable category, amid a broader culture of segregation and racial hierarchy.",
             bbox: [[490, 2157], [1964, 2332]],
-            image: "./src/lib/assets/images/covenant_4.jpg",
+            image: `${base}/images/covenant_4.jpg`,
              alertMessage: "You found a restrictive covenant! This deed reads: “That no part of the land hereby conveyed, or the improvements thereon, shall ever be sold, leased, traded, rented or donated to any one other than the Caucasian race.”"
         },
         {
@@ -41,7 +41,7 @@
             name: "Covenant recorded April 7, 1950 in Dracut, MA",
             description: "According to the record, this 1950 property deed was conveyed by E. Gaston Campbell, Frank J. Rochette, and Thomas Rochette. This covenant is nearly identical to the previous deed from 1939, illustrating the persistence of racial covenants even as legal challenges mounted. By 1950, Shelley v. Kraemer (1948) had already ruled that courts could not enforce restrictive covenants. However, many property owners continued to insert racial restrictions into deeds. The social construction of whiteness remained deeply embedded in real estate practices, shaping patterns of segregation that would endure long after explicit legal enforcement ended. Today, these covenants can still be found in property deeds, continuing to “run with the land.” ",
             bbox: [[265, 1691.6], [2442, 1893.4]],
-            image: "./src/lib/assets/images/covenant_5.jpg",
+            image: `${base}/images/covenant_5.jpg`,
              alertMessage: "You found a restrictive covenant! This deed reads: “No part of the land hereby conveyed shall ever be conveyed, leased, traded, rented or donated to anyone who is not a member of the caucasian race.”"
         }
     ];
