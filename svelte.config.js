@@ -8,6 +8,8 @@ export default {
       fallback: 'index.html'
     }),
     paths: {
+      // dev:       ''
+      // preview: '/FP_HOME'
       base: process.env.VITE_BASE || ''
     }
   }

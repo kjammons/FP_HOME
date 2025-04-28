@@ -1,43 +1,52 @@
-<!-- src/lib/components/RaceBarChart.svelte -->
 <script>
-  import { onMount } from 'svelte';
+  import { onMount, onDestroy } from 'svelte';
+  import { base } from '$app/paths';
   import * as d3 from 'd3';
 
   export let year = 1920;
-  export let csvPath = 'src/lib/assets/data/race_by_decade.csv';
 
+  // elements & dimensions
   let container;
   let svgElement;
   let data = [];
   let width = 0;
   let height = 0;
-
-  // increased bottom margin to make room for 45° labels
   const margin = { top: 20, right: 20, bottom: 200, left: 60 };
 
+  // build the CSV URL using the same `base` your pages use
+  const csvPath = `${base}/data/race_by_decade.csv`;
 
-
-  onMount(async () => {
-    const csv = await d3.csv(csvPath, d => ({
-      year: +d.YEAR,
-      category: d.category,
-      value: +d.value
-    }));
-    data = csv;
-    updateDimensions();
-    window.addEventListener('resize', updateDimensions);
-  });
-
-  $: filteredData = data.filter(d => d.year === year && d.value > 0);
-  $: if (filteredData.length && width && height) {
-    drawChart();
-  }
-
+  // recalc on resize
   function updateDimensions() {
     if (!container) return;
     const rect = container.getBoundingClientRect();
     width = rect.width;
     height = rect.height;
+  }
+
+  onMount(async () => {
+    // 1) set initial size & listen for future resizes
+    updateDimensions();
+    window.addEventListener('resize', updateDimensions);
+
+    // 2) fetch your CSV at runtime from /static/data/…
+    const res = await fetch(csvPath);
+    const text = await res.text();
+    data = d3.csvParse(text, d => ({
+      year: +d.YEAR,
+      category: d.category,
+      value: +d.value
+    }));
+  });
+
+  onDestroy(() => {
+    window.removeEventListener('resize', updateDimensions);
+  });
+
+  // whenever data, year, or size changes, redraw
+  $: filteredData = data.filter(d => d.year === year && d.value > 0);
+  $: if (filteredData.length && width && height) {
+    drawChart();
   }
 
   function drawChart() {

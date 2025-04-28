@@ -1,30 +1,26 @@
 <!-- src/routes/timeline/HomeownBar.svelte -->
 <script>
-  import { onMount } from 'svelte';
+  import { onMount, onDestroy } from 'svelte';
+  import { base } from '$app/paths';
   import * as d3 from 'd3';
 
+  // the currently selected decade
   export let year = 1920;
-  export let csvPath = 'src/lib/assets/data/home_ownership_by_decade.csv';
 
-  let data = [];
-  let svgElement;
+  // build the URL at runtime
+  const csvPath = `${base}/data/home_ownership_by_decade.csv`;
+
+  // DOM refs & dimensions
   let container;
+  let svgElement;
+  let data = [];
   let width = 0;
   let height = 0;
 
-  // give even more bottom room for rotated labels
+  // margins for axes/labels
   const margin = { top: 20, right: 20, bottom: 200, left: 60 };
 
-  onMount(async () => {
-    data = await d3.csv(csvPath, d => ({
-      year: +d.YEAR,
-      category: d.Category.trim(),
-      value: +d.Value
-    }));
-    window.addEventListener('resize', updateSize);
-    updateSize();
-  });
-
+  // recalc chart size on window resize
   function updateSize() {
     if (!container) return;
     const rect = container.getBoundingClientRect();
@@ -32,7 +28,26 @@
     height = rect.height;
   }
 
-  // redraw anytime data, year, width or height changes
+  onMount(async () => {
+    // 1) set initial size & listen for changes
+    updateSize();
+    window.addEventListener('resize', updateSize);
+
+    // 2) fetch & parse the CSV at runtime
+    const res = await fetch(csvPath);
+    const text = await res.text();
+    data = d3.csvParse(text, d => ({
+      year:     +d.YEAR,
+      category: d.Category.trim(),
+      value:    +d.Value
+    }));
+  });
+
+  onDestroy(() => {
+    window.removeEventListener('resize', updateSize);
+  });
+
+  // whenever data, year, or size changes, redraw
   $: if (data.length && width && height && year !== undefined) {
     drawChart();
   }
