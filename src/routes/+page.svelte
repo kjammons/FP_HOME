@@ -12,7 +12,8 @@
     ];
   </script>
 
-
+<h1>Constructing Whiteness in Middlesex County, MA: Racial Covenants & Geographies of Inequality
+</h1>
   <div class="wrapper">
     <svg width="100%" height="100%">
         {#each pages as p}
@@ -57,4 +58,9 @@ text{
   font-family: Courier;
 }
 
+h1{
+    font-family: Courier;
+    font-size: 140%;
+
+}
 </style>
