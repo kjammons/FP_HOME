@@ -8,9 +8,6 @@ import mapPreview from '$lib/assets/images/map.png';
 
 const backgroundUrl = `${base}/data/1226-454.jpg`;  // <-- FIX here
 
-// ... everything else you already have
-
-
   // decades
   const years = [1920,1930,1940,1950,1960,1970,1980,1990,2000,2010,2020];
   let currentIndex = 0;
@@ -221,7 +218,7 @@ const backgroundUrl = `${base}/data/1226-454.jpg`;  // <-- FIX here
   }
 </style>
 
-<div class="wrapper">
+<div class="wrapper" style="background-image: url('{backgroundUrl}')">
   <aside class="sidebar">
     <RaceBarChart year={selectedYear} />
     <HomeownBar year={selectedYear} />
