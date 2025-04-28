@@ -8,23 +8,23 @@ export default defineConfig({
     viteStaticCopy({
       targets: [
         {
-          src: 'src/lib/assets/data/*',   // GeoJSON, CSV, etc
+          src: 'src/lib/assets/data/*',
           dest: 'data'
         },
         {
-          src: 'src/lib/assets/images/*', // Images (optional but you have it)
+          src: 'src/lib/assets/images/*',
           dest: 'assets/images'
         },
         {
-          src: 'src/lib/assets/covenants/*', // Anything inside covenants (optional)
+          src: 'src/lib/assets/covenants/*',
           dest: 'assets/covenants'
         },
         {
-          src: 'src/lib/assets/map.pdf',  // Your map.pdf
+          src: 'src/lib/assets/map.pdf',
           dest: 'assets'
         },
         {
-          src: 'src/lib/assets/overlay.svg', // Your overlay.svg
+          src: 'src/lib/assets/overlay.svg',
           dest: 'assets'
         }
       ]
