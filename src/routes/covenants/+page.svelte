@@ -6,43 +6,38 @@
     const deeds = [
         {
             id: 1,
-            name: "Covenant 1",
-            description: "Grantor: Arathusa F. Dyar. Date Recorded: May 06, 1878. Location: East Chelmsford, MA",
-            bbox: [[147, 1533], [1388, 1594]], // Bounding box coordinates
+            name: "Covenant recorded on May 6, 1878 in East Chelmesford, MA",
+            description: "According to the record, this 1878 property deed was conveyed by Arathusa F. Dyar.",
+            bbox: [[147, 1506.6], [1388, 1620.4]], // Bounding box coordinates
             image: "./src/lib/assets/images/covenant_1.jpg", // Path to the image
-            alertMessage: "This deed reads: “He shall keep the premises hereby leased neat and orderly and allow no liquor drunk or disorderly conduct upon the premises.” We are not interpreting this as a restrictive covenant, but it illustrates the stucture that covenants will be added to."
         },
         {
             id: 2,
-            name: "Covenant 2",
-            description: "Grantor: Charles D. Wild. Date Recorded: June 22, 1880. Location: Wilmington, MA",
-            bbox: [[168, 1454], [1514, 1571]],
+            name: "Covenant recorded on June 22, 1880 in Wilmington, MA",
+            description: "According to the record, this 1880 property deed was conveyed by Charles D. Wild.",
+            bbox: [[168, 1437.2], [1514, 1587.8]],
             image: "./src/lib/assets/images/covenant_2.jpg",
-            alertMessage: "You found a restrictive covenant! This deed reads: “That said premises are to be used as a place of residence only and are not to be occupied or conveyed to any Negroes or Irish or any person or persons that would be considered disorderly people."
         },
         {
             id: 3,
-            name: "Covenant 3",
-            description: "Grantor: Maria M. Lenfest and Granville S. Lenfest. Date Recorded: May 10, 1924. Location: Wilmington, MA",
+            name: "Covenant recorded on May 10, 1924 in Wilmington, MA",
+            description: "According to the record, this 1924 property deed was conveyed by Maria M. Lenfest and Granville S. Lenfest.",
             bbox: [[367, 2087], [1808, 2220]],
             image: "./src/lib/assets/images/covenant_3.jpg",
-            alertMessage: "You found a restrictive covenant! This deed reads: “that, the said premises are to be used as a place of residence only and are not to be occupied or conveyed to any Negroes or any person or persons that would be considered disorderly people.”"
         },
         {
             id: 4,
-            name: "Covenant 4",
-            description: "Grantors: Fred E. Kroker, Ethel W. Kroker. Date Recorded: November 28, 1939. Location: Dracut, MA",
+            name: "Covenant recorded November 28, 1939 in Dracut, MA",
+            description: "According to the record, this 1939 property deed was conveyed by Fred E. Kroker and Ethel W. Kroker.",
             bbox: [[490, 2157], [1964, 2332]],
             image: "./src/lib/assets/images/covenant_4.jpg",
-            alertMessage: "You found a restrictive covenant! This deed reads: “That no part of the land hereby conveyed, or the improvements thereon, shall ever be sold, leased, traded, rented or donated to any one other than the Caucasian race.”"
         },
         {
             id: 5,
-            name: "Covenant 5",
-            description: "Grantors: E. Gaston Campbell, Frank J. Rochette, and Thomas Rochette. Date Recorded: April 7, 195. Location: Dracut, MA",
-            bbox: [[265, 1713], [2442, 1872]],
+            name: "Covenant recorded April 7, 1950 in Dracut, MA",
+            description: "According to the record, this 1950 property deed was conveyed by E. Gaston Campbell, Frank J. Rochette, and Thomas Rochette.",
+            bbox: [[265, 1691.6], [2442, 1893.4]],
             image: "./src/lib/assets/images/covenant_5.jpg",
-            alertMessage: "You found a restrictive covenant! This deed reads: “No part of the land hereby conveyed shall ever be conveyed, leased, traded, rented or donated to anyone who is not a member of the caucasian race.”"
         }
     ];
 
@@ -103,7 +98,7 @@
         boundingBoxElement.style.width = `${width}px`;
         boundingBoxElement.style.height = `${height}px`;
         boundingBoxElement.style.position = "absolute";
-        boundingBoxElement.style.border = "2px solid yellow";
+        boundingBoxElement.style.border = "10px solid yellow";
         boundingBoxElement.style.pointerEvents = "none"; // Ensure it doesn't block clicks
     }
 
@@ -163,7 +158,7 @@
     });
 </script>
 
-<h1>Covenants</h1>
+<h1>Understanding Restrictive Covenants</h1>
 
 <!-- Custom Alert Modal -->
 {#if showAlert}
@@ -189,10 +184,17 @@
         />
         <!-- Bounding box -->
         <div id={`bounding-box-${deed.id}`}></div>
+
+
     </div>
 {/each}
 
 <style>
+    /* Apply the Courier font to the entire page */
+    * {
+        font-family: 'Courier', monospace;
+    }
+
     h1 {
         text-align: center;
         color: #333;
@@ -235,14 +237,12 @@
         text-align: center;
         max-width: 300px;
         width: 90%;
-        font-family: 'Georgia', 'Times New Roman', serif; /* Archival font style */
     }
 
     .modal h2 {
         margin: 0 0 10px;
         font-size: 18px;
         color: #333;
-        font-family: 'Georgia', 'Times New Roman', serif; /* Archival font style */
     }
 
     .modal button {
@@ -253,10 +253,10 @@
         border-radius: 4px;
         cursor: pointer;
         font-size: 14px;
-        font-family: 'Georgia', 'Times New Roman', serif; /* Archival font style */
     }
 
     .modal button:hover {
         background: #0056b3;
     }
 </style>
+ 
