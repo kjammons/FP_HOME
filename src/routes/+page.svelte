@@ -12,6 +12,7 @@
     ];
   </script>
 
+
 <h1>Constructing Whiteness in Middlesex County, MA: Racial Covenants & Geographies of Inequality
 </h1>
   <div class="wrapper">
@@ -64,3 +65,11 @@ h1{
 
 }
 </style>
+=======
+  
+  <h1>Massachusetts Covenants Project</h1>
+  
+  <main>
+    <OverlayMap />
+  </main>
+
