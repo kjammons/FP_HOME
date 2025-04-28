@@ -2,7 +2,7 @@
     import { page } from "$app/stores";
         
     let pages = [
-        { url: "/", title: "Home" },
+        { url: "", title: "Home" },
         { url: "covenants", title: "Covenants" },
         { url: "timeline", title: "Timeline" },
         { url: "white_homeownership", title: "Homeownership Map" },
