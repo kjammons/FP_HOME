@@ -111,7 +111,7 @@ const backgroundUrl = `${base}/data/1226-454.jpg`;  // <-- FIX here
   :global(body) {
     margin: 0;
     padding: 0;
-    font-family: serif;
+    font-family: Courier;
     background: #faf3e0;
     color: #333;
   }

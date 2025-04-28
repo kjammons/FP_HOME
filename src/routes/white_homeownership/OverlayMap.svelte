@@ -1,14 +1,15 @@
 <script>
   import { onMount } from "svelte";
   import * as pdfjsLib from "pdfjs";
+  import { base } from '$app/paths';
 
   let canvasEl;
   let svgContainer;
 
-  onMount(async () => {
+  onMount(async () => { 
     console.log("🧭 OverlayMap mounted");
     try {
-      const loadingTask = pdfjsLib.getDocument("src/lib/assets/map.pdf");
+      const loadingTask = pdfjsLib.getDocument(`${base}/data/map.pdf`);
       console.log("📥 loading map.pdf...");
       const pdf = await loadingTask.promise;
       const page = await pdf.getPage(1);
@@ -22,7 +23,7 @@
       await page.render({ canvasContext: context, viewport }).promise;
 
       // Load and insert the SVG
-      const response = await fetch("/overlay.svg");
+      const response = await fetch(`${base}/data/overlay.svg`);
       const svgText = await response.text();
       svgContainer.innerHTML = svgText;
 
