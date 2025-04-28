@@ -12,6 +12,6 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   opacity: 0;
   transition: opacity 0.2s ease, transform 0.2s ease;
-  transform: translateY(-5px);
+  /* transform: translateY(-5px); */
   z-index: 10;
 }
