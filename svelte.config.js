@@ -1,5 +1,5 @@
 import adapter from '@sveltejs/adapter-static';
-import { vitePreprocess } from '@sveltejs/kit/vite';
+import { vitePreprocess } from '@sveltejs/kit';
 
 export default {
   preprocess: vitePreprocess(),
@@ -8,7 +8,7 @@ export default {
     adapter: adapter({
       pages: 'dist',
       assets: 'dist',
-      fallback: 'index.html'  
+      fallback: 'index.html'
     }),
     paths: {
       base: process.env.VITE_BASE || ''
