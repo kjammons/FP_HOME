@@ -5,6 +5,7 @@
   import { createBarChartScale } from '../utils/chartScales.js';
   import { chartDimensions, barStyle, centerLineStyle, textStyle } from '../utils/chartStyles.js';
   import { loadGeoJSON } from '../utils/mapUtils.js';
+  import { base } from '$app/paths';
   import '../utils/tooltip.css';
 
   const { width, height, margin } = chartDimensions;

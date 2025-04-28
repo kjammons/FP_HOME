@@ -13,7 +13,7 @@
   let height = 0;
 
   // increased bottom margin to make room for 45° labels
-  const margin = { top: 20, right: 20, bottom: 80, left: 60 };
+  const margin = { top: 20, right: 20, bottom: 200, left: 60 };
 
 
 
@@ -147,7 +147,7 @@
       .attr('transform', `translate(0,${innerHeight})`)
       .call(d3.axisBottom(x))
       .selectAll('text')
-        .attr('transform', 'rotate(-45)')
+        .attr('transform', 'rotate(-40)')
         .style('text-anchor', 'end')
         .style('font-size', '12px') // Set font size for x-axis labels
         .style('font-family', '"Roboto", sans-serif')
@@ -250,7 +250,7 @@
   h1{
     font-size: 1rem;
     margin-right: 10px;
-    font-size: 120%;
+    font-size: 85%;
     font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
     color: #eee;
   }
