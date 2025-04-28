@@ -1,4 +1,7 @@
 <!-- src/components/TextBox.svelte -->
+import { base } from '$app/paths';
+
+
 <script>
   export let text = `
     <p>This project is inspired by and developed in accordance with the long-term goals of the <a href="https://dusp.mit.edu/projects/massachusetts-covenants-project" target="_blank" rel="noopener noreferrer"> Massachusetts Covenants Project</a>. Racially restrictive covenants are one of the hidden histories of housing discrimination. They proliferated separately from government-sponsored means of discrimination like redlining or exclusionary zoning, embodying a populist, insidious desire of neighbors to exclude neighbors. Today, the covenants the “run with the land,” alive in the property deeds although now ruled unenforceable and illegal [Hansberry v. Lee (1940); Shelley v. Kraemer (1948); Fair Housing Act (1968)].</p>
