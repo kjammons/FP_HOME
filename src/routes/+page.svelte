@@ -18,18 +18,18 @@
         {#each pages as p}
         <a href={p.url} style="text-decoration: none;">
             <rect
-                x={p.position.x}
+                x={p.position.x-10}
                 y={p.position.y}
-                width={p.position.width}
+                width={p.position.width+20}
                 height={p.position.height}
-                fill="rgba(255, 255, 255, 0.7)"
-                stroke="black"
-                stroke-width="2"
+                fill="rgba(255, 255, 255, 0.9)"
+                stroke="red"
+                stroke-width="5"
             />
             <text
                 x={p.position.x + p.position.width / 2}
                 y={p.position.y + p.position.height / 2}
-                fill="black"
+                fill="red"
                 font-size="16"
                 font-weight="bold"
                 text-anchor="middle"

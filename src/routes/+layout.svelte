@@ -13,6 +13,23 @@
 </script>
 
 
+{#if $page.url.pathname !== "/"}
+<nav>
+    <ul style="list-style: none; display: flex; gap: 20px; padding: 0;">
+        {#each pages as p}
+        <li>
+            <a
+                href={p.url}
+                class:current={$page.url.pathname === p.url}
+                style="text-decoration: none; color: black;"
+            >
+                {p.title}
+            </a>
+        </li>
+        {/each}
+    </ul>
+</nav>
+{/if}
 <div></div>
 
 
