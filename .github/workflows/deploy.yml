@@ -22,7 +22,7 @@ jobs:
 
       - name: Build
         env:
-          VITE_BASE: "FP_HOME"
+          VITE_BASE: "/FP_HOME"
         run: |
           npm run build
 
