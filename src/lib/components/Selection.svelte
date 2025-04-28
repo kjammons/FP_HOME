@@ -10,6 +10,14 @@
 
   const { width, height, margin } = chartDimensions;
 
+  const chartSettings = {
+  width: () => Math.min(800, window.innerWidth * 0.9),
+  height: 300,
+  margin: { top: 20, right: 20, bottom: 20, left: 20 },
+  barHeight: 25,
+  barPadding: 5
+};
+
   // Remove map view container variable.
   // We'll only use two containers for the charts.
   let svgHomeownership;
@@ -54,77 +62,91 @@
   }
 
   // --- Homeownership Pyramid Chart ---
-  function drawHomeownershipChart(feature) {
-    const leftKey = 'j_NON_WHITE OWNER RATE';
-    const rightKey = 'j_WHITE OWNER_RATE';
-    const nonWhiteVal = +feature.properties[leftKey] || 0;
-    const whiteVal = +feature.properties[rightKey] || 0;
-    const maxVal = d3.max([nonWhiteVal, whiteVal]);
+function drawHomeownershipChart(feature) {
+  const whiteKey = "j_WHITE HOMEOWNERSHIP RATE (AS OF TOTAL)";
+  const blackKey = "j_BLACK HOME OWNERSHIP RATE";
+  const asianKey = "j_ASIAN HOMEOWNERSHIP_RATE";
+  const indianKey = "j_AMERICAN INDIAN HOMEOWNERSHIP_RATE";
+  const hawaiianKey = "j_NATIVE HAWAIIAN HOMEOWNERSHIP_RATE";
+  const otherKey = "j_OTHER RACE HOMEOWNERSHIP RATE";
 
-    const innerWidth = width - margin.left - margin.right;
-    const innerHeight = height - margin.top - margin.bottom;
-    const halfWidth = innerWidth / 2;
-    const { barHeight, labelOffset } = barStyle;
-    const barY = (innerHeight - barHeight) / 2;
+  const values = [
+    { race: "White", rate: +feature.properties[whiteKey] || 0 },
+    { race: "Black", rate: +feature.properties[blackKey] || 0 },
+    { race: "Asian", rate: +feature.properties[asianKey] || 0 },
+    { race: "American Indian", rate: +feature.properties[indianKey] || 0 },
+    { race: "Native Hawaiian", rate: +feature.properties[hawaiianKey] || 0 },
+    { race: "Other", rate: +feature.properties[otherKey] || 0 }
+  ];
 
-    const xScale = d3.scaleLinear()
-      .domain([0, maxVal])
-      .range([0, halfWidth]);
+  const filteredValues = values.filter(d => d.rate > 0);
 
-    // Clear previous drawing
-    d3.select(svgHomeownership).selectAll('*').remove();
-    const g = d3.select(svgHomeownership)
-      .append('g')
-      .attr('transform', `translate(${margin.left}, ${margin.top})`);
+  const { width, height, margin, barHeight, barPadding } = chartSettings;
+const svgWidth = width();
+const svgHeight = height;
+const innerWidth = svgWidth - margin.left - margin.right;
+const innerHeight = svgHeight - margin.top - margin.bottom;
+  const halfWidth = innerWidth / 2;
 
-    const centerX = halfWidth;
-    const leftBarWidth = xScale(nonWhiteVal);
-    const rightBarWidth = xScale(whiteVal);
 
-    // Draw left bar (Non-White Homeownership)
-    g.append('rect')
-      .attr('x', centerX - leftBarWidth)
-      .attr('y', barY)
-      .attr('width', leftBarWidth)
-      .attr('height', barHeight)
-      .attr('fill', barChartColorScale(nonWhiteVal));
+  const maxVal = d3.max(filteredValues, d => d.rate);
 
-    // Draw right bar (White Homeownership)
-    g.append('rect')
-      .attr('x', centerX)
-      .attr('y', barY)
-      .attr('width', centerX + rightBarWidth)
-      .attr('height', barHeight)
-      .attr('fill', barChartColorScale(whiteVal));
+  // Clear previous drawing
+  d3.select(svgHomeownership).selectAll('*').remove();
 
-    // Draw center divider
-    g.append('line')
-      .attr('x1', centerX)
-      .attr('x2', centerX)
-      .attr('y1', 0)
-      .attr('y2', innerHeight)
-      .attr('stroke', centerLineStyle.stroke);
+  const svg = d3.select(svgHomeownership)
+    .attr("width", width)
+    .attr("height", height)
+    .attr("viewBox", `0 0 ${width} ${height}`)
+    .attr("preserveAspectRatio", "xMidYMid meet");
 
-    // Create human‑readable labels for homeownership percentages.
-    const nonWhiteLabel = `Non-White Homeownership: ${(nonWhiteVal * 100).toFixed(2)}%`;
-    const whiteLabel = `White Homeownership: ${(whiteVal * 100).toFixed(2)}%`;
-
-    g.append('text')
-      .attr('x', margin.left + 60)
-      .attr('y', innerHeight-10)
-      .attr('text-anchor', textStyle.textAnchor)
-      .attr('fill', textStyle.fill)
-      .style('font-size', textStyle.fontSize)
-      .text(nonWhiteLabel);
-
-    g.append('text')
-      .attr('x', innerWidth-margin.right -70)
-      .attr('y', innerHeight-10)
-      .attr('text-anchor', textStyle.textAnchor)
-      .attr('fill', textStyle.fill)
-      .style('font-size', textStyle.fontSize)
-      .text(whiteLabel);
+  // ✨ If no data available
+  if (filteredValues.length === 0) {
+    svg.append('text')
+      .attr('class', 'no-data-text')
+      .attr('x', width / 2)
+      .attr('y', height / 2)
+      .attr('text-anchor', 'middle')
+      .attr('fill', '#666')
+      .text('No data available');
+    return;
   }
+
+  const raceColors = {
+    "White": "#F97B72",
+    "Black": "#F2B701",
+    "Asian": "#11A579",
+    "American Indian": "#CA73C6",
+    "Native Hawaiian": "#D05D02",
+    "Other": "#3969AC"
+  };
+
+  const xScale = d3.scaleLinear()
+    .domain([0, maxVal])
+    .range([0, halfWidth]);
+
+  const g = svg.append('g')
+    .attr('transform', `translate(${margin.left}, ${margin.top})`);
+
+  g.selectAll('rect')
+    .data(filteredValues)
+    .join('rect')
+    .attr('x', 0)
+    .attr('y', (d, i) => i * (barHeight + barPadding))
+    .attr('width', d => xScale(d.rate))
+    .attr('height', barHeight)
+    .attr('fill', d => raceColors[d.race] || "#ccc");
+
+  g.selectAll('text')
+    .data(filteredValues)
+    .join('text')
+    .attr('x', d => xScale(d.rate) + 5)
+    .attr('y', (d, i) => i * (barHeight + barPadding) + barHeight / 2)
+    .attr('dy', '0.35em')
+    .attr('fill', textStyle.fill)
+    .style('font-size', textStyle.fontSize)
+    .text(d => `${d.race}: ${(d.rate * 100).toFixed(2)}%`);
+}
 
   // --- Population Pyramid Chart ---
   function drawPopulationChart(feature) {
@@ -147,24 +169,27 @@
 console.log('Population values:', values);
 
 const raceColors = {
-  "White": "#42a5f5",         // Blue
-  "Black": "#66bb6a",         // Green
-  "Asian": "#ffa726",         // Orange
-  "American Indian": "#ab47bc", // Purple
-  "Native Hawaiian": "#ef5350", // Red
-  "Other": "#8d6e63"          // Brown
+  "White": "#F97B72",         
+  "Black": "#F2B701",        
+  "Asian": "#11A579",         
+  "American Indian": "#CA73C6", 
+  "Native Hawaiian": "#D05D02", 
+  "Other": "#3969AC"          
 };
 
+const filteredValues = values.filter(d => d.pop > 0); 
     const maxVal = d3.max(values, d => d.pop);
+   
+    const width = Math.min(800, window.innerWidth * 0.9);  // responsive width
+  const height = 300;
 
-    const innerWidth = width - margin.left - margin.right;
-    const innerHeight = height - margin.top - margin.bottom;
-    const halfWidth = innerWidth / 2;
-    const { barHeight, labelOffset } = barStyle;
-    const barY = (innerHeight - barHeight) / 2;
-
-    const barPadding = 2; // ✨ Add this
-
+  const margin = { top: 20, right: 20, bottom: 20, left: 20 };
+  const innerWidth = width - margin.left - margin.right;
+  const innerHeight = height - margin.top - margin.bottom;
+  const halfWidth = innerWidth / 2;
+  
+  const barHeight = 25;  // or use your barStyle values if you want
+  const barPadding = 5; 
 
     const xScale = d3.scaleLinear()
       .domain([0, maxVal])
@@ -177,8 +202,28 @@ const raceColors = {
       .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
   
+      if (filteredValues.length === 0) {
+  d3.select(svgPopulation).selectAll('*').remove(); // Clear old
+  
+  const svg = d3.select(svgPopulation)
+    .attr("width", width)
+    .attr("height", height)
+    .attr("viewBox", `0 0 ${width} ${height}`)
+    .attr("preserveAspectRatio", "xMidYMid meet");
+
+  svg.append('text')
+    .attr('class', 'no-data-text')    // CSS class
+    .attr('x', width / 2)             // center horizontally
+    .attr('y', height / 2)            // center vertically
+    .attr('text-anchor', 'middle')    // center text anchor
+    .attr('fill', '#666')             // explicitly set fill
+    .text('No data available');
+  
+  return; // 🚨 Stop further drawing
+}
+
       g.selectAll('rect')
-  .data(values)
+  .data(filteredValues)
   .join('rect')
   .attr('x', 0)
   .attr('y', (d, i) => i * (barHeight + barPadding))
@@ -187,7 +232,7 @@ const raceColors = {
   .attr('fill', d => raceColors[d.race] || "#ccc");  // Different color
 
 g.selectAll('text')
-  .data(values)
+  .data(filteredValues)
   .join('text')
   .attr('x', d => xScale(d.pop) + 5)
   .attr('y', (d, i) => i * (barHeight + barPadding) + barHeight / 2 + 5)
@@ -219,7 +264,7 @@ g.selectAll('text')
       </div>
     </div>
       <div class="bargraph-container">
-        <h2>Homeownership Demographics for {currentFeature.properties.TOWN20} </h2>
+        <h2>Homeownership Rate by Race for {currentFeature.properties.TOWN20} </h2>
         <svg bind:this={svgHomeownership} width={width} height={height}></svg>
       </div>
   {:else}
@@ -279,4 +324,12 @@ g.selectAll('text')
     text-align: center;
     font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
   }
+
+  .no-data-text {
+    font-size: 150%;
+    font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
+    fill: #666;
+    text-anchor: middle;
+  }
+
 </style>
