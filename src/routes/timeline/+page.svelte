@@ -200,7 +200,7 @@
   display: flex;
   height: 100vh;
   overflow: hidden;
-  background-image: url('src/lib/assets/data/image background.png'); /* Path to your background image */
+  background-image: url('src/lib/assets/data/1226-454.jpg'); /* Path to your background image */
   background-size: cover;  /* Make sure the image covers the entire area */
   background-position: center center; /* Center the background image */
   background-repeat: no-repeat;  /* Prevent the image from repeating */
