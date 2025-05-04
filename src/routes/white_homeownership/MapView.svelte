@@ -25,9 +25,9 @@
     j_OWNER_RATE: 'Overall Homeownership Rate',
     'j_WHITE HOMEOWNERSHIP RATE (AS OF TOTAL)': 'White Homeownership Rate',
     'j_BLACK HOME OWNERSHIP RATE': 'Black Homeownership Rate',
-    j_ASIAN_HOMEOWNERSHIP_RATE: 'Asian Homeownership Rate',
-    j_AMERICAN_INDIAN_HOMEOWNERSHIP_RATE: 'American Indian Homeownership Rate',
-    j_NATIVE_HAWAIIAN_HOMEOWNERSHIP_RATE: 'Native Hawaiian Homeownership Rate',
+    'j_ASIAN_HOMEOWNERSHIP_RATE': 'Asian Homeownership Rate',
+    'j_AMERICAN_INDIAN_HOMEOWNERSHIP_RATE': 'American Indian Homeownership Rate',
+    'j_NATIVE_HAWAIIAN_HOMEOWNERSHIP_RATE': 'Native Hawaiian Homeownership Rate',
     'j_OTHER RACE HOMEOWNERSHIP RATE': 'Other Race Homeownership Rate'
   };
 
