@@ -17,8 +17,8 @@
 
 <style>
   div {
-    font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
-    font-size: 70%;
+    font-family: 'Courier', monospace;
+    font-size: 50%;
   }
 
   .text-box {

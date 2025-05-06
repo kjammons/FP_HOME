@@ -17,5 +17,5 @@ export function createOwnerRateScale(features) {
   const min = d3.min(values);
   const max = d3.max(values);
 
-  return d3.scaleSequential(d3.interpolate("#e3f2fd","#1565c0")).domain([min, max]);
+  return d3.scaleSequential(d3.interpolateRgb("#ffe0e0", "#990000")).domain([min, max]);
 }
