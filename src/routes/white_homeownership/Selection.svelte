@@ -119,7 +119,7 @@ const innerHeight = svgHeight - margin.top - margin.bottom;
     "Asian": "#11A579",
     "American Indian": "#CA73C6",
     "Native Hawaiian": "#D05D02",
-    "Other": "#3969AC"
+    "Other": "#7F3C8D"
   };
 
   const xScale = d3.scaleLinear()
@@ -175,7 +175,7 @@ const raceColors = {
   "Asian": "#11A579",         
   "American Indian": "#CA73C6", 
   "Native Hawaiian": "#D05D02", 
-  "Other": "#3969AC"          
+  "Other": "#7F3C8D"          
 };
 
 const filteredValues = values.filter(d => d.pop > 0); 
@@ -277,31 +277,31 @@ g.selectAll('text')
   .selection {
     margin-bottom: 20px;
     text-align: center;
-    font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
+    font-family: 'Courier', monospace;
   }
   label {
     font-size: 1rem;
     margin-right: 10px;
     font-size: 100%;
-    font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
+    font-family: 'Courier', monospace;
   }
 
   h2{
     font-size: 1rem;
     margin-right: 10px;
     font-size: 120%;
-    font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
+    font-family: 'Courier', monospace;
   }
 
   p{
     font-size: 1rem;
     margin-right: 10px;
     font-size: 150%;
-    font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
+    font-family: 'Courier', monospace;
   }
   select {
     font-size: 1rem;
-    font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
+    font-family: 'Courier', monospace;
     padding: 5px;
   }
   .combined-charts-container {
@@ -323,12 +323,12 @@ g.selectAll('text')
     padding: 10px;
     border: 1px #ccc;
     text-align: center;
-    font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
+    font-family: 'Courier', monospace;
   }
 
   .no-data-text {
     font-size: 150%;
-    font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
+    font-family: 'Courier', monospace;
     fill: #666;
     text-anchor: middle;
   }
