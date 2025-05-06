@@ -188,7 +188,7 @@
         </div>
       </div>
     {/each}
-    <a class="explore-button" href="/timeline">
+    <a class="explore-button" href="timeline">
         Take a walk through history!
     </a>
   </div>
