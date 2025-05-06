@@ -33,6 +33,8 @@
           <a
             href={hrefFor(p.url)}
             class:current={isCurrent(p.url)}
+            target={p.url.startsWith('http') ? '_blank' : undefined}
+            rel={p.url.startsWith('http') ? 'noopener noreferrer' : undefined}
             >{p.title}</a
           >
         </li>
