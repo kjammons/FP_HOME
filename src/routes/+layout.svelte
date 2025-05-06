@@ -26,6 +26,7 @@
     };
   </script>
 
+{#if $page.url.pathname !== '/'}
   <nav style="background: #faf3e0; padding: 0.5rem 1rem;">
     <ul style="list-style:none; display:flex; gap:1.5rem; margin:0; padding:0">
       {#each pages as p}
@@ -39,7 +40,7 @@
       {/each}
     </ul>
   </nav>
-
+  {/if}
   <slot />
 
   <style>
