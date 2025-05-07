@@ -4,7 +4,10 @@
   import { base } from '$app/paths';
   import * as d3 from 'd3';
   import { selectedCity, cityList, geoDataStore } from '../../stores/state.js';
-  import { createOwnerRateScale } from '$lib/utils/MapScales.js';
+  import {
+  createShareScale,
+  createDifferenceScale,
+} from '$lib/utils/MapScales.js';
   import '$lib/utils/tooltip.css';
 
   let svgEl;
@@ -27,27 +30,27 @@
 
   const raceFields = {
     'White': {
-      rate: 'j_WHITE HOMEOWNERSHIP RATE (AS OF TOTAL)',
+      diff: null,
       share: 'j_SHARE_OWNER_WHITE'
     },
     'Black': {
-      rate: 'j_BLACK HOME OWNERSHIP RATE',
+      diff: 'DIFF_BLACK_WHITE',
       share: 'j_SHARE_OWNER_BLACK'
     },
     'Asian': {
-      rate: 'j_ASIAN HOMEOWNERSHIP_RATE',
+      diff: 'DIFF_ASIAN_WHITE',
       share: 'j_SHARE_OWNER_ASIAN'
     },
     'American Indian': {
-      rate: 'j_AMERICAN INDIAN HOMEOWNERSHIP_RATE',
+      diff: 'DIFF_AMERICAN_INDIAN_WHITE',
       share: 'j_SHARE_OWNER_AMERICAN_INDIAN'
     },
     'Native Hawaiian': {
-      rate: 'j_NATIVE HAWAIIAN HOMEOWNERSHIP_RATE',
+      diff: 'DIFF_NATIVE_HAWAIIAN_WHITE',
       share: 'j_SHARE_OWNER_NATIVE_HAWAIIAN'
     },
     'Other': {
-      rate: 'j_OTHER RACE HOMEOWNERSHIP RATE',
+      diff: 'DIFF_OTHER_WHITE',
       share: 'j_SHARE_OWNER_OTHER'
     }
   };
@@ -70,18 +73,20 @@
 
   // };
 
-  $: selectedRateType = showShare ? raceFields[selectedRace].share : raceFields[selectedRace].rate;
-  $: tooltipLabel = showShare ? `Share of ${selectedRace} Homeowners` : `${selectedRace} Homeownership Rate`;
+  $: selectedRateType = showShare ? raceFields[selectedRace].share : raceFields[selectedRace].diff;
+  $: tooltipLabel = showShare ? `Share of ${selectedRace} Homeowners` : `Difference: ${selectedRace} vs. White Homeownership Rate`;
 
   onMount(async () => {
     // 1️⃣ Fetch the GeoJSON from your static folder
     try {
       const res = await fetch(`${base}/data/SB_ACSDATA_2.geojson`);
       geoData = await res.json();
-      
+
       geoData.features.forEach(f => {
   const props = f.properties;
   const totalOwners = +props['j_OWNER HOUSING UNITS']; // total owner-occupied housing units
+  const whiteRate = +props['j_WHITE HOMEOWNERSHIP RATE'];
+
 
   // Add a derived value only if data is valid
   props['j_SHARE_OWNER_WHITE'] =
@@ -96,6 +101,13 @@
     totalOwners ? +props['j_TOTAL OWNERS_NATIVE HAWAIIAN'] / totalOwners : NaN;
   props['j_SHARE_OWNER_OTHER'] =
     totalOwners ? +props['j_TOTAL OWNERS_some other race'] / totalOwners : NaN;
+
+    // 🔁 Derived rate difference with White
+    props['DIFF_BLACK_WHITE'] = +props['j_BLACK HOME OWNERSHIP RATE'] - whiteRate;
+      props['DIFF_ASIAN_WHITE'] = +props['j_ASIAN HOMEOWNERSHIP_RATE'] - whiteRate;
+      props['DIFF_AMERICAN_INDIAN_WHITE'] = +props['j_AMERICAN INDIAN HOMEOWNERSHIP_RATE'] - whiteRate;
+      props['DIFF_NATIVE_HAWAIIAN_WHITE'] = +props['j_NATIVE HAWAIIAN HOMEOWNERSHIP_RATE'] - whiteRate;
+      props['DIFF_OTHER_WHITE'] = +props['j_OTHER RACE HOMEOWNERSHIP RATE'] - whiteRate;
 });
 
 
@@ -108,16 +120,33 @@
     const cities = Array.from(new Set(geoData.features.map(f => f.properties.TOWN20)));
     cityList.set(cities);
 
-    // 3️⃣ Build the initial color scale & render
-    colorScale = createOwnerRateScale(geoData.features, selectedRateType);
-    renderMap();
-  });
+  //   // 3️⃣ Build the initial color scale & render
+  //   colorScale = createOwnerRateScale(geoData.features, selectedRateType);
+  //   renderMap();
+  // });
 
-  // re-render on rate type change
-  $: if (geoData && selectedRateType) {
-    colorScale = createOwnerRateScale(geoData.features, selectedRateType);
-    renderMap();
+  // // re-render on rate type change
+  // $: if (geoData && selectedRateType) {
+  //   colorScale = createOwnerRateScale(geoData.features, selectedRateType);
+  //   renderMap();
+  // }
+
+  if (showShare) {
+    colorScale = createShareScale(geoData.features, selectedRateType);
+  } else {
+    colorScale = createDifferenceScale(geoData.features, selectedRateType);
   }
+  renderMap();
+});
+
+$: if (geoData && selectedRateType) {
+  if (showShare) {
+    colorScale = createShareScale(geoData.features, selectedRateType);
+  } else {
+    colorScale = createDifferenceScale(geoData.features, selectedRateType);
+  }
+  renderMap();
+}
 
   // re-render on city selection change
   $: if ($selectedCity && geoData) {
@@ -172,14 +201,31 @@
         )
       .on('mouseover', (evt, d) => {
         const city = d.properties.TOWN20;
-        const pct = +(d.properties[selectedRateType] * 100).toFixed(1);
-        d3.select(tooltipEl)
-          .style('opacity', 1)
-          .html(
-  `<strong>${city}</strong><br/>${tooltipLabel}: ${isNaN(pct) ? 'N/A' : pct + '%'}`
-)
-          .style('left', evt.pageX + 10 + 'px')
-          .style('top', evt.pageY + 10 + 'px');
+const val = +d.properties[selectedRateType];
+let content = `<strong>${city}</strong><br/>`;
+
+if (showShare) {
+  // Racial share case
+  content += `Share of ${selectedRace} homeowners: ${isNaN(val) ? 'N/A' : (val * 100).toFixed(1) + '%'}`;
+} else {
+  // Difference-from-white case
+  if (isNaN(val)) {
+    content += 'Data unavailable.';
+  } else if (val > 0) {
+    content += `${selectedRace} homeownership is ${val.toFixed(1)} percentage points higher than White.`;
+  } else if (val < 0) {
+    content += `White homeownership is ${Math.abs(val).toFixed(1)} percentage points higher than ${selectedRace}.`;
+  } else {
+    content += `${selectedRace} and White homeownership rates are equal.`;
+  }
+}
+
+d3.select(tooltipEl)
+  .style('opacity', 1)
+  .html(content)
+  .style('left', evt.pageX + 10 + 'px')
+  .style('top', evt.pageY + 10 + 'px');
+
         // fade others
         svg
           .selectAll('path')
@@ -259,7 +305,7 @@
     <input type="checkbox" bind:checked={showShare} />
     <span class="slider"></span>
   </label>
-  <span class="toggle-label">{showShare ? 'Racial share of all homeowners ' : 'Homeownership within each racial group'}</span>
+  <span class="toggle-label">{showShare ? 'Racial share among total homeowners ' : 'Difference from White Homeownership Rate'}</span>
 </div>
 
 <svg bind:this={svgEl}></svg>
