@@ -10,7 +10,7 @@ let pages=[
   { url: 'reading_list',   title: 'READING LIST', position:{x:680, y:240, width:120, height:30}},
   { url: 'https://dusp.mit.edu/projects/massachusetts-covenants-project#:~:text=This%20research%20project%20is%20systematically,the%20United%20States%3A%20restrictive%20covenants.',
         title: 'GET INVOLVED', position:{x:780, y:520, width:100, height:30} },
-  {url: 'Start Here',               title: 'START\nHERE', position:{x:550, y:360, width:150, height:50, rotate:90}, shape:'circle'},
+  {url: 'start_here',               title: 'START\nHERE', position:{x:550, y:360, width:150, height:50, rotate:90}, shape:'circle'},
 ]
 </script>
 
