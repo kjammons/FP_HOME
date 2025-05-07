@@ -35,5 +35,6 @@ export function createDifferenceScale(features, diffField) {
   return d3.scaleDiverging()
     .domain([DIFF_MIN, 0, DIFF_MAX])
     .interpolator(d3.interpolateRdBu) // Red–White–Blue
+    
     .clamp(true);
 }
