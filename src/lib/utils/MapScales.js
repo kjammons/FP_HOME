@@ -2,20 +2,39 @@
 import * as d3 from 'd3';
 
 /**
- * Creates and returns a D3 sequential color scale for owner rate.
- * The function extracts j_OWNER_RATE from the provided features,
- * computes the minimum and maximum values, and sets those as the domain.
+ * Creates a sequential red color scale for racial share maps.
+ * Higher share = deeper red.
  *
  * @param {Array} features - Array of GeoJSON feature objects.
- * @returns {Function} A D3 scaleSequential function using d3.interpolateBlues.
+ * @param {string} shareField - The property name (e.g., 'j_SHARE_OWNER_BLACK').
+ * @returns {Function} D3 scaleSequential using d3.interpolateReds.
  */
-export function createOwnerRateScale(features) {
-  const values = features
-    .map(f => +f.properties.j_OWNER_RATE)
-    .filter(v => !isNaN(v));
+export function createShareScale(features, shareField) {
+  // Use hardcoded min and max values for the share scale
+  const SHARE_MIN = 0; 
+  const SHARE_MAX = 1;  
 
-  const min = d3.min(values);
-  const max = d3.max(values);
+  return d3.scaleSequential()
+    .domain([SHARE_MIN, SHARE_MAX])
+    .interpolator(d3.interpolateReds);
+}
 
-  return d3.scaleSequential(d3.interpolateRgb("#ffe0e0", "#990000")).domain([min, max]);
+/**
+ * Creates a diverging color scale for racial rate differences from White.
+ * Red = Non-white advantage, White = parity, Blue = White advantage.
+ *
+ * @param {Array} features - Array of GeoJSON feature objects.
+ * @param {string} diffField - The property name (e.g., 'DIFF_BLACK_WHITE').
+ * @returns {Function} D3 scaleDiverging using d3.interpolateRdBu.
+ */
+export function createDifferenceScale(features, diffField) {
+  // Use hardcoded min and max values for the difference scale
+  const DIFF_MIN = -1;  
+  const DIFF_MAX = 1;   
+
+  return d3.scaleDiverging()
+    .domain([DIFF_MIN, 0, DIFF_MAX])
+    .interpolator(d3.interpolateRdBu) // Red–White–Blue
+    
+    .clamp(true);
 }

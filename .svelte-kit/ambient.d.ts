@@ -67,6 +67,7 @@ declare module '$env/static/private' {
 	export const npm_package_name: string;
 	export const LOCAL_GIT_DIRECTORY: string;
 	export const LANG: string;
+	export const LOCAL_GIT_DIRECTORY: string;
 	export const npm_config_npm_version: string;
 	export const XPC_FLAGS: string;
 	export const VSCODE_GIT_ASKPASS_EXTRA_ARGS: string;
@@ -74,8 +75,10 @@ declare module '$env/static/private' {
 	export const npm_package_version: string;
 	export const _CE_M: string;
 	export const XPC_SERVICE_NAME: string;
-	export const SHLVL: string;
+	export const VSCODE_INJECTION: string;
+
 	export const HOME: string;
+	export const SHLVL: string;
 	export const VSCODE_GIT_ASKPASS_MAIN: string;
 	export const HOMEBREW_PREFIX: string;
 	export const npm_config_cache: string;
@@ -166,6 +169,7 @@ declare module '$env/dynamic/private' {
 		npm_package_name: string;
 		LOCAL_GIT_DIRECTORY: string;
 		LANG: string;
+		LOCAL_GIT_DIRECTORY: string;
 		npm_config_npm_version: string;
 		XPC_FLAGS: string;
 		VSCODE_GIT_ASKPASS_EXTRA_ARGS: string;
@@ -173,8 +177,11 @@ declare module '$env/dynamic/private' {
 		npm_package_version: string;
 		_CE_M: string;
 		XPC_SERVICE_NAME: string;
-		SHLVL: string;
+
+		VSCODE_INJECTION: string;
+
 		HOME: string;
+		SHLVL: string;
 		VSCODE_GIT_ASKPASS_MAIN: string;
 		HOMEBREW_PREFIX: string;
 		npm_config_cache: string;
