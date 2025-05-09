@@ -25,21 +25,21 @@
   let svgPopulation;
   let geoData;
 
-  // On mount, load GeoJSON data, update the shared store, and populate the dropdown.
-  onMount(async () => {
-    try {
-      const data = await d3.json(`${base}/data/SB_ACSDATA_2.geojson`);
-      geoDataStore.set(data);
-      geoData = data;
+  // // On mount, load GeoJSON data, update the shared store, and populate the dropdown.
+  // onMount(async () => {
+  //   try {
+  //     const data = await d3.json(`${base}/data/SB_ACSDATA_2.geojson`);
+  //     geoDataStore.set(data);
+  //     geoData = data;
 
-      // Extract unique city names, sorted alphabetically.
-      const cities = data.features.map(f => f.properties.TOWN20);
-      const uniqueCities = [...new Set(cities)].sort((a, b) => a.localeCompare(b));
-      cityList.set(uniqueCities);
-    } catch (error) {
-      console.error('Error loading GeoJSON:', error);
-    }
-  });
+  //     // Extract unique city names, sorted alphabetically.
+  //     const cities = data.features.map(f => f.properties.TOWN20);
+  //     const uniqueCities = [...new Set(cities)].sort((a, b) => a.localeCompare(b));
+  //     cityList.set(uniqueCities);
+  //   } catch (error) {
+  //     console.error('Error loading GeoJSON:', error);
+  //   }
+  // });
 
   // Reactive: create the bar chart color scale (for the homeownership pyramid)
   $: barChartColorScale =
@@ -64,12 +64,19 @@
 
   // --- Homeownership Pyramid Chart ---
 function drawHomeownershipChart(feature) {
-  const whiteKey = "j_WHITE HOMEOWNERSHIP RATE (AS OF TOTAL)";
-  const blackKey = "j_BLACK HOME OWNERSHIP RATE";
-  const asianKey = "j_ASIAN HOMEOWNERSHIP_RATE";
-  const indianKey = "j_AMERICAN INDIAN HOMEOWNERSHIP_RATE";
-  const hawaiianKey = "j_NATIVE HAWAIIAN HOMEOWNERSHIP_RATE";
-  const otherKey = "j_OTHER RACE HOMEOWNERSHIP RATE";
+  // const whiteKey = "j_WHITE HOMEOWNERSHIP RATE";
+  // const blackKey = "j_BLACK HOME OWNERSHIP RATE";
+  // const asianKey = "j_ASIAN HOMEOWNERSHIP_RATE";
+  // const indianKey = "j_AMERICAN INDIAN HOMEOWNERSHIP_RATE";
+  // const hawaiianKey = "j_NATIVE HAWAIIAN HOMEOWNERSHIP_RATE";
+  // const otherKey = "j_OTHER RACE HOMEOWNERSHIP RATE";
+
+const whiteKey = "j_SHARE_OWNER_WHITE";
+const blackKey = "j_SHARE_OWNER_BLACK";
+const asianKey = "j_SHARE_OWNER_ASIAN";
+const indianKey = "j_SHARE_OWNER_AMERICAN_INDIAN";
+const hawaiianKey = "j_SHARE_OWNER_NATIVE_HAWAIIAN";
+const otherKey = "j_SHARE_OWNER_OTHER";
 
   const values = [
     { race: "White", rate: +feature.properties[whiteKey] || 0 },
@@ -123,7 +130,7 @@ const innerHeight = svgHeight - margin.top - margin.bottom;
   };
 
   const xScale = d3.scaleLinear()
-    .domain([0, maxVal])
+    .domain([0, 1])
     .range([0, halfWidth]);
 
   const g = svg.append('g')
@@ -193,7 +200,7 @@ const filteredValues = values.filter(d => d.pop > 0);
   const barPadding = 5; 
 
     const xScale = d3.scaleLinear()
-      .domain([0, maxVal])
+      .domain([0, 1])
       .range([0, halfWidth]);
 
     // Clear previous drawing
@@ -265,7 +272,7 @@ g.selectAll('text')
       </div>
     </div>
       <div class="bargraph-container">
-        <h2>Homeownership Rate by Race for {currentFeature.properties.TOWN20} </h2>
+        <h2>Homeownership Share among for {currentFeature.properties.TOWN20} </h2>
         <svg bind:this={svgHomeownership} width={width} height={height}></svg>
       </div>
   {:else}

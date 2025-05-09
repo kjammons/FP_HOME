@@ -19,7 +19,7 @@
   const width = 800;
   const height = 600;
 
-  let selectedRace = 'White';
+  let selectedRace = 'Black';
   let showShare = false;
 
   // which field we color by
@@ -55,24 +55,6 @@
     }
   };
 
-  // const rateTypeLabels = {
-  //   'j_OWNER_RATE': 'Overall Homeownership Rate',
-  //   'j_WHITE HOMEOWNERSHIP RATE (AS OF TOTAL)': 'White Homeownership Rate',
-  //   'j_BLACK HOME OWNERSHIP RATE': 'Black Homeownership Rate',
-  //   'j_ASIAN HOMEOWNERSHIP_RATE': 'Asian Homeownership Rate',
-  //   'j_AMERICAN INDIAN HOMEOWNERSHIP_RATE': 'American Indian Homeownership Rate',
-  //   'j_NATIVE HAWAIIAN HOMEOWNERSHIP_RATE': 'Native Hawaiian Homeownership Rate',
-  //   'j_OTHER RACE HOMEOWNERSHIP RATE': 'Other Race Homeownership Rate',
-
-  //   'j_SHARE_OWNER_WHITE': 'Share of White Homeowners among All',
-  // 'j_SHARE_OWNER_BLACK': 'Share of Black Homeowners among All',
-  // 'j_SHARE_OWNER_ASIAN': 'Share of Asian Homeowners among All',
-  // 'j_SHARE_OWNER_AMERICAN_INDIAN': 'Share of American Indian Homeowners among All',
-  // 'j_SHARE_OWNER_NATIVE_HAWAIIAN': 'Share of Native Hawaiian Homeowners among All',
-  // 'j_SHARE_OWNER_OTHER': 'Share of Other Race Homeowners among All'
-
-  // };
-
   $: selectedRateType = showShare ? raceFields[selectedRace].share : raceFields[selectedRace].diff;
   $: tooltipLabel = showShare ? `Share of ${selectedRace} Homeowners` : `Difference: ${selectedRace} vs. White Homeownership Rate`;
 
@@ -90,7 +72,7 @@
 
   // Add a derived value only if data is valid
   props['j_SHARE_OWNER_WHITE'] =
-    totalOwners ? +props['j_TOTAL OWNERS_WHITE'] / totalOwners : NaN;
+    totalOwners ? +props['j_WHITE OWNER HOUSING UNITS'] / totalOwners : NaN;
   props['j_SHARE_OWNER_BLACK'] =
     totalOwners ? +props['j_TOTAL OWNERS_BLACK'] / totalOwners : NaN;
   props['j_SHARE_OWNER_ASIAN'] =
@@ -182,7 +164,12 @@ $: if (geoData && selectedRateType) {
           console.log(selectedRateType, v); 
           return isNaN(v) ? '#ccc' : colorScale(v);
         })
-        .attr('stroke', '#fafafa')
+        .attr('stroke', d =>
+      selectedFeature && d.properties.TOWN20 === selectedFeature.properties.TOWN20
+        ? 'red'
+        : '#fafafa'
+    )
+
         .attr(
           'stroke-width',
           d =>
@@ -209,12 +196,12 @@ if (showShare) {
   content += `Share of ${selectedRace} homeowners: ${isNaN(val) ? 'N/A' : (val * 100).toFixed(1) + '%'}`;
 } else {
   // Difference-from-white case
-  if (isNaN(val)) {
+  if (val === null || val === undefined || isNaN(val)) {
     content += 'Data unavailable.';
   } else if (val > 0) {
-    content += `${selectedRace} homeownership is ${val.toFixed(1)} percentage points higher than White.`;
+    content += `${selectedRace} homeownership rate is ${(val*100).toFixed(1)} percentage points higher than White.`;
   } else if (val < 0) {
-    content += `White homeownership is ${Math.abs(val).toFixed(1)} percentage points higher than ${selectedRace}.`;
+    content += `White homeownership rate is ${(Math.abs(val)*100).toFixed(1)} percentage points higher than ${selectedRace}.`;
   } else {
     content += `${selectedRace} and White homeownership rates are equal.`;
   }
