@@ -68,6 +68,7 @@
   const props = f.properties;
   const totalOwners = +props['j_OWNER HOUSING UNITS']; // total owner-occupied housing units
   const whiteRate = +props['j_WHITE HOMEOWNERSHIP RATE'];
+  const safe = v => isFinite(v) && v !== 0;
 
 
   // Add a derived value only if data is valid
@@ -85,11 +86,14 @@
     totalOwners ? +props['j_TOTAL OWNERS_some other race'] / totalOwners : NaN;
 
     // 🔁 Derived rate difference with White
-    props['DIFF_BLACK_WHITE'] = +props['j_BLACK HOME OWNERSHIP RATE'] - whiteRate;
-      props['DIFF_ASIAN_WHITE'] = +props['j_ASIAN HOMEOWNERSHIP_RATE'] - whiteRate;
-      props['DIFF_AMERICAN_INDIAN_WHITE'] = +props['j_AMERICAN INDIAN HOMEOWNERSHIP_RATE'] - whiteRate;
-      props['DIFF_NATIVE_HAWAIIAN_WHITE'] = +props['j_NATIVE HAWAIIAN HOMEOWNERSHIP_RATE'] - whiteRate;
-      props['DIFF_OTHER_WHITE'] = +props['j_OTHER RACE HOMEOWNERSHIP RATE'] - whiteRate;
+    const raceRate = (key) =>
+    safe(+props[key]) && safe(whiteRate) ? +props[key] - whiteRate : NaN;
+
+  props['DIFF_BLACK_WHITE'] = raceRate('j_BLACK HOME OWNERSHIP RATE');
+  props['DIFF_ASIAN_WHITE'] = raceRate('j_ASIAN HOMEOWNERSHIP_RATE');
+  props['DIFF_AMERICAN_INDIAN_WHITE'] = raceRate('j_AMERICAN INDIAN HOMEOWNERSHIP_RATE');
+  props['DIFF_NATIVE_HAWAIIAN_WHITE'] = raceRate('j_NATIVE HAWAIIAN HOMEOWNERSHIP_RATE');
+  props['DIFF_OTHER_WHITE'] = raceRate('j_OTHER RACE HOMEOWNERSHIP RATE');
 });
 
 
@@ -131,12 +135,44 @@ $: if (geoData && selectedRateType) {
 }
 
   // re-render on city selection change
-  $: if ($selectedCity && geoData) {
-    selectedFeature = geoData.features.find(
-      f => f.properties.TOWN20.trim() === $selectedCity.trim()
+  $: if ($selectedCity && geoData && svgEl && tooltipEl) {
+  selectedFeature = geoData.features.find(
+    f => f.properties.TOWN20.trim() === $selectedCity.trim()
+  );
+
+  if (selectedFeature) {
+    const pathGen = d3.geoPath().projection(
+      d3.geoMercator().fitSize([width, height], geoData)
     );
-    renderMap();
+
+    const [x, y] = pathGen.centroid(selectedFeature);
+    const val = +selectedFeature.properties[selectedRateType];
+
+    let content = `<strong>${selectedFeature.properties.TOWN20}</strong><br/>`;
+
+    if (showShare) {
+      content += `Share of ${selectedRace} homeowners: ${isNaN(val) ? 'N/A' : (val * 100).toFixed(1) + '%'}`;
+    } else {
+      if (isNaN(val)) {
+        content += 'Data unavailable or selected race has 0 homeownership in this city.';
+      } else if (val > 0) {
+        content += `${selectedRace} homeownership rate is ${(val * 100).toFixed(1)} percentage points higher than White.`;
+      } else if (val < 0) {
+        content += `White homeownership rate is ${(Math.abs(val) * 100).toFixed(1)} percentage points higher than ${selectedRace}.`;
+      } else {
+        content += `${selectedRace} and White homeownership rates are equal.`;
+      }
+    }
+
+    d3.select(tooltipEl)
+      .style('opacity', 1)
+      .html(content)
+      .style('left', `${svgEl.getBoundingClientRect().left + x + 10}px`)
+      .style('top', `${svgEl.getBoundingClientRect().top + y - 30}px`);
   }
+
+  renderMap();
+}
 
   function renderMap() {
     if (!geoData || !svgEl) return;
@@ -149,8 +185,8 @@ $: if (geoData && selectedRateType) {
 
     const svg = d3
       .select(svgEl)
-      .attr('width', width)
-      .attr('height', height)
+      .attr('viewBox', `0 0 ${width} ${height}`)
+      .attr('preserveAspectRatio', 'xMidYMid meet')
       .html(''); // clear
 
     // draw each tract
@@ -162,7 +198,7 @@ $: if (geoData && selectedRateType) {
         .attr('fill', d => {
           const v = +d.properties[selectedRateType];
           console.log(selectedRateType, v); 
-          return isNaN(v) ? '#ccc' : colorScale(v);
+          return isNaN(v) ?  'rgba(200, 200, 200, 0.4)' : colorScale(v);
         })
         .attr('stroke', d =>
       selectedFeature && d.properties.TOWN20 === selectedFeature.properties.TOWN20
@@ -196,8 +232,8 @@ if (showShare) {
   content += `Share of ${selectedRace} homeowners: ${isNaN(val) ? 'N/A' : (val * 100).toFixed(1) + '%'}`;
 } else {
   // Difference-from-white case
-  if (val === null || val === undefined || isNaN(val)) {
-    content += 'Data unavailable.';
+  if (!isFinite(val) || val === 0) {
+    content += `Data unavailable or there is no ${selectedRace} homeownership in this city.`;
   } else if (val > 0) {
     content += `${selectedRace} homeownership rate is ${(val*100).toFixed(1)} percentage points higher than White.`;
   } else if (val < 0) {
@@ -304,10 +340,10 @@ d3.select(tooltipEl)
 
 <style>
   svg {
-    display: block;
     margin: auto;
-    width: 800px;
-    height: 600px;
+    width: 100%;
+  height: auto;
+  display: block;
     overflow: visible;
   }
 
