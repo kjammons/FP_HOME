@@ -8,6 +8,8 @@ import mapPreview from '$lib/assets/images/map.png';
 
 const backgroundUrl = `${base}/data/1226-454.jpg`;  // <-- FIX here
 
+let showLanding = true;
+
   // decades
   const years = [1920,1930,1940,1950,1960,1970,1980,1990,2000,2010,2020];
   let currentIndex = 0;
@@ -111,7 +113,7 @@ const backgroundUrl = `${base}/data/1226-454.jpg`;  // <-- FIX here
   :global(body) {
     margin: 0;
     padding: 0;
-    font-family: Courier;
+    font-family: raleway;
     color: #333;
   }
 
@@ -170,14 +172,14 @@ const backgroundUrl = `${base}/data/1226-454.jpg`;  // <-- FIX here
     font-variant: small-caps;
     font-size: 2rem;
     font-size: 120%;
-    font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
+    font-family: raleway;
     color: #fff;
   }
 
   .description p {
     margin: 1rem 0 0 0;
     font-size: 120%;
-    font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
+    font-family: raleway;
     color: #fff;
   }
 
@@ -215,7 +217,68 @@ const backgroundUrl = `${base}/data/1226-454.jpg`;  // <-- FIX here
     background-position: center center;
     background-repeat: no-repeat;
   }
+
+  .landing {
+  position: fixed;
+  inset: 0;
+  background: url('images/Middlesex map.jpg') no-repeat center center;
+  background-size: cover;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.landing-content {
+  text-align: center;
+  background: rgba(0,0,0,0.7);
+  padding: 2rem;
+  border-radius: 8px;
+  color: white;
+  max-width: 800px;
+}
+
+.landing-content h1 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  font-family: raleway;
+}
+
+.landing-content p {
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+  font-family: raleway;
+}
+
+.landing-content button {
+  background:red;
+  color: #333;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: raleway;
+  font-size: 200%;
+}
+
+.landing-content button:hover {
+  background: red;
+}
+
+
 </style>
+
+{#if showLanding}
+  <div class="landing">
+    <div class="landing-content">
+      <h1>History of Homeownership in Middlesex County</h1>
+      <p>Understanding that restrictive covenants have historically played an exclusionary role in who can access homeownership in Middlesex County, let’s take a look together at how racial demographics and homeownership have evolved over time! </p>
+      <p>Please note: U.S. Census Bureau designations of race, ethnicity, and national origin change from one decade to the next, reflecting evolving cultural, political, and societal practices. These changes are reflected in the following visualizations.</p>
+      <button on:click={() => showLanding = false}><strong>Enter</strong></button>
+    </div>
+  </div>
+{:else}
 
 <div class="wrapper" style="background-image: url('{backgroundUrl}')">
   <aside class="sidebar">
@@ -223,15 +286,8 @@ const backgroundUrl = `${base}/data/1226-454.jpg`;  // <-- FIX here
     <HomeownBar year={selectedYear} />
   </aside>
 
+
   <main class="timeline">
-    <section class="intro">
-      <div class="description">
-        <h2>Introduction</h2>
-        <p>Let’s take a look at how racial demographics and homeownership by race has evolved overtime in Middlesex County! <br><br>
-          *Note how the category names have changed from one decade to the next in a reflection of past and current politics, science and public attitudes. 
-          </p>
-      </div>
-    </section>
 
     {#each years as yr, i}
       <section use:collect={i} class:active={i === currentIndex}>
@@ -253,5 +309,6 @@ const backgroundUrl = `${base}/data/1226-454.jpg`;  // <-- FIX here
         </div>
       </section>
     {/each}
-  </main>
 </div>
+
+{/if}
