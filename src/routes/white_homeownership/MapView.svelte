@@ -420,6 +420,7 @@ d3.select(tooltipEl)
     text-align: center;
     margin-top: 0.5rem;
   }
+
 h1, h2, p, label, select, option, toggle-label {
   color: #fff;
   background-color: #000;

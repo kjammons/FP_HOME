@@ -56,8 +56,6 @@
       line-height: 1.6;
       margin: 0;
       padding: 2rem;
-      background-color: #f9f9f9;
-      color: #333;
     }
   
     .covenants-content h2 {

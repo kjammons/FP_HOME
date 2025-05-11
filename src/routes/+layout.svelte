@@ -63,6 +63,13 @@
       font-weight: bold;
       border-bottom: 2px solid #333;
     }
+
+    :global(body) {
+      background-color: #000;
+      color: #fff;
+      margin: 0;
+      padding: 0;
+    }
     .route-loader {
     position: fixed;
     top: 0;
