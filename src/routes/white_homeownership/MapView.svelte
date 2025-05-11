@@ -309,6 +309,7 @@ d3.select(tooltipEl)
     .attr('x', (d, i) => i * rectWidth)
     .attr('y', height + 12)
     .attr('font-size', '10px')
+    .style('fill', '#fff')
     .text(d => (d * 100).toFixed(0) + '%');
 }
 
@@ -397,6 +398,8 @@ d3.select(tooltipEl)
 
   .toggle-label {
     font-size: 0.9rem;
+    color: white;
+
   }
 
   .tooltip {
@@ -417,4 +420,15 @@ d3.select(tooltipEl)
     text-align: center;
     margin-top: 0.5rem;
   }
+  :global(body) {
+  background-color: #000;
+  color: #fff;
+  margin: 0;
+  padding: 0;
+}
+h1, h2, p, label, select, option, toggle-label {
+  color: #fff;
+  background-color: #000;
+}
+
 </style>

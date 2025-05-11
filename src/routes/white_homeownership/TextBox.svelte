@@ -1,4 +1,4 @@
-<script>
+<!-- <script>
   export let text = `
     This project is inspired by and developed in accordance with the long-term goals of the 
     <a href="https://dusp.mit.edu/projects/massachusetts-covenants-project" target="_blank" rel="noopener noreferrer">
@@ -36,4 +36,4 @@
   .text-box p {
     margin-bottom: 1.5em;
   }
-</style>
+</style> -->
