@@ -5,14 +5,14 @@
 
 
 let pages=[
-  {url: '',               title: 'You are here', position:{x:200, y:250, width:60, height:30}},
-  { url: 'covenants',      title: 'What are Restrictive Covenants?', position:{x:340, y:260, width:180, height:30}},
-  { url: 'timeline',       title: 'Tracking Homeownership Over Time', position:{x:130, y:460, width:190, height:30}},
+  {url: '',               title: 'You\u00A0are here!', position:{x:200, y:250, width:60, height:30}},
+  { url: 'covenants',      title: 'What\u00A0are Restrictive Covenants?', position:{x:340, y:260, width:180, height:30}},
+  { url: 'timeline',       title:'Tracking Homeownership Over\u00A0Time' , position:{x:130, y:460, width:190, height:30}},
   { url: 'white_homeownership', title: 'Mapping Contemporary Homeownership', position:{x:550, y:470, width:200, height:30} },
   { url: 'reading_list',   title: 'Reading List', position:{x:740, y:240, width:120, height:30}},
   { url: 'https://dusp.mit.edu/projects/massachusetts-covenants-project#:~:text=This%20research%20project%20is%20systematically,the%20United%20States%3A%20restrictive%20covenants.',
-        title: 'Get Involved', position:{x:780, y:520, width:100, height:30} },
-  {url: 'start_here',               title: 'START\nHERE', position:{x:550, y:360, width:150, height:50, rotate:90}, shape:'circle'},
+        title: 'Get Involved', position:{x:850, y:520, width:100, height:30} },
+  {url: 'start_here',               title: 'START\nHERE', position:{x:500, y:360, width:150, height:50, rotate:90}, shape:'circle'},
 ]
 
 let boxes = [];
@@ -68,7 +68,7 @@ let boxes = [];
       dominant-baseline="middle"
       font-family="Courier"
     >
-      {#each p.title.split('\\n') as line, j}
+      {#each p.title.split('\n') as line, j}
         <tspan x={p.position.x} dy={j === 0 ? '-0.6em' : '1.2em'}>{line}</tspan>
       {/each}
     </text>
@@ -82,7 +82,7 @@ let boxes = [];
         fill="#A91B0D"
         stroke="white"
         stroke-width="1"
-        rx="4"
+        rx="0"
       />
     {/if}
 
