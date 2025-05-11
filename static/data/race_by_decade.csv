@@ -13,7 +13,7 @@ YEAR,category,value
 1920,Black,9953
 1930,Black,10042
 1940,Black,9183
-1950,None-White,10587
+1950,Non-White,10587
 1960,Black,13066
 1970,Black,16265
 1980,Black,25358
@@ -64,7 +64,7 @@ YEAR,category,value
 1990,Native Hawaiian and Other Pacific Islander,
 2000,Native Hawaiian and Other Pacific Islander,540
 2010,Native Hawaiian and Other Pacific Islander,487
-2020,TwNative Hawaiian and Other Pacific Islander,444
+2020,Native Hawaiian and Other Pacific Islander,444
 1920,Other Race,412
 1930,Other Race,0
 1940,Other Race,421
