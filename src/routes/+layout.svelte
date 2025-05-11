@@ -1,7 +1,7 @@
 <script>
     import { page } from '$app/stores';
     import { base } from '$app/paths';
-  
+
     const pages = [
       { url: '',               title: 'Home' },
       { url: 'covenants',      title: 'Covenants' },
@@ -13,11 +13,11 @@
         title: 'Get Involved'
       }
     ];
-  
+
     // If it's an absolute URL, leave it.  Otherwise prefix with base + "/"
     const hrefFor = (u) =>
       u.startsWith('http') ? u : `${base}/${u}`.replace(/\/{2,}/, '/');
-  
+
     // for matching current path
     const isCurrent = (u) => {
       // Home has url="" → path should be "/"
@@ -25,7 +25,8 @@
       return $page.url.pathname === path;
     };
   </script>
-  
+
+{#if $page.url.pathname !== '/'}
   <nav style="background: #faf3e0; padding: 0.5rem 1rem;">
     <ul style="list-style:none; display:flex; gap:1.5rem; margin:0; padding:0">
       {#each pages as p}
@@ -41,9 +42,9 @@
       {/each}
     </ul>
   </nav>
-  
+  {/if}
   <slot />
-  
+
   <style>
     a {
       text-decoration: none;
@@ -55,4 +56,3 @@
       border-bottom: 2px solid #333;
     }
   </style>
-  
