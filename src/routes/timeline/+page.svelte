@@ -143,6 +143,7 @@ let finalSummaryVisible = false;
   <div class="wrapper" style="background-image: url('{backgroundUrl}')">
     <aside class="sidebar">
       <RaceBarChart year={selectedYear} />
+      <div style="margin-top: 2rem;">
       <HomeownBar year={selectedYear} />
     </aside>
 

@@ -76,6 +76,7 @@
       'White': '#F97B72',
       'Black': '#F2B701',
       'Black or African American': '#F2B701',
+      'Non-White':'#F2B701',
       'Other Race': '#3969AC',
       'Indian, Chinese, Japanese or Other Race': '#11A579',
       'Indian, Chinese, Japanese or Filipino':'#11A579',
@@ -85,7 +86,7 @@
       'American Indian and Alaska Native': '#CA73C6',
       'American Indian ': '#CA73C6',
       'Two or more races ': '#7F3C8D',
-      'Native Hawaiian and Other Pacific Islander': '#D05D02'
+      'Native Hawaiian and Other Pacific Islander': '#D05D02',
     };
 
     const g = svg.append('g')
@@ -116,7 +117,7 @@
   .style('color', '#fff')
   .style('padding', '10px 15px')  // Increased padding for better readability
   .style('border-radius', '8px')  // Rounded corners
-  .style('font-size', '14px')     // Larger font size for better readability
+  .style('font-size', '13px')     // Larger font size for better readability
   .style('font-family', 'Helvetica')  // Modern font family
   .style('box-shadow', '0 4px 6px rgba(0, 0, 0, 0.2)')  // Subtle shadow
   .style('transition', 'opacity 0.2s ease')  // Smooth opacity transition for fade-in/out
@@ -158,7 +159,7 @@
       .selectAll('text')
         .attr('transform', 'rotate(-40)')
         .style('text-anchor', 'end')
-        .style('font-size', '12px') // Set font size for x-axis labels
+        .style('font-size', '13px') // Set font size for x-axis labels
         .style('font-family', 'Helvetica')
         .style('fill', '#fff')
         .attr('dx', '-0.5em')
@@ -168,7 +169,7 @@
     g.append('g')
       .call(d3.axisLeft(y).ticks(6))
       .selectAll('text')
-        .style('font-size', '10px') // Set font size for y-axis labels
+        .style('font-size', '11px') // Set font size for y-axis labels
         .style('font-family', 'Helvetica')
         .style('fill', '#fff')
 
@@ -177,7 +178,7 @@
   .attr('x', - (height /2000))  // Position the label at the center of the Y axis (adjust the positioning)
   .attr('y', margin.left-50)  // Positioning the label at the top of the Y axis (above the axis)
   .style('text-anchor', 'right')
-  .style('font-size', '12px')
+  .style('font-size', '14px')
   .style('font-family', 'Helvetica')
   .style('fill', '#fff')
   .text('Total Population');

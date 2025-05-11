@@ -8,10 +8,11 @@
   export let year = 1920;
 
   const notes = {
-  1950: "Based on census data often reflect a binary classification of 'white' versus 'non-white', reinforcing 20th-century racial hierarchies and obscuring the distinct experiences of individual racial groups.",
+  1950: "1950 census reflects a binary classification of 'white' versus 'non-white', reinforcing 20th-century racial hierarchies and obscuring the distinct experiences of individual racial groups.",
   1970: "As a result of post-war policies aimed at spurring homeownership, 59% of Middlesex County households are owner-occupied, close to national average. But homeownership in Middlesex County was overwhelmingly limited to white residents due to a combination of discriminatory housing policies, lending practices, and local exclusionary zoning.",
   1990: "Asian population surpasses Black population- Following the Vietnam War, Cambodian genocide, and Laotian civil war, the U.S. accepted large numbers of refugees from Southeast Asia. Places like Lowell and Lynn, became key resettlement areas. White homeownership is 37% higher than Black homeownership, reflecting a growing trend of racial disparity in homeownership rate.",
-  2010: "From 1980-2010, white homeownership increased by 8% percentage points when that of black households remained constant overtime (dropping at 25% in 1990).The total homeownership rate in Middlesex County aligns with both state and national trends, standing at approximately 60%"
+  2010: "From 1980-2010, white homeownership increased by 8% percentage points when that of black households remained constant overtime (dropping at 25% in 1990).The total homeownership rate in Middlesex County aligns with both state and national trends, reaching 60%",
+  2020:"In 2020, only about 5% of Middlesex County's population identified as Black or African American, compared to 25% in Suffolk County (Boston), underscoring how urban/suburban racial geographies in Massachusetts remain stark. "
 };
 
   // build the URL at runtime
@@ -136,7 +137,7 @@ if (filtered.length === 0) {
     .attr('y', margin.top  + innerH / 2 - boxH / 4)
     .attr('text-anchor', 'middle')
     .style('fill', '#fff')
-    .style('font-size', '14px')
+    .style('font-size', '18px')
     .style('font-family', 'Helvetica')
     .text(msg);
 
@@ -198,7 +199,7 @@ if (filtered.length === 0) {
       .style('color', '#fff')
       .style('padding', '10px 15px')
       .style('border-radius', '8px')
-      .style('font-size', '14px')
+      .style('font-size', '13px')
       .style('font-family', 'Helvetica')
       .style('box-shadow', '0 4px 6px rgba(0, 0, 0, 0.2)')
       .style('pointer-events', 'none')
@@ -237,7 +238,7 @@ if (filtered.length === 0) {
       .selectAll('text')
         .attr('transform', 'rotate(-40)')
         .style('text-anchor', 'end')
-        .style('font-size', '12px')
+        .style('font-size', '13px')
         .style('font-family', 'Helvetica')
         .style('fill', '#fff')
         .attr('dx', '-0.5em')
@@ -248,7 +249,7 @@ if (filtered.length === 0) {
       .call(d3.axisLeft(y).ticks(6).tickFormat(d3.format('.0%')))
       .selectAll('text')
         .style('fill', '#fff')
-        .style('font-size', '12px')
+        .style('font-size', '13px')
         .style('font-family', 'Helvetica');
   }
 
@@ -306,7 +307,7 @@ if (filtered.length === 0) {
 .chart-note-box {
   background-color: rgba(0, 0, 0, 0.7);
   padding: 0.75rem 1rem;
-  border-left: 4px solid #f5d262;
+  border-left: 4px solid #A91B0D;
   color: #fff;
   font-style: italic;
   font-size: 0.95rem;
