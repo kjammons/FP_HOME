@@ -106,5 +106,11 @@ text{
   font-family:Courier;
 }
 
+:global(body) {
+  background-color: #000;
+  color: #fff;
+  margin: 0;
+  padding: 0;
+}
 
 </style>
