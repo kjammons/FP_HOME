@@ -1,6 +1,7 @@
 <script>
     import { page } from '$app/stores';
     import { base } from '$app/paths';
+    import { navigating } from '$app/stores';
 
     const pages = [
       { url: '',               title: 'Home' },
@@ -14,17 +15,22 @@
       }
     ];
 
-    // If it's an absolute URL, leave it.  Otherwise prefix with base + "/"
     const hrefFor = (u) =>
       u.startsWith('http') ? u : `${base}/${u}`.replace(/\/{2,}/, '/');
 
-    // for matching current path
+
     const isCurrent = (u) => {
-      // Home has url="" → path should be "/"
       const path = `/${u}`.replace(/\/{2,}/, '/');
       return $page.url.pathname === path;
     };
   </script>
+
+{#if $navigating}
+<div class="route-loader">
+  Loading…
+</div>
+{/if}
+
 
 {#if $page.url.pathname !== '/'}
   <nav style="background: #faf3e0; padding: 0.5rem 1rem;">
@@ -55,4 +61,16 @@
       font-weight: bold;
       border-bottom: 2px solid #333;
     }
+    .route-loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(0,0,0,0.7);
+    color: white;
+    text-align: center;
+    padding: 0.5em;
+    font-size: 0.9rem;
+    z-index: 1000;
+  }
   </style>
