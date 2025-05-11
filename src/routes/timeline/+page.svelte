@@ -134,7 +134,7 @@ let finalSummaryVisible = false;
 
 
 {#if showLanding}
-  <div class="landing">
+  <div class="landing" style="background-image: url('{landingUrl}')">
     <div class="landing-content">
       <h1>History of Homeownership in Middlesex County</h1>
       <p>Recognizing the historically exclusionary role of restrictive covenants in shaping access to homeownership in Middlesex County, let’s take a closer look together at how racial demographics and homeownership patterns have evolved over time!</p>
@@ -320,7 +320,7 @@ let finalSummaryVisible = false;
     display: flex;
     height: 100vh;
     overflow: hidden;
-    background-image: url('src/lib/assets/data/1226-454.jpg');
+
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
@@ -329,7 +329,7 @@ let finalSummaryVisible = false;
   .landing {
   position: fixed;
   inset: 0;
-  background: url('static/images/Middlesexmap.jpg') no-repeat center center;
+  background: no-repeat center center;
   background-size: cover;
   z-index: 1000;
   display: flex;
