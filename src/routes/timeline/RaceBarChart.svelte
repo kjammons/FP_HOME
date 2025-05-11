@@ -187,6 +187,8 @@
 </script>
 
 <div bind:this={container} class="chart-container">
+  <p>Data source: Social Explorer, U.S. Decennial Census</p>
+  <div style="margin-top: 2rem;"></div>
   <h1>Racial Demographics in Middlesex County for {year}</h1>
   <svg bind:this={svgElement}></svg>
 </div>
@@ -198,6 +200,13 @@
     padding: 0.5rem;
     border-radius: 8px;
     box-sizing: border-box;
+  }
+
+  .chart-container p{
+font-family: helvetica;
+font-size: 80%;
+font-style: italic;
+color: darkgrey;
   }
 
   :global(svg) {

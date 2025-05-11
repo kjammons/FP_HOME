@@ -125,6 +125,15 @@ let finalSummaryVisible = false;
       'Ongoing reforms push inclusive development & stronger fair housing enforcement.',
     ]
   };
+
+  const extraContent = {
+  1950: "1950 census reflects a binary classification of 'white' versus 'non-white', reinforcing 20th-century racial hierarchies and obscuring the distinct experiences of individual racial groups.",
+  1970: "As a result of post-war policies aimed at spurring homeownership, 59% of Middlesex County households are owner-occupied, close to national average. But homeownership in Middlesex County was overwhelmingly limited to white residents due to a combination of discriminatory housing policies, lending practices, and local exclusionary zoning.",
+  1990: "Asian population surpasses Black population- Following the Vietnam War, Cambodian genocide, and Laotian civil war, the U.S. accepted large numbers of refugees from Southeast Asia. Places like Lowell and Lynn, became key resettlement areas. White homeownership is 37% higher than Black homeownership, reflecting a growing trend of racial disparity in homeownership rate.",
+  2010: "From 1980-2010, white homeownership increased by 8% percentage points when that of black households remained constant overtime (dropping at 25% in 1990).The total homeownership rate in Middlesex County aligns with both state and national trends, reaching 60%",
+  2020: "In 2020, only about 5% of Middlesex County's population identified as Black or African American, compared to 25% in Suffolk County (Boston), underscoring how urban/suburban racial geographies in Massachusetts remain stark. "
+};
+
 </script>
 
 
@@ -143,7 +152,7 @@ let finalSummaryVisible = false;
   <div class="wrapper" style="background-image: url('{backgroundUrl}')">
     <aside class="sidebar">
       <RaceBarChart year={selectedYear} />
-      <div style="margin-top: 2rem;">
+      <div style="margin-top: 4rem;">
       <HomeownBar year={selectedYear} />
     </aside>
 
@@ -152,10 +161,18 @@ let finalSummaryVisible = false;
         <section use:collect={i} class:active={i === currentIndex}>
           <div class="description">
             <h2>{yr}</h2>
+            <p>What was happening?</p>
             {#each descriptions[yr] as bullet}
               <li>{@html bullet}</li>
             {/each}
           </div>
+
+          {#if extraContent[yr]}
+          <div class="description-secondary">
+            <h2>What does the data tell us?</h2>
+            <p>{@html extraContent[yr]}</p>
+          </div>
+        {/if}
         </section>
       {/each}
 
@@ -240,13 +257,15 @@ let finalSummaryVisible = false;
     box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.05);
     border-radius: 8px;
     margin-bottom: 2rem;
+    margin-left: 5rem;
   }
+
 
   .description h2 {
     margin-top: 0;
     font-variant: small-caps;
     font-size: 2rem;
-    font-size: 120%;
+    font-size: 250%;
     font-family: Helvetica;
     color: #fff;
   }
@@ -257,6 +276,50 @@ let finalSummaryVisible = false;
     font-family: Helvetica;
     color: #fff;
   }
+
+  .description p{
+    margin: 1rem 0 0 0;
+    font-size: 150%;
+    font-family: Helvetica;
+    color: #fff;
+    font-weight: bold;
+  }
+  .description-secondary {
+    max-width: 600px;
+    background-color: rgba(0, 0, 0, 0.85);
+    color: white;
+    padding: 1.5rem;
+    border-left: 4px solid #A91B0D;
+    box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.05);
+    border-radius: 8px;
+    margin-bottom: 2rem;
+    margin-left: 5rem;
+}
+
+.description-secondary p{
+  margin: 1rem 0 0 0;
+    font-size: 120%;
+    font-family: Helvetica;
+    color: #fff;
+}
+
+.description-secondary h2{
+  margin: 1rem 0 0 0;
+    font-size: 150%;
+    font-family: Helvetica;
+    color: #fff;
+}
+section {
+  display: flex;
+  flex-direction: column; /* 👈 makes content stack vertically */
+  align-items: flex-start;
+  justify-content: center;
+  padding: 2rem 0;
+  min-height: 100vh;
+  opacity: 0.3;
+  transition: opacity 0.4s ease;
+}
+
 
 
   .popup img {
@@ -333,7 +396,7 @@ let finalSummaryVisible = false;
   .landing {
   position: fixed;
   inset: 0;
-  background: url('images/Middlesex map.jpg') no-repeat center center;
+  background: url('images/Middlesex map.png') no-repeat center center;
   background-size: cover;
   z-index: 1000;
   display: flex;
