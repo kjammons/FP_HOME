@@ -3,7 +3,7 @@
 <style>
     /* General page styling */
     body {
-        font-family: 'Courier', monospace; /* Changed font to Courier */
+        font-family: 'Helvetica', sans-serif; /* Set font to Helvetica */
         line-height: 1.6;
         margin: 0;
         padding: 0;
@@ -19,7 +19,7 @@
         background: #fff;
         border-radius: 10px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        font-family: 'Courier', monospace; /* Ensure container uses Courier font */
+        font-family: 'Helvetica', sans-serif; /* Ensure container uses Helvetica */
     }
 
     /* Title styling */
@@ -28,7 +28,8 @@
         font-weight: bold;
         text-align: center;
         margin-bottom: 20px;
-        color: red; /* Added a blue color for the title */
+        color: #A91B0D; /* Changed title color to blue */
+        font-family: 'Helvetica', sans-serif; /* Ensure title uses Helvetica */
     }
 
     /* Description styling */
@@ -37,12 +38,14 @@
         margin-bottom: 30px;
         text-align: center;
         color: #555;
+        font-family: 'Helvetica', sans-serif; /* Ensure description uses Helvetica */
     }
 
     /* List styling */
     ul {
         list-style: none;
         padding: 0;
+        font-family: 'Helvetica', sans-serif; /* Ensure list uses Helvetica */
     }
 
     li {
@@ -52,6 +55,7 @@
         border-radius: 8px;
         background-color: #fdfdfd;
         transition: transform 0.2s, box-shadow 0.2s; /* Added hover animation */
+        font-family: 'Helvetica', sans-serif; /* Ensure list items use Helvetica */
     }
 
     li:hover {
@@ -59,16 +63,17 @@
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); /* Added shadow on hover */
     }
 
+    /* Link styling */
     a {
+        color: #A91B0D; /* Updated link color */
         text-decoration: none;
-        color: red;
         font-weight: bold;
-        font-size: 1.1rem; /* Slightly larger font size for links */
+        font-family: 'Helvetica', sans-serif; /* Ensure links use Helvetica */
     }
 
     a:hover {
-        color: red;
         text-decoration: underline;
+        color: #FF5733; /* Optional hover color for better interactivity */
     }
 
     /* Responsive design */
