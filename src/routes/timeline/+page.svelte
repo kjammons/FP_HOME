@@ -7,7 +7,8 @@ import HomeownBar from './HomeownBar.svelte';
 import mapPreview from '$lib/assets/images/map.png';
     import { fade } from 'svelte/transition';
 
-const backgroundUrl = `${base}/data/1226-454.jpg`;  // <-- FIX here
+const backgroundUrl = `${base}/data/1226-454.jpg`; 
+const landingUrl =  `${base}/data/Middlesexmap.jpg`; 
 
 let showLanding = true;
 let sentinel;
@@ -118,7 +119,7 @@ let finalSummaryVisible = false;
 
 
 {#if showLanding}
-  <div class="landing">
+  <div class="landing" style="background-image: url('{landingUrl}')">
     <div class="landing-content">
       <h1>History of Homeownership in Middlesex County</h1>
       <p>Given the historically exclusionary role of restrictive covenants in shaping access to homeownership in Middlesex County, let’s explore how racial demographics and homeownership patterns have changed over time.</p>
@@ -367,7 +368,7 @@ section {
     display: flex;
     height: 100vh;
     overflow: hidden;
-    background-image: url('src/lib/assets/data/1226-454.jpg');
+
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;
@@ -376,7 +377,7 @@ section {
   .landing {
   position: fixed;
   inset: 0;
-  background: url('images/Middlesex map.png') no-repeat center center;
+  background: no-repeat center center;
   background-size: cover;
   z-index: 1000;
   display: flex;
