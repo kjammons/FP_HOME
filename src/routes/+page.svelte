@@ -103,7 +103,7 @@ let pages=[
 }
 
 text{
-  font-family:Courier;
+  font-family:Helvetica;
 }
 
 

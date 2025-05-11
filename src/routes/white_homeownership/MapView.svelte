@@ -14,6 +14,8 @@
   let tooltipEl;
   let geoData;
   let selectedFeature = null;
+  let showInsights = false;
+
 
   
   const width = 800;
@@ -215,12 +217,7 @@ $: if (geoData && selectedRateType) {
               : 0.5
         )
         .attr(
-          'opacity',
-          d =>
-            selectedFeature &&
-            d.properties.TOWN20 === selectedFeature.properties.TOWN20
-              ? 1
-              : 0.6
+          'opacity', 0.4
         )
       .on('mouseover', (evt, d) => {
         const city = d.properties.TOWN20;
@@ -255,7 +252,7 @@ d3.select(tooltipEl)
           .transition()
           .duration(200)
           .style('opacity', p =>
-            p === d ? 1 : 0.6
+            p === d ? 1 : 0.3
           );
       })
       .on('mousemove', evt => {
@@ -269,7 +266,7 @@ d3.select(tooltipEl)
           .selectAll('path')
           .transition()
           .duration(200)
-          .style('opacity', 1);
+          .style('opacity', 0.7);
       })
       .on('click', (evt, d) => {
         evt.stopPropagation();
@@ -309,7 +306,7 @@ d3.select(tooltipEl)
     .attr('x', (d, i) => i * rectWidth)
     .attr('y', height + 12)
     .attr('font-size', '10px')
-    .style('fill', '#fff')
+    .style('fill', 'white') 
     .text(d => (d * 100).toFixed(0) + '%');
 }
 
@@ -332,11 +329,28 @@ d3.select(tooltipEl)
   <span class="toggle-label">{showShare ? 'Racial share among total homeowners ' : 'Difference from White Homeownership Rate'}</span>
 </div>
 
+  <button class="insight-fab" on:click={() => showInsights = !showInsights}>Key Insights</button>
+
+{#if showInsights}
+  <div class="insight-popup">
+    <div class="popup-content">
+      <h2>Key Insights</h2>
+      <p>1. <span class="highlight-text">Predominantly White Population:</span> Middlesex County is mostly white, with small racial minority populations.<br><br>
+        2. <span class="highlight-text">Racial Disparities in Homeownership:</span> White homeownership rates are significantly higher than other racial groups in most cities. The darker the red, the greater the disparity where white homeownership is higher than that of other races. <br><br>
+        3.<span class="highlight-text">Rate by Race:</span> Homeownership rates reflect race-specific data; a small population can still show a high rate, but the overall county remains predominantly white.<br><br>
+        4. <span class="highlight-text">Income Disparities:</span> Median income for homeowners is significantly higher than for renters, further highlighting the racial disparities in wealth and homeownership across the county.
+      </p>
+      <!-- Add more insights here -->
+      <button class="close-btn" on:click={() => showInsights = false}>Close</button>
+    </div>
+  </div>
+{/if}
+
 <svg bind:this={svgEl}></svg>
 <div bind:this={tooltipEl} class="tooltip"></div>
 
 <p class="source">
-  Source: ACS data (2018–2023), census-tract level
+  Source: ACS data (2019–2023)
 </p>
 
 <style>
@@ -426,9 +440,78 @@ d3.select(tooltipEl)
   margin: 0;
   padding: 0;
 }
+
 h1, h2, p, label, select, option, toggle-label {
   color: #fff;
   background-color: #000;
+  font-family: 'Helvetica';
+}
+.insight-fab {
+  position: fixed;
+  bottom: 5rem;
+  left: 4rem;
+  padding: 0.75rem 1.5rem;
+  background-color: #A91B0D;
+  color: white;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  z-index: 9999;
+  white-space: nowrap;
+  visibility: visible;
+  opacity: 0.7;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
+.insight-fab:hover {
+  background-color: #A91B0D;
+  opacity: 1;
+  color: white;
+}
+
+/* Popup styles */
+.insight-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000;
+}
+
+.popup-content {
+  background-color: black;
+  color: white;
+  padding: 2rem;
+  border-radius: 8px;
+  width: 80%;
+  max-width: 800px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.popup-content h2 {
+  margin-top: 0;
+}
+
+.close-btn {
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  background-color: #A91B0D;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.close-btn:hover {
+  background-color: #8A160A;
+}
+.highlight-text {
+  color: #A91B0D; /* You can change this to any color you like */
+  font-weight: bold; /* Optional to make it stand out */
+}
 </style>
