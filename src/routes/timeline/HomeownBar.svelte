@@ -15,6 +15,9 @@
   2020:"In 2020, only about 5% of Middlesex County's population identified as Black or African American, compared to 25% in Suffolk County (Boston), underscoring how urban/suburban racial geographies in Massachusetts remain stark. "
 };
 
+//for the line on the bar chart
+const hideThresholdLineYears = [1920, 1970 ]; //skip line for these years
+
   // build the URL at runtime
   const csvPath = `${base}/data/home_ownership_by_decade.csv`;
 
@@ -134,7 +137,7 @@ if (filtered.length === 0) {
   // append the text element centered in the box
   const textEl = svg.append('text')
     .attr('x', margin.left + innerW / 2)
-    .attr('y', margin.top  + innerH / 2 - boxH / 4)
+    .attr('y', margin.top  + innerH / 2 - boxH /13)
     .attr('text-anchor', 'middle')
     .style('fill', '#fff')
     .style('font-size', '18px')
@@ -251,7 +254,32 @@ if (filtered.length === 0) {
         .style('fill', '#fff')
         .style('font-size', '13px')
         .style('font-family', 'Helvetica');
+
+
+        if (!hideThresholdLineYears.includes(year)) {
+          // Draw horizontal threshold line at 30%
+g.append('line')
+  .attr('x1', 0)
+  .attr('x2', innerW)
+  .attr('y1', y(0.3)) // 30% threshold
+  .attr('y2', y(0.3))
+  .attr('stroke', '#f5d262')  // Choose your line color
+  .attr('stroke-width', 2)
+  .attr('stroke-dasharray', '4,2')
+  .attr('stroke', '#ffffff')
+  .attr('stroke-opacity', 0.5)
+
+  g.append('text')
+    .attr('x', innerW - 5)
+    .attr('y', y(0.3) - 5)
+    .attr('text-anchor', 'end')
+    .text('30%')
+    .style('fill', '#f5d262')
+    .style('font-size', '14px')
+    .style('font-family', 'Helvetica')
+    .style('font-weight','bold');
   }
+}
 
 
 </script>
@@ -259,11 +287,6 @@ if (filtered.length === 0) {
 <div bind:this={container} class="chart-container">
   <h1>Homeownership Rate by Race in Middlesex County for {year}</h1>
   <svg bind:this={svgElement}></svg>
-  {#if notes[year]}
-  <div class="chart-note-box">
-    <p>{notes[year]}</p>
-  </div>
-{/if}
 
 </div>
 
@@ -275,6 +298,13 @@ if (filtered.length === 0) {
     overflow: visible;
     padding: 0.5rem;
     box-sizing: border-box;
+  }
+
+  .chart-container p{
+font-family: helvetica;
+font-size: 90%;
+font-style: italic;
+color: darkgrey;
   }
   svg { display: block; }
   h1 {
@@ -312,7 +342,7 @@ if (filtered.length === 0) {
   font-style: italic;
   font-size: 0.95rem;
   font-family: Helvetica;
-  max-width: 500px;
+  max-width: 700px;
   margin-top: 0.5rem;
   border-radius: 6px;
 }
