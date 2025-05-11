@@ -54,10 +54,12 @@
   <style>
     a {
       text-decoration: none;
+      font-family: 'Courier', monospace;
       color: black;
       padding-bottom: 0.2rem;
     }
     a.current {
+      font-family: 'Courier', monospace;
       font-weight: bold;
       border-bottom: 2px solid #333;
     }
@@ -67,7 +69,7 @@
     left: 0;
     width: 100%;
     background: rgba(0,0,0,0.7);
-    color: white;
+    color: black;
     text-align: center;
     padding: 0.5em;
     font-size: 0.9rem;
