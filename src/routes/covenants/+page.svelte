@@ -281,7 +281,7 @@
     .modal h2 {
       margin: 0 0 10px;
       font-size: 18px;
-      color: black;
+      color: white;
     }
   
     .modal button {
