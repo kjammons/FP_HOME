@@ -5,11 +5,13 @@ import { base } from '$app/paths';
 import RaceBarChart from './RaceBarChart.svelte';
 import HomeownBar from './HomeownBar.svelte';
 import mapPreview from '$lib/assets/images/map.png';
+    import { fade } from 'svelte/transition';
 
 const backgroundUrl = `${base}/data/1226-454.jpg`;  // <-- FIX here
 
 let showLanding = true;
-let finalYearSeen = false;
+let sentinel;
+let finalSummaryVisible = false;
 
 
   // decades
@@ -20,7 +22,9 @@ let finalYearSeen = false;
   // collect step elements for IntersectionObserver
   let stepEls = [];
   let observer;
-  function collect(el,i) {
+  let summaryObserver;
+
+  function collect(el, i) {
     stepEls[i] = el;
     observer?.observe(el);
     return {
@@ -28,7 +32,7 @@ let finalYearSeen = false;
         observer?.unobserve(el);
         stepEls[i] = null;
       }
-    }
+    };
   }
 
   onMount(() => {
@@ -41,18 +45,31 @@ let finalYearSeen = false;
               currentIndex = idx;
               selectedYear = years[idx];
             }
-            if (years[idx] === 2020) {
-              finalYearSeen = true;
-            }
           }
         });
       },
       { threshold: 0.5 }
     );
     stepEls.forEach(el => el && observer.observe(el));
-    return () => observer.disconnect();
+
+    return () => {
+      observer.disconnect();
+      if (summaryObserver) summaryObserver.disconnect();
+    };
   });
 
+  $: if (sentinel) {
+    if (summaryObserver) summaryObserver.disconnect();
+    summaryObserver = new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          finalSummaryVisible = entry.isIntersecting;
+        });
+      },
+      { threshold: 0.5 }
+    );
+    summaryObserver.observe(sentinel);
+  }
   // full bullet list for each decade
   const descriptions = {
     1920: [
@@ -113,6 +130,59 @@ let finalYearSeen = false;
     ]
   };
 </script>
+
+
+{#if showLanding}
+  <div class="landing">
+    <div class="landing-content">
+      <h1>History of Homeownership in Middlesex County</h1>
+      <p>Recognizing the historically exclusionary role of restrictive covenants in shaping access to homeownership in Middlesex County, let’s take a closer look together at how racial demographics and homeownership patterns have evolved over time!</p>
+      <p><em>Please note: U.S. Census Bureau designations of race, ethnicity, and national origin change from one decade to the next, reflecting evolving cultural, political, and societal practices.</em></p>
+      <button on:click={() => showLanding = false}>
+        <strong>We invite you to explore those patterns with us!</strong>
+      </button>
+    </div>
+  </div>
+{:else}
+  <div class="wrapper" style="background-image: url('{backgroundUrl}')">
+    <aside class="sidebar">
+      <RaceBarChart year={selectedYear} />
+      <HomeownBar year={selectedYear} />
+    </aside>
+
+    <main class="timeline">
+      {#each years as yr, i}
+        <section use:collect={i} class:active={i === currentIndex}>
+          <div class="description">
+            <h2>{yr}</h2>
+            {#each descriptions[yr] as bullet}
+              <p>{bullet}</p>
+            {/each}
+          </div>
+        </section>
+      {/each}
+
+      <!-- 👇 Sentinel triggers final popup when it enters view -->
+      <div bind:this={sentinel} style="height: 1px;"></div>
+    </main>
+  </div>
+
+  {#if finalSummaryVisible}
+  <div class="fullscreen-overlay" transition:fade>
+    <div class="popup centered">
+        <p>
+          Over the past few decades, while homeownership rates for both the general population and white residents in Middlesex County have steadily risen—from 37% to 62% overall, and from 47% to 67% for white residents—the Black homeownership rate has remained stagnant at around 30%. Despite increased access to mortgage loans for minority groups, the disparity in homeownership rates between minority groups, particularly Black people, and white residents persists, underscoring the enduring legacy of historical injustices. This trend is also linked to the historically small Black population in Middlesex County, which totaled 84,670 residents in 2020. Our project aims to highlight the intergenerational impacts of restrictive covenants, which systematically excluded people of color from the wealth-building opportunities that white homeowners were able to benefit from through home equity.
+        </p>
+        <p><em>*All data presented are sourced from the U.S. Decennial Census, conducted by the U.S. Census Bureau since 1790.*</em></p>
+        <p>Explore contemporary homeownership dynamics:</p>
+        <a href="white_homeownership">
+          <img src={mapPreview} alt="Homeownership Map" />
+        </a>
+        <p><small>Click the map to continue your journey.</small></p>
+      </div>
+    </div>
+  {/if}
+{/if}
 
 <style>
   :global(body) {
@@ -216,21 +286,29 @@ let finalYearSeen = false;
   cursor: pointer;
 }
 
-
-  .popup-overlay {
+.fullscreen-overlay {
   position: fixed;
-  bottom: 1rem;
-  right: 1rem;
-  z-index: 1000;
-  background: rgba(0, 0, 0, 0.9);
-  border: 1px solid #f5d262;
-  padding: 1rem;
-  border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.4);
-  max-width: 260px;
-  color: #fff;
-  animation: fadeIn 0.5s ease-in;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  padding: 2rem;
 }
+
+.popup.centered {
+  background: rgba(250, 243, 224, 0.95);
+  padding: 2rem;
+  border-radius: 10px;
+  max-width: 800px;
+  width: 100%;
+  color: #000;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+  text-align: center;
+}
+
 
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(10px); }
@@ -298,52 +376,3 @@ let finalYearSeen = false;
 
 
 </style>
-
-{#if showLanding}
-  <div class="landing">
-    <div class="landing-content">
-      <h1>History of Homeownership in Middlesex County</h1>
-      <p>Understanding that restrictive covenants have historically played an exclusionary role in who can access homeownership in Middlesex County, let’s take a look together at how racial demographics and homeownership have evolved over time! </p>
-      <p> <em>Please note: U.S. Census Bureau designations of race, ethnicity, and national origin change from one decade to the next, reflecting evolving cultural, political, and societal practices. These changes are reflected in the following visualizations.</em></p>
-      <button on:click={() => showLanding = false}><strong>We invite you to explore those patterns with us!</strong></button>
-    </div>
-  </div>
-{:else}
-
-<div class="wrapper" style="background-image: url('{backgroundUrl}')">
-  <aside class="sidebar">
-    <RaceBarChart year={selectedYear} />
-    <HomeownBar year={selectedYear} />
-  </aside>
-
-
-  <main class="timeline">
-
-    {#each years as yr, i}
-      <section use:collect={i} class:active={i === currentIndex}>
-        <div class="description">
-          <h2>{yr}</h2>
-          {#each descriptions[yr] as bullet}
-            <p>{bullet}</p>
-          {/each}
-
-        </div>
-      </section>
-    {/each}
-    {#if finalYearSeen}
-  <div class="popup-overlay">
-    <div class="popup">
-      <p>'Over the past few decades, while homeownership rates for both the general population and white residents in Middlesex County have steadily risen— from 37% to 62% overall, and from 47% to 67% for white residents—the Black homeownership rate has remained stagnant at around 30%. Despite increased access to mortgage loans for minority groups, the disparity in homeownership rates between minority groups, particularly Black people, and white residents persists, underscoring the enduring legacy of historical injustices. This trend is also linked to the historically small Black population in Middlesex County, which totaled 84,670 residents in 2020. Our project aims to highlight the intergenerational impacts of restrictive covenants, which systematically excluded people of color from the wealth-building opportunities that white homeowners were able to benefit from through home equity.',
-        '*All data presented are sourced from the U.S. Decennial Census, conducted by the U.S. Census Bureau since 1790.'</p>
-      <p>Explore who lives and who owns in Middlesex County today:</p>
-      <a href="white_homeownership">
-        <img src={mapPreview} alt="Homeownership Map" />
-      </a>
-      <p><small>Click the map to continue your journey.</small></p>
-    </div>
-  </div>
-{/if}
-</div>
-
-{/if}
-
