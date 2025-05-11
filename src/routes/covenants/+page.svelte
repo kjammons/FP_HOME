@@ -205,7 +205,7 @@
   
     h1 {
       text-align: center;
-      color: #333;
+      color: white;
     }
   
 
@@ -281,7 +281,7 @@
     .modal h2 {
       margin: 0 0 10px;
       font-size: 18px;
-      color: #333;
+      color: white;
     }
   
     .modal button {
