@@ -8,7 +8,7 @@ import mapPreview from '$lib/assets/images/map.png';
     import { fade } from 'svelte/transition';
 
 const backgroundUrl = `${base}/data/1226-454.jpg`; 
-const landingUrl =  `${base}/data/Middlesexmap.png`; 
+const landingUrl =  `${base}/data/Middlesexmap.jpg`; 
 
 let showLanding = true;
 let sentinel;
@@ -292,7 +292,7 @@ let finalSummaryVisible = false;
 }
 section {
   display: flex;
-  flex-direction: column; /* 👈 makes content stack vertically */
+  flex-direction: column; 
   align-items: flex-start;
   justify-content: center;
   padding: 2rem 0;
