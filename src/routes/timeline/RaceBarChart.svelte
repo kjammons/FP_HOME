@@ -117,7 +117,7 @@
   .style('padding', '10px 15px')  // Increased padding for better readability
   .style('border-radius', '8px')  // Rounded corners
   .style('font-size', '14px')     // Larger font size for better readability
-  .style('font-family', '"Roboto", sans-serif')  // Modern font family
+  .style('font-family', 'Helvetica')  // Modern font family
   .style('box-shadow', '0 4px 6px rgba(0, 0, 0, 0.2)')  // Subtle shadow
   .style('transition', 'opacity 0.2s ease')  // Smooth opacity transition for fade-in/out
   .style('pointer-events', 'none')
@@ -159,7 +159,7 @@
         .attr('transform', 'rotate(-40)')
         .style('text-anchor', 'end')
         .style('font-size', '12px') // Set font size for x-axis labels
-        .style('font-family', '"Roboto", sans-serif')
+        .style('font-family', 'Helvetica')
         .style('fill', '#fff')
         .attr('dx', '-0.5em')
         .attr('dy', '0.25em');
@@ -169,7 +169,7 @@
       .call(d3.axisLeft(y).ticks(6))
       .selectAll('text')
         .style('font-size', '10px') // Set font size for y-axis labels
-        .style('font-family', '"Roboto", sans-serif')
+        .style('font-family', 'Helvetica')
         .style('fill', '#fff')
 
 
@@ -178,7 +178,7 @@
   .attr('y', margin.left-50)  // Positioning the label at the top of the Y axis (above the axis)
   .style('text-anchor', 'right')
   .style('font-size', '12px')
-  .style('font-family', '"Roboto", sans-serif')
+  .style('font-family', 'Helvetica')
   .style('fill', '#fff')
   .text('Total Population');
 
@@ -240,7 +240,7 @@
     padding: 10px 15px;
     border-radius: 8px;
     font-size: 14px;
-    font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
+    font-family: 'Helvetica';
     box-shadow: 0 4px 6px rgba(190, 48, 48, 0.2);
     transition: opacity 0.2s ease;
   }
@@ -259,8 +259,8 @@
   h1{
     font-size: 1rem;
     margin-right: 10px;
-    font-size: 85%;
-    font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
+    font-size: 100%;
+    font-family: Helvetica;
     color: #eee;
   }
 </style>

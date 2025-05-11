@@ -137,7 +137,7 @@ if (filtered.length === 0) {
     .attr('text-anchor', 'middle')
     .style('fill', '#fff')
     .style('font-size', '14px')
-    .style('font-family', '"Segoe UI", sans-serif')
+    .style('font-family', 'Helvetica')
     .text(msg);
 
   // wrap it to the width of the box
@@ -199,7 +199,7 @@ if (filtered.length === 0) {
       .style('padding', '10px 15px')
       .style('border-radius', '8px')
       .style('font-size', '14px')
-      .style('font-family', '"Segoe UI", sans-serif')
+      .style('font-family', 'Helvetica')
       .style('box-shadow', '0 4px 6px rgba(0, 0, 0, 0.2)')
       .style('pointer-events', 'none')
       .style('transition', 'opacity 0.2s ease')
@@ -238,7 +238,7 @@ if (filtered.length === 0) {
         .attr('transform', 'rotate(-40)')
         .style('text-anchor', 'end')
         .style('font-size', '12px')
-        .style('font-family', '"Segoe UI", sans-serif')
+        .style('font-family', 'Helvetica')
         .style('fill', '#fff')
         .attr('dx', '-0.5em')
         .attr('dy', '0.5em');
@@ -249,7 +249,7 @@ if (filtered.length === 0) {
       .selectAll('text')
         .style('fill', '#fff')
         .style('font-size', '12px')
-        .style('font-family', '"Segoe UI", sans-serif');
+        .style('font-family', 'Helvetica');
   }
 
 
@@ -277,9 +277,9 @@ if (filtered.length === 0) {
   }
   svg { display: block; }
   h1 {
-    font-size: 85%;
+    font-size: 100%;
     margin-bottom: 0.25rem;
-    font-family: 'Segoe UI', sans-serif;
+    font-family: Helvetica;
     color: aliceblue;
   }
   :global(.tooltip) {
@@ -291,7 +291,7 @@ if (filtered.length === 0) {
     padding: 10px 15px;
     border-radius: 8px;
     font-size: 14px;
-    font-family: 'Segoe UI', sans-serif;
+    font-family: Helvetica;
     box-shadow: 0 4px 6px rgba(0,0,0,0.2);
     transition: opacity 0.2s ease;
   }
@@ -300,7 +300,7 @@ if (filtered.length === 0) {
   font-size: 0.9rem;
   font-style: italic;
   color: #ddd;
-  font-family: 'Segoe UI', sans-serif;
+  font-family: Helvetica;
 }
 
 .chart-note-box {
@@ -310,7 +310,7 @@ if (filtered.length === 0) {
   color: #fff;
   font-style: italic;
   font-size: 0.95rem;
-  font-family: 'Segoe UI', sans-serif;
+  font-family: Helvetica;
   max-width: 500px;
   margin-top: 0.5rem;
   border-radius: 6px;
