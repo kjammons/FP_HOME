@@ -7,7 +7,8 @@ import HomeownBar from './HomeownBar.svelte';
 import mapPreview from '$lib/assets/images/map.png';
     import { fade } from 'svelte/transition';
 
-const backgroundUrl = `${base}/data/1226-454.jpg`;  // <-- FIX here
+const backgroundUrl = `${base}/data/1226-454.jpg`; 
+const landingUrl =  `${base}/data/Middlesexmap.jpg`; 
 
 let showLanding = true;
 let sentinel;
@@ -328,7 +329,7 @@ let finalSummaryVisible = false;
   .landing {
   position: fixed;
   inset: 0;
-  background: url('images/Middlesex map.jpg') no-repeat center center;
+  background: url('static/images/Middlesexmap.jpg') no-repeat center center;
   background-size: cover;
   z-index: 1000;
   display: flex;
