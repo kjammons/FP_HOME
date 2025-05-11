@@ -21,7 +21,7 @@ export const chartDimensions = {
   
  
   export const textStyle = {
-    fill: '#333',
+    fill: '#fff',
     fontSize: '12px',
     textAnchor: 'middle',
   };

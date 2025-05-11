@@ -10,10 +10,11 @@
 
 
   const { width, height, margin } = chartDimensions;
+  const { barHeight, barPadding } = barStyle;
 
   const chartSettings = {
   width: () => Math.min(800, window.innerWidth * 0.9),
-  height: 300,
+  height: 450,
   margin: { top: 20, right: 20, bottom: 20, left: 20 },
   barHeight: 25,
   barPadding: 5
@@ -23,23 +24,9 @@
   // We'll only use two containers for the charts.
   let svgHomeownership;
   let svgPopulation;
+  let svgIncome;
   let geoData;
-
-  // On mount, load GeoJSON data, update the shared store, and populate the dropdown.
-  onMount(async () => {
-    try {
-      const data = await d3.json(`${base}/data/SB_ACSDATA_2.geojson`);
-      geoDataStore.set(data);
-      geoData = data;
-
-      // Extract unique city names, sorted alphabetically.
-      const cities = data.features.map(f => f.properties.TOWN20);
-      const uniqueCities = [...new Set(cities)].sort((a, b) => a.localeCompare(b));
-      cityList.set(uniqueCities);
-    } catch (error) {
-      console.error('Error loading GeoJSON:', error);
-    }
-  });
+  let responsiveWidth = () => Math.min(800, window.innerWidth * 0.9);
 
   // Reactive: create the bar chart color scale (for the homeownership pyramid)
   $: barChartColorScale =
@@ -54,6 +41,11 @@
             f.properties.TOWN20.trim() === $selectedCity.trim())
       : null;
 
+      $: medianRenterIncome = currentFeature?.properties["j_MEDIAN_RENTER HOUSEHOLD INCOME"] || null;
+  $: medianOwnerIncome = currentFeature?.properties["j_MEDIAN_OWNER HOUSEHOLD INCOME"] || null;
+  $: medianOverallIncome = currentFeature?.properties["j_MEDIAN_HOUSEHOLD INCOME"] || null;
+
+
   // When a city is selected and the SVGs are present, draw the two charts.
   $: if (currentFeature && svgHomeownership && barChartColorScale) {
     drawHomeownershipChart(currentFeature);
@@ -61,15 +53,26 @@
   $: if (currentFeature && svgPopulation) {
     drawPopulationChart(currentFeature);
   }
-
+  $: if (currentFeature && svgIncome) {
+    drawIncomeChart(currentFeature);
+  }
+  onMount(() => {
+    window.addEventListener('resize', () => {
+      if (currentFeature) {
+        drawHomeownershipChart(currentFeature);
+        drawPopulationChart(currentFeature);
+        drawIncomeChart(currentFeature);
+      }
+    });
+  });
   // --- Homeownership Pyramid Chart ---
 function drawHomeownershipChart(feature) {
-  const whiteKey = "j_WHITE HOMEOWNERSHIP RATE (AS OF TOTAL)";
-  const blackKey = "j_BLACK HOME OWNERSHIP RATE";
-  const asianKey = "j_ASIAN HOMEOWNERSHIP_RATE";
-  const indianKey = "j_AMERICAN INDIAN HOMEOWNERSHIP_RATE";
-  const hawaiianKey = "j_NATIVE HAWAIIAN HOMEOWNERSHIP_RATE";
-  const otherKey = "j_OTHER RACE HOMEOWNERSHIP RATE";
+const whiteKey = "j_SHARE_OWNER_WHITE";
+const blackKey = "j_SHARE_OWNER_BLACK";
+const asianKey = "j_SHARE_OWNER_ASIAN";
+const indianKey = "j_SHARE_OWNER_AMERICAN_INDIAN";
+const hawaiianKey = "j_SHARE_OWNER_NATIVE_HAWAIIAN";
+const otherKey = "j_SHARE_OWNER_OTHER";
 
   const values = [
     { race: "White", rate: +feature.properties[whiteKey] || 0 },
@@ -83,7 +86,7 @@ function drawHomeownershipChart(feature) {
   const filteredValues = values.filter(d => d.rate > 0);
 
   const { width, height, margin, barHeight, barPadding } = chartSettings;
-const svgWidth = width();
+const svgWidth = responsiveWidth();
 const svgHeight = height;
 const innerWidth = svgWidth - margin.left - margin.right;
 const innerHeight = svgHeight - margin.top - margin.bottom;
@@ -123,7 +126,7 @@ const innerHeight = svgHeight - margin.top - margin.bottom;
   };
 
   const xScale = d3.scaleLinear()
-    .domain([0, maxVal])
+    .domain([0, 1])
     .range([0, halfWidth]);
 
   const g = svg.append('g')
@@ -193,14 +196,15 @@ const filteredValues = values.filter(d => d.pop > 0);
   const barPadding = 5; 
 
     const xScale = d3.scaleLinear()
-      .domain([0, maxVal])
+      .domain([0, 1])
       .range([0, halfWidth]);
 
     // Clear previous drawing
     d3.select(svgPopulation).selectAll('*').remove();
     const g = d3.select(svgPopulation)
       .append('g')
-      .attr('transform', `translate(${margin.left}, ${margin.top})`);
+      .attr('transform', `translate(${margin.left}, ${margin.top})`)
+      .attr('preserveAspectRatio', 'xMidYMid meet');
 
   
       if (filteredValues.length === 0) {
@@ -241,6 +245,65 @@ g.selectAll('text')
   .style('font-size', textStyle.fontSize)
   .text(d => `${d.race}: ${(d.pop * 100).toFixed(2)}%`);
   }
+
+  function drawIncomeChart(feature) {
+    const svgWidth = chartDimensions.width;
+  const svgHeight =
+    3 * (barStyle.barHeight + barStyle.labelOffset) +
+    chartDimensions.margin.top +
+    chartDimensions.margin.bottom;
+  const margin = { top: 20, right: 20, bottom: 20, left: 120 };
+
+  const ownerIncome = +feature.properties['j_MEDIAN_OWNER HOUSEHOLD INCOME'] || 0;
+  const renterIncome = +feature.properties['j_MEDIAN_RENTER HOUSEHOLD INCOME'] || 0;
+  const overallIncome = +feature.properties['j_MEDIAN_HOUSEHOLD INCOME'] || 0;
+
+  const data = [
+    { type: 'Owner Households', value: ownerIncome },
+    { type: 'Renter Households', value: renterIncome },
+    { type: 'Overall Households', value: overallIncome }
+  ];
+
+  const xScale = d3.scaleLinear()
+    .domain([0, d3.max(data, d => d.value) || 1])
+    .range([0, svgWidth - chartDimensions.margin.left - chartDimensions.margin.right-200]);
+
+  d3.select(svgIncome).selectAll("*").remove();
+  const g = d3.select(svgIncome)
+    .attr("width", svgWidth)
+    .attr("height", svgHeight)
+    .attr('viewBox', `0 0 ${svgWidth} ${svgHeight}`)
+    .attr('preserveAspectRatio', 'xMidYMid meet')
+    .append("g")
+    .attr("transform", `translate(${chartDimensions.margin.left},${chartDimensions.margin.top})`);
+
+  g.selectAll("rect")
+    .data(data)
+    .join("rect")
+    .attr("y", (d, i) => i * (barStyle.barHeight + barStyle.labelOffset))
+    .attr("width", d => xScale(d.value))
+    .attr("height", barStyle.barHeight)
+    .attr("fill", "#1565C0");
+
+  g.selectAll("text.label")
+    .data(data)
+    .join("text")
+    .attr("x", -10)
+    .attr("y", (d, i) => i * (barStyle.barHeight + barStyle.labelOffset) + barStyle.barHeight / 2 + 4)
+    .attr("text-anchor", "end")
+    .style('font-size', textStyle.fontSize)
+    .style('fill', textStyle.fill)
+    .text(d => d.type);
+
+  g.selectAll("text.value")
+    .data(data)
+    .join("text")
+    .attr("x", d => xScale(d.value) + 5)
+    .attr("y", (d, i) => i * (barStyle.barHeight + barStyle.labelOffset) + barStyle.barHeight / 2 + 4)
+    .style('font-size', textStyle.fontSize)
+    .style('fill', textStyle.fill)
+    .text(d => `${d.type}: $${d3.format(",.0f")(d.value)}`);
+}
   
 </script>
 
@@ -263,11 +326,15 @@ g.selectAll('text')
         <h2>Racial Demographics for {currentFeature.properties.TOWN20}</h2>
         <svg bind:this={svgPopulation} width={width} height={height}></svg>
       </div>
-    </div>
       <div class="bargraph-container">
-        <h2>Homeownership Rate by Race for {currentFeature.properties.TOWN20} </h2>
-        <svg bind:this={svgHomeownership} width={width} height={height}></svg>
+        <h2>Homeownership Share for {currentFeature.properties.TOWN20} </h2>
+        <svg bind:this={svgHomeownership}></svg>
       </div>
+      <div class="income-chart-container">
+        <h2>Median Household Incomes</h2>
+        <svg bind:this={svgIncome}></svg>
+      </div>
+    </div>
   {:else}
     <p>Please select a city to see its data.</p>
   {/if}
@@ -319,11 +386,16 @@ g.selectAll('text')
     max-width: 900px;
   }
   .bargraph-container,
-  .population-chart-container {
+  .population-chart-container,
+  .income-chart-container {
     padding: 10px;
     border: 1px #ccc;
     text-align: center;
     font-family: 'Courier', monospace;
+  }
+
+  .income-chart-container {
+    margin-top: -130px;
   }
 
   .no-data-text {
@@ -333,4 +405,8 @@ g.selectAll('text')
     text-anchor: middle;
   }
 
+  h2, p, label, select, option {
+  color: #fff;
+  background-color: #000;
+}
 </style>
