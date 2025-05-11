@@ -73,65 +73,45 @@ let finalSummaryVisible = false;
   // full bullet list for each decade
   const descriptions = {
     1920: [
-      '<span style="font-weight:bold; color:#A91B0D;">Racially restrictive covenants</span> appeared in the late 19th century and spread rapidly in the 1920s after the Supreme Court banned racial zoning (Buchanan vs. Warely)',
-      'Racially restrictive covenants upheld by the Supreme Court <span style="font-weight:bold; color:#A91B0D;">Corrigan v. Buckley (1926)</span>',
-      '<span style="font-weight:bold; color:#A91B0D;">Great migration </span> of six million Black people from the rural South to the urban North, yet limited in Middlesex County',
-      'Homeowners’ organizations and real estate boards turned to advocating for racial separation. '
+      'Although there are varying accounts, racially restrictive covenants emerged as early as the mid-19th century. They gained widespread use in the 1920s, particularly as a means to continue racial housing discrimination after the <span style="font-weight:bold; color:#A91B0D;">Supreme Court struck down racial zoning laws in Buchanan v. Warley (1917). In Corrigan v. Buckley (1926), </span> the Supreme Court upheld covenants’ legality, legitimizing their role in housing discrimination. Homeowners’ associations, real estate boards, and private citizens increasingly capitalized on these opportunities to enact racial separation through private means, such as restrictive covenants, to preserve segregated neighborhoods. '
     ],
     1930: [
-      ' <span style="font-weight:bold; color:#A91B0D;">Redlining institutionalized via HOLC & FHA “security” maps;</span> Lexington, Belmont, Winchester, and Waltham were often labeled “still desirable”',
-      'Suburban areas in Middlesex County were heavily favored for new housing development, but only for white buyers',
-      ' <span style="font-weight:bold; color:#A91B0D;">From 1934 on, the FHA recommended the inclusion of restrictive covenants in the deeds of homes it insured. </span>'
+      ' The creation of Home Owners’ Loan Corporation (HOLC) and Federal Housing Administration (FHA) <span style="font-weight:bold; color:#A91B0D;">“security” maps</span> institutionalized the practice we know today as<span style="font-weight:bold; color:#A91B0D;"> “redlining.”</span> These maps systematically graded neighborhoods based on perceived lending risk. Suburban towns in Middlesex County—such as Lexington, Belmont, Winchester, and Waltham—were frequently labeled as “still desirable,” reinforcing their preferential status. These areas were heavily targeted for new housing development, but access was largely restricted to white buyers. Beginning in 1934, the FHA explicitly recommended that restrictive covenants be included in the deeds of homes it insured, further entrenching racial segregation in suburban housing markets.'
     ],
     1940: [
-      'GI Bill legislation passed by Congress in 1944, offering low interest home loans for veterans, but Black veterans in MA often shut out by discriminatory lending',
-      ' <span style="font-weight:bold; color:#A91B0D;">White families build suburban wealth</span>, while many Black families remain renters in segregated neighborhoods',
-      '<span style="font-weight:bold; color:#A91B0D;">Shelley v. Kraemer (1948) makes covenants unenforceable. </span>'
-    ],
+      'The GI Bill, passed by Congress in 1944, offered low-interest home loans and other benefits to returning veterans. However, in Massachusetts as across the country, Black veterans were often denied these opportunities due to discriminatory lending practices and exclusionary policies. As a result, even more white families were able to build generational wealth through suburban homeownership, while many Black families remained renters in segregated urban neighborhoods. Although the Supreme Court’s decision in <span style="font-weight:bold; color:#A91B0D;">Shelley v. Kraemer (1948), ruled that racially restrictive covenants were not legally enforceable,</span> the legacy of these practices continued to shape patterns of residential segregation and inequality. The unenforceable ruling also <span style="font-weight:bold; color:#A91B0D;">did not remove restrictive covenants from property deeds, and the covenants “run with the land” to this day.</span> '  ],
     1950: [
-      ' <span style="font-weight:bold; color:#A91B0D;">Homeownership boom</span> began after World War II',
-      'Federal-Aid Highway Act of 1956 shaping suburban development: <span style="font-weight:bold; color:#A91B0D;">white flight to suburbs </span>like Lincoln & Weston',
-      '<span style="font-weight:bold; color:#A91B0D;">Exclusionary zoning</span> (large‐lot, single‐family) excluded low-income households, often disproportionately nonwhite.',
+      ' The post–World War II era ushered in a <span style="font-weight:bold; color:#A91B0D;">major homeownership boom,</span> driven partially by federal policies and economic expansion. The Federal-Aid Highway Act (1956) played a critical role in shaping suburban development, enabling <span style="font-weight:bold; color:#A91B0D;">white flight from urban centers to suburban peripheries.</span> As these communities grew, <span style="font-weight:bold; color:#A91B0D;">exclusionary zoning</span> practices—particularly large-lot, single-family zoning—became widespread, barring low-income households from accessing suburban housing. These policies disproportionately excluded non-white residents, reinforcing the momentum of racial and economic segregation in the expanding suburbs.'
     ],
     1960: [
-      'Civil rights activists held Open Housing Marches in Mattapan & Hyde Park demanding fair and equal access to housing regardless of race',
-      ' <span style="font-weight:bold; color:#A91B0D;">Federal Fair Housing Act (1968) bans discrimination in housing, ending redlining (on paper)</span>, but enforcement remains weak.'
+      'Civil rights activists organized Open Housing Marches in neighborhoods like Mattapan and Hyde Park to <span style="font-weight:bold; color:#A91B0D;">demand fair and equal access to housing for all,</span> regardless of race. Sustained efforts nationally culminated in the passage of the <span style="font-weight:bold; color:#A91B0D;">federal Fair Housing Act (1968),</span> which formally outlawed housing discrimination and marked the <span style="font-weight:bold; color:#A91B0D;">official end of redlining policies—at least on paper.</span> Disappointingly, enforcement of the law remained weak, and many discriminatory practices persisted if only in more covert forms.'
     ],
     1970: [
-      'Federal court ordered the desegregation of Boston public schools through busing (1974), which sparked violent protests and led many white families to move to the suburbs ',
-      'Further entrenched racial lines: urban areas seen as black, suburbs as white',
-      '<span style="font-weight:bold; color:#A91B0D;">MA Comprehensive Permit Act (1969)</span> overrode exclusionary local zoning regulations, enabling affordable units in resistant towns.',
+      'In 1974, a federal court ordered the desegregation of Boston public schools through a busing mandate, prompting intense backlash and violent protests. In response, many white families relocated to the suburbs, further entrenching regional racial divisions<span style="font-weight:bold; color:#A91B0D;"> along urban-suburban lines.</span> Although <span style="font-weight:bold; color:#A91B0D;">the Massachusetts Comprehensive Permit Act (1969)</span> aimed to counteract exclusionary zoning by allowing developers to bypass restrictive local regulations and build affordable housing, its implementation faced significant resistance in many suburban towns, limiting its impact on promoting racial and economic integration in these geographies.',
     ],
     1980: [
-      '<span style="font-weight:bold; color:#A91B0D;">NAACP lawsuit against the Boston Housing Authority (1988)</span>, alleging widespread racial discrimination in public housing administration by maintaining segregated waiting lists, which disproportionately assigned Black applicants to developments in poor condition or high-crime areas, while reserving better-maintained units in white neighborhoods for white families. ',
+      'In this period, the NAACP prominently sued the Boston Housing Authority (1988), alleging <span style="font-weight:bold; color:#A91B0D;">widespread racial discrimination in their administration of public housing.</span> NAACP lawyers pointed to highly segregated waiting lists, which disproportionately assigned Black applicants to developments in poor condition or high-crime areas, while reserving better-maintained units in white neighborhoods for white families. ',
     ],
     1990: [
-      'HUD finds systemic discrimination in Boston public housing after forced integration fallout',
-      'HMDA data (1992) expose <span style="font-weight:bold; color:#A91B0D;">mortgage‐denial gaps</span>; community reinvestment agreements follow',
-      'Despite efforts, <span style="font-weight:bold; color:#A91B0D;">the Black-white homeownership gap remains wide by decade’s end.</span>'
+      'In the 1990s, the U.S. Department of Housing and Urban Development (HUD) finds evidence of <span style="font-weight:bold; color:#A91B0D;">systemic discrimination within Boston’s public housing system.</span> In 1992, data from the Home Mortgage Disclosure Act (HMDA) revealed <span style="font-weight:bold; color:#A91B0D;">significant disparities in mortgage denial rates between Black and white applicants,</span> prompting the creation of community reinvestment agreements aimed at addressing these inequities. <span style="font-weight:bold; color:#A91B0D;">Despite these interventions, the Black-white homeownership gap remained substantial by the end of the decade, highlighting the enduring impact of structural barriers to housing equity.</span>'
     ],
     2000: [
-      '<span style="font-weight:bold; color:#A91B0D;">Chapter 40B (MA Affordable Housing Act)</span> expands low-income units across resistant towns',
-      'Housing bubble doubles prices from 1995 to 2000, displacing working-class residents',
-      'Median home prices in towns like Belmont, Arlington, and Lexington rose from ~$200,000 to over $500,000 between 1995 and 2005, <span style="font-weight:bold; color:#A91B0D;">increasing wealth gap. </span> '
+      'Massachusetts’ Chapter 40B, also known as <span style="font-weight:bold; color:#A91B0D;">the Affordable Housing Act,</span> sought to expand low-income housing across municipalities that had historically resisted such development. However, <span style="font-weight:bold; color:#A91B0D;">during the housing bubble of the late 1990s,</span> home prices in the region surged dramatically, displacing many working-class residents. Between 1995 and 2005, median home prices in suburban towns such as Belmont, Arlington, and Lexington skyrocketed from approximately $200,000 to over $500,000, <span style="font-weight:bold; color:#A91B0D;">exacerbating the wealth gap and deepening existing economic and racial segregation.</span>  '
     ],
     2010: [
-      'Post-2008 crash recovery stabilizes home prices—but gentrification displaces longtime residents',
-      '<span style="font-weight:bold; color:#A91B0D;">The Dodd-Frank Act (2010)</span> tightens MA lending standards after a surge in foreclosures',
-      '<span style="font-weight:bold; color:#A91B0D;">Inclusionary zoning & anti-displacement task forces emerge amid persistent segregation.</span>'
+      'In the wake of <span style="font-weight:bold; color:#A91B0D;">the 2008 financial crisis,</span> the housing market gradually stabilized, but the recovery period ushered in waves of gentrification that displaced many longtime residents. This was felt acutely in urban neighborhoods. <span style="font-weight:bold; color:#A91B0D;">The Dodd-Frank Act of 2010 imposed stricter lending standards in Massachusetts </span> in response to the foreclosure crisis, aiming to prevent similar financial instability in the future. Meanwhile, cities and towns began adopting <span style="font-weight:bold; color:#A91B0D;">inclusionary zoning policies and forming anti-displacement task forces</span> to address growing concerns around housing affordability and persistent patterns of racial and economic segregation.'
     ],
     2020: [
-      '<span style="font-weight:bold; color:#A91B0D;">Housing Choice law (Jan 2021)</span> facilitates zoning changes in towns with high demand and high exclusion, & mandates <span style="font-weight:bold; color:#A91B0D;">multifamily near MBTA stations</span>, in towns like Arlington, Acton, Malden, and Waltham',
-      'Ongoing reforms push inclusive development & stronger fair housing enforcement.',
+      '<span style="font-weight:bold; color:#A91B0D;">The MBTA Communities Law (2021)</span> was designed to facilitate zoning changes in communities with high housing demand and histories of exclusion. The law mandated <span style="font-weight:bold; color:#A91B0D;">the development of multifamily housing near MBTA stations in towns such as Arlington, Acton, Malden, and Waltham.</span> These reforms aim to promote more inclusive development and are accompanied by ongoing efforts to strengthen fair housing enforcement, <span style="font-weight:bold; color:#A91B0D;">addressing long-standing barriers to equitable access in Massachusetts housing landscape.</span>',
     ]
   };
 
   const extraContent = {
-  1950: "1950 census reflects a binary classification of 'white' versus 'non-white', reinforcing 20th-century racial hierarchies and obscuring the distinct experiences of individual racial groups.",
-  1970: "As a result of post-war policies aimed at spurring homeownership, 59% of Middlesex County households are owner-occupied, close to national average. But homeownership in Middlesex County was overwhelmingly limited to white residents due to a combination of discriminatory housing policies, lending practices, and local exclusionary zoning.",
-  1990: "Asian population surpasses Black population- Following the Vietnam War, Cambodian genocide, and Laotian civil war, the U.S. accepted large numbers of refugees from Southeast Asia. Places like Lowell and Lynn, became key resettlement areas. White homeownership is 37% higher than Black homeownership, reflecting a growing trend of racial disparity in homeownership rate.",
-  2010: "From 1980-2010, white homeownership increased by 8% percentage points when that of black households remained constant overtime (dropping at 25% in 1990).The total homeownership rate in Middlesex County aligns with both state and national trends, reaching 60%",
-  2020: "In 2020, only about 5% of Middlesex County's population identified as Black or African American, compared to 25% in Suffolk County (Boston), underscoring how urban/suburban racial geographies in Massachusetts remain stark. "
+  1950: "In 1950, census data reflected a binary classification of 'white' versus 'non-white.” This reinforced racial hierarchies and obscured the distinct experiences of individual racial groups. ",
+  1970: "As a result of post-war policies aimed at spurring homeownership, 59% of Middlesex County households are owner-occupied, close to the national average. However, homeownership in Middlesex County was overwhelmingly limited to white residents, resulting from a combination of discriminatory housing policies, lending practices, and local exclusionary zoning.",
+  1990: "In this period, we observe that the Asian population surpasses the Black population in Middlesex County. Following the Vietnam War, Cambodian genocide, and Laotian civil war, the U.S. accepted large numbers of refugees from Southeast Asia. Geographies like Lowell and Lynn became key resettlement areas. At this time, white homeownership is 37% points higher than Black homeownership, reflecting a persistent and growing trend of racial disparity in homeownership rate.",
+  2010: "From 1980-2010, white homeownership increased by 8% percentage points while that of Black households remained constant overtime (dropping at 25% in 1990). During this period, the total homeownership rate in Middlesex County aligns with both state and national trends, at around 60%.",
+  2020: "In 2020, only about 5% of Middlesex County's population identified as Black or African American, compared to 25% in Suffolk County (Boston). This is only one example of how urban-suburban racial geographies in Massachusetts remain evident.  "
 };
 
 </script>
@@ -141,7 +121,7 @@ let finalSummaryVisible = false;
   <div class="landing">
     <div class="landing-content">
       <h1>History of Homeownership in Middlesex County</h1>
-      <p>Recognizing the historically exclusionary role of restrictive covenants in shaping access to homeownership in Middlesex County, let’s take a closer look together at how racial demographics and homeownership patterns have evolved over time!</p>
+      <p>Given the historically exclusionary role of restrictive covenants in shaping access to homeownership in Middlesex County, let’s explore how racial demographics and homeownership patterns have changed over time.</p>
       <p><em>Please note: U.S. Census Bureau designations of race, ethnicity, and national origin change from one decade to the next, reflecting evolving cultural, political, and societal practices.</em></p>
       <button on:click={() => showLanding = false}>
         <strong>We invite you to explore those patterns with us!</strong>
