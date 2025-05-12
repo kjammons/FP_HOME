@@ -119,7 +119,7 @@ let boxes = [];
 }
 
 text{
-  font-family:Helvetica;
+  font-family:Courier;
 }
 
 </style>
