@@ -341,7 +341,7 @@ d3.select(tooltipEl)
         4. <span class="highlight-text">Income Disparities:</span> Median income for homeowners is significantly higher than for renters, further highlighting the racial disparities in wealth and homeownership across the county.
       </p>
        <!-- Add the link button here -->
-    <a href="/reading_list" class="reading-list-btn">
+    <a href="reading_list" class="reading-list-btn">
       Head to the reading list to learn more about the impacts of historical discriminatory practices on contemporary homeownership
     </a>
 
