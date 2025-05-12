@@ -7,8 +7,8 @@ import HomeownBar from './HomeownBar.svelte';
 import mapPreview from '$lib/assets/images/map.png';
     import { fade } from 'svelte/transition';
 
-const backgroundUrl = `${base}/data/1226-454.jpg`; 
-const landingUrl =  `${base}/data/Middlesexmap.jpg`; 
+const backgroundUrl = `${base}/data/1226-454.jpg`;
+const landingUrl =  `${base}/data/Middlesexmap.jpg`;
 
 let showLanding = true;
 let sentinel;
@@ -77,7 +77,7 @@ let finalSummaryVisible = false;
       'Although there are varying accounts, racially restrictive covenants emerged as early as the mid-19th century. They gained widespread use in the 1920s, particularly as a means to continue racial housing discrimination after the <span style="font-weight:bold; color:#A91B0D;">Supreme Court struck down racial zoning laws in Buchanan v. Warley (1917). In Corrigan v. Buckley (1926), </span> the Supreme Court upheld covenants’ legality, legitimizing their role in housing discrimination. Homeowners’ associations, real estate boards, and private citizens increasingly capitalized on these opportunities to enact racial separation through private means, such as restrictive covenants, to preserve segregated neighborhoods. '
     ],
     1930: [
-      ' The creation of Home Owners’ Loan Corporation (HOLC) and Federal Housing Administration (FHA) <span style="font-weight:bold; color:#A91B0D;">“security” maps</span> institutionalized the practice we know today as<span style="font-weight:bold; color:#A91B0D;"> “redlining.”</span> These maps systematically graded neighborhoods based on perceived lending risk. Suburban towns in Middlesex County—such as Lexington, Belmont, Winchester, and Waltham—were frequently labeled as “still desirable,” reinforcing their preferential status. These areas were heavily targeted for new housing development, but access was largely restricted to white buyers. Beginning in 1934, the FHA explicitly recommended that restrictive covenants be included in the deeds of homes it insured, further entrenching racial segregation in suburban housing markets.'
+      ' The creation of Home Owners’ Loan Corporation (HOLC) and Federal Housing Administration (FHA) <span style="font-weight:bold; color:#A91B0D;">“security” maps</span> institutionalized the practice we know today as<span style="font-weight:bold; color:#A91B0D;"> “redlining.”</span> These maps systematically graded neighborhoods based on perceived lending risk. <span style="font-weight:bold; color:#A91B0D;">Suburban towns in Middlesex County—such as Lexington, Belmont, Winchester, and Waltham—were frequently labeled as “still desirable,” reinforcing their preferential status.</span> These areas were heavily targeted for new housing development, but access was largely restricted to white buyers. Beginning in 1934, the FHA explicitly recommended that restrictive covenants be included in the deeds of homes it insured, further entrenching racial segregation in suburban housing markets.'
     ],
     1940: [
       'The GI Bill, passed by Congress in 1944, offered low-interest home loans and other benefits to returning veterans. However, in Massachusetts as across the country, Black veterans were often denied these opportunities due to discriminatory lending practices and exclusionary policies. As a result, even more white families were able to build generational wealth through suburban homeownership, while many Black families remained renters in segregated urban neighborhoods. Although the Supreme Court’s decision in <span style="font-weight:bold; color:#A91B0D;">Shelley v. Kraemer (1948), ruled that racially restrictive covenants were not legally enforceable,</span> the legacy of these practices continued to shape patterns of residential segregation and inequality. The unenforceable ruling also <span style="font-weight:bold; color:#A91B0D;">did not remove restrictive covenants from property deeds, and the covenants “run with the land” to this day.</span> '  ],
@@ -166,12 +166,12 @@ let finalSummaryVisible = false;
   <div class="fullscreen-overlay" transition:fade>
     <div class="popup centered">
         <p>
-          Over the past few decades, while homeownership rates for both the general population and white residents in Middlesex County have steadily risen—from 37% to 62% overall, and from 47% to 67% for white residents—black homeownership rate has remained stagnant at around 30%. <br>
+          Over the past few decades, homeownership rates for both the general population and white residents in Middlesex County have steadily risen—<span style="font-weight:bold; color:#A91B0D;">from 37% to 62% overall, and from 47% to 67% for white residents.</span> The Black homeownership rate has remained stagnant—at around 30%. <br>
           <br>
-          Despite increased access to mortgage loans for minority groups, the disparity in homeownership rates between minority groups and white residents persists, underscoring the enduring legacy of historical injustices, including racially restrictive covenants.
+          Despite increased access to mortgage loans for non-white groups, the disparity in homeownership rates between white and non-white residents persists, underscoring the enduring legacy of historical injustices, including racially restrictive covenants.
         </p>
         <br>
-        <h2>Now we invite you to explore contemporary homeownership dynamics!</h2>
+        <h2>Now that you’ve explored the history, we invite you to explore contemporary homeownership dynamics!</h2>
         <a href="white_homeownership">
           <img src={mapPreview} alt="Homeownership Map" />
         </a>
