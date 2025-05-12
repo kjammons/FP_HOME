@@ -17,7 +17,7 @@
   let showInsights = false;
 
 
-  
+
   const width = 800;
   const height = 600;
 
@@ -58,6 +58,9 @@
   };
 
   $: selectedRateType = showShare ? raceFields[selectedRace].share : raceFields[selectedRace].diff;
+  $: if (!showShare && selectedRace === 'White') {
+  selectedRace = 'Black';
+}
   $: tooltipLabel = showShare ? `Share of ${selectedRace} Homeowners` : `Difference: ${selectedRace} vs. White Homeownership Rate`;
 
   onMount(async () => {
@@ -153,14 +156,14 @@ $: if (geoData && selectedRateType) {
     let content = `<strong>${selectedFeature.properties.TOWN20}</strong><br/>`;
 
     if (showShare) {
-      content += `Share of ${selectedRace} homeowners: ${isNaN(val) ? 'N/A' : (val * 100).toFixed(1) + '%'}`;
+      content += `Share of ${selectedRace} homeowners: ${isNaN(val) ? 'N/A' : (val * 100).toFixed(2) + '%'}`;
     } else {
       if (isNaN(val)) {
         content += 'Data unavailable or selected race has 0 homeownership in this city.';
       } else if (val > 0) {
-        content += `${selectedRace} homeownership rate is ${(val * 100).toFixed(1)} percentage points higher than White.`;
+        content += `${selectedRace} homeownership rate is ${(val * 100).toFixed(2)} percentage points higher than White.`;
       } else if (val < 0) {
-        content += `White homeownership rate is ${(Math.abs(val) * 100).toFixed(1)} percentage points higher than ${selectedRace}.`;
+        content += `White homeownership rate is ${(Math.abs(val) * 100).toFixed(2)} percentage points higher than ${selectedRace}.`;
       } else {
         content += `${selectedRace} and White homeownership rates are equal.`;
       }
@@ -199,9 +202,11 @@ $: if (geoData && selectedRateType) {
         .attr('d', pathGen)
         .attr('fill', d => {
           const v = +d.properties[selectedRateType];
-          console.log(selectedRateType, v); 
-          return isNaN(v) ?  'rgba(200, 200, 200, 0.4)' : colorScale(v);
-        })
+          if (!isFinite(v) || v === 0) {
+        return 'rgba(200, 200, 200, 0.4)';
+    }
+    return colorScale(v);
+})
         .attr('stroke', d =>
       selectedFeature && d.properties.TOWN20 === selectedFeature.properties.TOWN20
         ? 'red'
@@ -216,9 +221,11 @@ $: if (geoData && selectedRateType) {
               ? 2
               : 0.5
         )
-        .attr(
-          'opacity', 0.4
-        )
+        .attr('opacity', d =>
+  selectedFeature && d.properties.TOWN20 === selectedFeature.properties.TOWN20
+    ? 1
+    : 0.4
+)
       .on('mouseover', (evt, d) => {
         const city = d.properties.TOWN20;
 const val = +d.properties[selectedRateType];
@@ -226,15 +233,15 @@ let content = `<strong>${city}</strong><br/>`;
 
 if (showShare) {
   // Racial share case
-  content += `Share of ${selectedRace} homeowners: ${isNaN(val) ? 'N/A' : (val * 100).toFixed(1) + '%'}`;
+  content += `Share of ${selectedRace} homeowners: ${isNaN(val) ? 'N/A' : (val * 100).toFixed(2) + '%'}`;
 } else {
   // Difference-from-white case
   if (!isFinite(val) || val === 0) {
     content += `Data unavailable or there is no ${selectedRace} homeownership in this city.`;
   } else if (val > 0) {
-    content += `${selectedRace} homeownership rate is ${(val*100).toFixed(1)} percentage points higher than White.`;
+    content += `${selectedRace} homeownership rate is ${(val*100).toFixed(2)} percentage points higher than White.`;
   } else if (val < 0) {
-    content += `White homeownership rate is ${(Math.abs(val)*100).toFixed(1)} percentage points higher than ${selectedRace}.`;
+    content += `White homeownership rate is ${(Math.abs(val)*100).toFixed(2)} percentage points higher than ${selectedRace}.`;
   } else {
     content += `${selectedRace} and White homeownership rates are equal.`;
   }
@@ -269,9 +276,15 @@ d3.select(tooltipEl)
           .style('opacity', 0.7);
       })
       .on('click', (evt, d) => {
-        evt.stopPropagation();
-        selectedCity.set(d.properties.TOWN20);
-      });
+    const town = d.properties.TOWN20;
+    if (['WAYLAND', 'WESTON'].includes(town)) {
+      evt.stopPropagation();
+      return; // ❌ Do nothing for these towns
+    }
+
+    evt.stopPropagation();
+    selectedCity.set(town);
+});
 
     // clear selection on background click
     svg.on('click', () => {
@@ -306,7 +319,7 @@ d3.select(tooltipEl)
     .attr('x', (d, i) => i * rectWidth)
     .attr('y', height + 12)
     .attr('font-size', '7px')
-    .style('fill', 'white') 
+    .style('fill', 'white')
     .text(d => (d * 100).toFixed(0) + '%');
 }
 
@@ -318,7 +331,9 @@ d3.select(tooltipEl)
   <label for="race-select">Select  group by race:</label>
   <select id="race-select" bind:value={selectedRace}>
     {#each Object.keys(raceFields) as race}
+    {#if !(race === 'White' && !showShare)}
       <option value={race}>{race}</option>
+      {/if}
     {/each}
   </select>
 
@@ -335,13 +350,16 @@ d3.select(tooltipEl)
   <div class="insight-popup">
     <div class="popup-content">
       <h2>Key Insights</h2>
-      <p>1. <span class="highlight-text">Predominantly White Population:</span> Middlesex County is mostly white, with small racial minority populations.<br><br>
-        2. <span class="highlight-text">Racial Disparities in Homeownership:</span> White homeownership rates are significantly higher than other racial groups in most cities. The darker the red, the greater the disparity where white homeownership is higher than that of other races. <br><br>
-        3.<span class="highlight-text">Rate by Race:</span> Homeownership rates reflect race-specific data; a small population can still show a high rate, but the overall county remains predominantly white.<br><br>
-        4. <span class="highlight-text">Income Disparities:</span> Median income for homeowners is significantly higher than for renters, further highlighting the racial disparities in wealth and homeownership across the county.
+      <p>1. <span class="highlight-text">Predominantly White Population:</span> Demographically, Middlesex County is mostly white, with small racial minority populations.<br><br>
+        2. <span class="highlight-text">Racial Disparities in Homeownership:</span> White homeownership rates are significantly higher than other racial groups across most of Middlesex County. The darker the red, the greater the disparity between white homeownership and that of other racial groups.
+        <br><br>
+        3.<span class="highlight-text">Rate by Race:</span> Homeownership rates reflect race-specific data; even in instances where a non-white population shows a high rate of homeownership, the overall county remains predominantly white, reflecting majority white homeownership dynamics.
+        <br><br>
+        4. <span class="highlight-text">Income Disparities:</span> Median income for homeowners is significantly higher than for renters, highlighting how homeownership is a cause and symptom of entrenched exclusion from intergenerational wealth-building on the basis of race.
+
       </p>
        <!-- Add the link button here -->
-    <a href="/reading_list" class="reading-list-btn">
+    <a href="reading_list" class="reading-list-btn">
       Head to the reading list to learn more about the impacts of historical discriminatory practices on contemporary homeownership
     </a>
 
@@ -441,7 +459,7 @@ d3.select(tooltipEl)
     margin-top: 0.5rem;
   }
 
-h1, h2, p, label, select, option, toggle-label {
+h1, h2, p, a, label, select, option, toggle-label {
   color: #fff;
   background-color: #000;
   font-family: 'Helvetica';
@@ -485,6 +503,7 @@ h1{
   justify-content: center;
   align-items: center;
   z-index: 10000;
+  background-color: rgba(0, 0, 0, 0.8);
 }
 
 .popup-content {
@@ -495,6 +514,7 @@ h1{
   width: 80%;
   max-width: 800px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  border: 2px solid #A91B0D;
 }
 
 .popup-content h2 {
@@ -506,8 +526,8 @@ h1{
   margin: 1rem auto 0 auto;
   margin-top: 1rem;
   padding: 0.5rem 1rem;
-  background-color:#555; 
-  color: white; 
+  background-color:#555;
+  color: white;
   border-radius: 4px;
   cursor: pointer;
 }
