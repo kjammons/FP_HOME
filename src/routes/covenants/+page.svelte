@@ -1,7 +1,7 @@
 <script>
     import { onMount } from "svelte";
     import { base } from '$app/paths';
-  
+
     // Define the deeds array
     const deeds = [
       {
@@ -45,15 +45,15 @@
         alertMessage: `You found a restrictive covenant! This deed reads: “No part of the land hereby conveyed shall ever be conveyed, leased, traded, rented or donated to anyone who is not a member of the caucasian race.”`
       }
     ];
-  
+
     let showAlert = false;
     let alertMessage = "";
-  
+
     function showCustomAlert(message) {
       alertMessage = message;
       showAlert = true;
     }
-  
+
     function closeAlert() {
       showAlert = false;
     }
@@ -61,7 +61,7 @@
     function scrollToTop() {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
-  
+
     function calculateScaledBBox(imageElement, bbox) {
       const [topLeft, bottomRight] = bbox;
       const naturalW = imageElement.naturalWidth;
@@ -75,17 +75,17 @@
         scaledBottomRight: [bottomRight[0] * scaleX, bottomRight[1] * scaleY]
       };
     }
-  
+
     function drawBoundingBox(imgEl, boxEl, bbox) {
       const { scaledTopLeft, scaledBottomRight } = calculateScaledBBox(imgEl, bbox);
       const imgRect = imgEl.getBoundingClientRect();
       const containerRect = boxEl.offsetParent.getBoundingClientRect();
-  
+
       const left = imgRect.left - containerRect.left + scaledTopLeft[0];
       const top  = imgRect.top  - containerRect.top  + scaledTopLeft[1];
       const width  = scaledBottomRight[0] - scaledTopLeft[0];
       const height = scaledBottomRight[1] - scaledTopLeft[1];
-  
+
       Object.assign(boxEl.style, {
         left: `${left}px`,
         top: `${top}px`,
@@ -96,13 +96,13 @@
         pointerEvents: "none"
       });
     }
-  
+
     function handleClick(event, deed) {
       const img = event.currentTarget.querySelector("img");
       const { scaledTopLeft, scaledBottomRight } = calculateScaledBBox(img, deed.bbox);
       const clickX = event.offsetX;
       const clickY = event.offsetY;
-  
+
       if (
         clickX >= scaledTopLeft[0] &&
         clickX <= scaledBottomRight[0] &&
@@ -112,7 +112,7 @@
         showCustomAlert(deed.alertMessage);
       }
     }
-  
+
     function initializeBoundingBoxes() {
       deeds.forEach((deed) => {
         const imgEl = document.getElementById(`image-${deed.id}`);
@@ -123,26 +123,26 @@
         }
       });
     }
-  
+
     function onResize() {
       initializeBoundingBoxes();
     }
-  
+
     onMount(() => {
       window.addEventListener("resize", onResize);
       initializeBoundingBoxes();
       return () => window.removeEventListener("resize", onResize);
     });
   </script>
-  
+
   <h1>Understanding Restrictive Covenants</h1>
-  
+
   <div class="intro-wrapper">
     <h2>What are restrictive covenants?</h2>
     <p>
         A racially restrictive covenant is a legal clause inserted into a property deed prohibiting the sale, lease, and occupation of property to people of specific races, ethnicities, or religions. Although the record is mixed due to incomplete data and analog documents that were never digitized, restrictive covenants have been identified and documented across the country. According to the National Covenants Research Coalition, “​​Covenants come in a variety of forms. They could be plat restrictions, established by a real estate developer from the time a subdivision was laid out. They could be agreements, signed by residents in a neighborhood, never to sell, lease, or allow occupancy by someone who was not Caucasian, then filed with the county recorder of deeds. They could be private block restrictions on a small enclave within a city. They could be a short clause within a deed document, where the restriction or covenant language was embedded in every deed document when the property was transferred.”
     </p>
-  
+
     <h2>Tracing the social construction of whiteness in Middlesex County</h2>
     <p>
         On this page, there are five deeds for homes within Middlesex County where researchers have identified the presence of restrictive covenants. Select the text within red box to read the language that was used within each of the deeds and note how the language changes between the first covenant (1878) and the final covenant (1950).
@@ -166,7 +166,7 @@
       </div>
     </div>
   {/if}
-  
+
   <div class="covenants-wrapper">
     {#each deeds as deed}
       <div class="deed">
@@ -197,24 +197,25 @@
 <button class="scroll-top" on:click={scrollToTop} aria-label="Back to top">
     ↑ Top
 </button>
-  
+
   <style>
     * {
       font-family: 'Courier', monospace;
     }
-  
+
     h1 {
       text-align: center;
       color: white;
     }
-  
+
 
     .covenants-wrapper {
       max-width: 900px;
       margin: 0 auto;
       padding: 1.5rem;
+      color:#ccc
     }
-  
+
     .deed {
       display: flex;
       flex-direction: row;
@@ -224,7 +225,7 @@
       border: 1px solid #ccc;
       border-radius: 5px;
     }
-  
+
     .image-button {
       all: unset;
       position: relative;
@@ -232,13 +233,13 @@
       flex: 0 0 60%;
       cursor: pointer;
     }
-  
+
     .image-button img {
       display: block;
       width: 100%;
       height: auto;
     }
-  
+
 
     .deed-text {
       flex: 1;
@@ -246,17 +247,17 @@
       flex-direction: column;
       justify-content: flex-start;
     }
-  
+
     .deed-text h2 {
       margin-top: 0;
       font-size: 1.3rem;
     }
-  
+
     .deed-text p {
       font-size: 1.05rem;
       line-height: 1.6;
     }
-  
+
     .modal-overlay {
       position: fixed;
       top: 0; left: 0;
@@ -267,7 +268,7 @@
       align-items: center;
       z-index: 1000;
     }
-  
+
     .modal {
       background: white;
       padding: 20px;
@@ -277,12 +278,12 @@
       max-width: 350px;
       width: 90%;
     }
-  
+
     .modal h2 {
       margin: 0 0 10px;
       font-size: 18px;
     }
-  
+
     .modal button {
       background: #007bff;
       color: white;
@@ -292,23 +293,24 @@
       cursor: pointer;
       font-size: 14px;
     }
-  
+
     .modal button:hover {
       background: #0056b3;
     }
 
 .intro-wrapper {
   max-width: 900px;
-  margin: 0 auto;      
-  padding: 0 2rem;      
+  margin: 0 auto;
+  padding: 0 2rem;
+  color: #ccc;
 }
 
 .intro-wrapper h2 {
-  margin: 2rem 0 1rem;  
+  margin: 2rem 0 1rem;
 }
 
 .intro-wrapper p {
-  margin: 0 0 1.5rem;   
+  margin: 0 0 1.5rem;
 }
 
 .explore-button {
@@ -343,4 +345,3 @@
   }
 
   </style>
-  
