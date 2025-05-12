@@ -39,7 +39,7 @@ let boxes = [];
   <svg viewBox="0 0 1000 800" preserveAspectRatio="xMidYMid slice" width="100%" height="100%">
       <!-- Add the background image inside SVG -->
   <image
-  href={base + '/images/basemaphomepage.jpg'}
+  href={base + '/images/basemaphomepage.jpeg'}
   x="0"
   y="0"
   width="1000"
