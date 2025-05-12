@@ -292,7 +292,7 @@ let finalSummaryVisible = false;
 }
 section {
   display: flex;
-  flex-direction: column; /* 👈 makes content stack vertically */
+  flex-direction: column; 
   align-items: flex-start;
   justify-content: center;
   padding: 2rem 0;

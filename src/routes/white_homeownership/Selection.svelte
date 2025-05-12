@@ -247,13 +247,6 @@ g.selectAll('text')
   }
 
   function drawIncomeChart(feature) {
-    const svgWidth = chartDimensions.width;
-  const svgHeight =
-    3 * (barStyle.barHeight + barStyle.labelOffset) +
-    chartDimensions.margin.top +
-    chartDimensions.margin.bottom;
-  const margin = { top: 20, right: 20, bottom: 20, left: 120 };
-
   const ownerIncome = +feature.properties['j_MEDIAN_OWNER HOUSEHOLD INCOME'] || 0;
   const renterIncome = +feature.properties['j_MEDIAN_RENTER HOUSEHOLD INCOME'] || 0;
   const overallIncome = +feature.properties['j_MEDIAN_HOUSEHOLD INCOME'] || 0;
@@ -264,45 +257,37 @@ g.selectAll('text')
     { type: 'Overall Households', value: overallIncome }
   ];
 
-  const xScale = d3.scaleLinear()
-    .domain([0, d3.max(data, d => d.value) || 1])
-    .range([0, svgWidth - chartDimensions.margin.left - chartDimensions.margin.right-200]);
+  // Clear any previous SVG content
+  d3.select(svgIncome).html('');
 
-  d3.select(svgIncome).selectAll("*").remove();
-  const g = d3.select(svgIncome)
-    .attr("width", svgWidth)
-    .attr("height", svgHeight)
-    .attr('viewBox', `0 0 ${svgWidth} ${svgHeight}`)
-    .attr('preserveAspectRatio', 'xMidYMid meet')
-    .append("g")
-    .attr("transform", `translate(${chartDimensions.margin.left},${chartDimensions.margin.top})`);
+  const container = d3.select(svgIncome)
+    .attr("width", "100%")
+    .attr("height", null)
+    .append("foreignObject")
+    .attr("width", "100%")
+    .attr("height", 150)
+    .append("xhtml:div")
+    .attr("class", "income-box-wrapper");
 
-  g.selectAll("rect")
-    .data(data)
-    .join("rect")
-    .attr("y", (d, i) => i * (barStyle.barHeight + barStyle.labelOffset))
-    .attr("width", d => xScale(d.value))
-    .attr("height", barStyle.barHeight)
-    .attr("fill", "#1565C0");
-
-  g.selectAll("text.label")
-    .data(data)
-    .join("text")
-    .attr("x", -10)
-    .attr("y", (d, i) => i * (barStyle.barHeight + barStyle.labelOffset) + barStyle.barHeight / 2 + 4)
-    .attr("text-anchor", "end")
-    .style('font-size', textStyle.fontSize)
-    .style('fill', textStyle.fill)
-    .text(d => d.type);
-
-  g.selectAll("text.value")
-    .data(data)
-    .join("text")
-    .attr("x", d => xScale(d.value) + 5)
-    .attr("y", (d, i) => i * (barStyle.barHeight + barStyle.labelOffset) + barStyle.barHeight / 2 + 4)
-    .style('font-size', textStyle.fontSize)
-    .style('fill', textStyle.fill)
-    .text(d => `${d.type}: $${d3.format(",.0f")(d.value)}`);
+  data.forEach(d => {
+    container.append("div")
+    .attr("class", "income-box")
+    .style("display", "flex")
+    .style("flex-direction", "row")
+    .style("align-items", "center")
+    .style("margin-bottom", "10px")
+    .html(`
+      <div style="font-weight: bold; font-size: 1rem; margin-right: 20px; ">${d.type}</div>
+      <div style="
+        background: gray;
+        padding: 8px 14px;
+        border: 2px solid #A91B0D;
+        border-radius: 8px;
+        font-size: 0.95rem;
+        color: #003344;
+      ">$${d3.format(",.0f")(d.value)}</div>
+    `);
+});
 }
   
 </script>
@@ -312,7 +297,7 @@ g.selectAll('text')
   <label for="city-select">Select a City:</label>
   <select id="city-select" bind:value={$selectedCity}>
     <option value="">-- Choose a city --</option>
-    {#each $cityList as city}
+    {#each $cityList.sort() as city}
       <option value={city}>{city}</option>
     {/each}
   </select>
@@ -331,7 +316,7 @@ g.selectAll('text')
         <svg bind:this={svgHomeownership}></svg>
       </div>
       <div class="income-chart-container">
-        <h2>Median Household Incomes</h2>
+        <h2>Median Household Incomes for {currentFeature.properties.TOWN20} </h2>
         <svg bind:this={svgIncome}></svg>
       </div>
     </div>
@@ -344,31 +329,31 @@ g.selectAll('text')
   .selection {
     margin-bottom: 20px;
     text-align: center;
-    font-family: 'Courier', monospace;
+    font-family: 'Helvetica';
   }
   label {
     font-size: 1rem;
     margin-right: 10px;
     font-size: 100%;
-    font-family: 'Courier', monospace;
+    font-family: 'Helvetica';
   }
 
   h2{
     font-size: 1rem;
     margin-right: 10px;
     font-size: 120%;
-    font-family: 'Courier', monospace;
+    font-family: 'Helvetica';
   }
 
   p{
     font-size: 1rem;
     margin-right: 10px;
     font-size: 150%;
-    font-family: 'Courier', monospace;
+    font-family: 'Helvetica';
   }
   select {
     font-size: 1rem;
-    font-family: 'Courier', monospace;
+    font-family: 'Helvetica';
     padding: 5px;
   }
   .combined-charts-container {
@@ -391,17 +376,17 @@ g.selectAll('text')
     padding: 10px;
     border: 1px #ccc;
     text-align: center;
-    font-family: 'Courier', monospace;
+    font-family: 'Helvetica';
+    color: #fff;
   }
 
   .income-chart-container {
     margin-top: -130px;
+    padding: 10px;
   }
 
   .no-data-text {
-    font-size: 150%;
-    font-family: 'Courier', monospace;
-    fill: #666;
+    font-family: 'Helvetica';
     text-anchor: middle;
   }
 
@@ -409,4 +394,5 @@ g.selectAll('text')
   color: #fff;
   background-color: #000;
 }
+
 </style>
