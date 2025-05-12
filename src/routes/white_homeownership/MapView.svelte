@@ -58,6 +58,9 @@
   };
 
   $: selectedRateType = showShare ? raceFields[selectedRace].share : raceFields[selectedRace].diff;
+  $: if (!showShare && selectedRace === 'White') {
+  selectedRace = 'Black';
+}
   $: tooltipLabel = showShare ? `Share of ${selectedRace} Homeowners` : `Difference: ${selectedRace} vs. White Homeownership Rate`;
 
   onMount(async () => {
@@ -328,7 +331,9 @@ d3.select(tooltipEl)
   <label for="race-select">Select  group by race:</label>
   <select id="race-select" bind:value={selectedRace}>
     {#each Object.keys(raceFields) as race}
+    {#if !(race === 'White' && !showShare)}
       <option value={race}>{race}</option>
+      {/if}
     {/each}
   </select>
 
@@ -454,7 +459,7 @@ d3.select(tooltipEl)
     margin-top: 0.5rem;
   }
 
-h1, h2, p, label, select, option, toggle-label {
+h1, h2, p, a, label, select, option, toggle-label {
   color: #fff;
   background-color: #000;
   font-family: 'Helvetica';
