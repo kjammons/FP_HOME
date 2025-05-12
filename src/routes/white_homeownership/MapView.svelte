@@ -453,12 +453,6 @@ d3.select(tooltipEl)
     text-align: center;
     margin-top: 0.5rem;
   }
-  :global(body) {
-  background-color: #000;
-  color: #fff;
-  margin: 0;
-  padding: 0;
-}
 
 h1, h2, p, label, select, option, toggle-label {
   color: #fff;

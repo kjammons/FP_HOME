@@ -76,6 +76,7 @@
       'White': '#F97B72',
       'Black': '#F2B701',
       'Black or African American': '#F2B701',
+      'Non-White':'#F2B701',
       'Other Race': '#3969AC',
       'Indian, Chinese, Japanese or Other Race': '#11A579',
       'Indian, Chinese, Japanese or Filipino':'#11A579',
@@ -85,7 +86,7 @@
       'American Indian and Alaska Native': '#CA73C6',
       'American Indian ': '#CA73C6',
       'Two or more races ': '#7F3C8D',
-      'Native Hawaiian and Other Pacific Islander': '#D05D02'
+      'Native Hawaiian and Other Pacific Islander': '#D05D02',
     };
 
     const g = svg.append('g')
@@ -116,8 +117,8 @@
   .style('color', '#fff')
   .style('padding', '10px 15px')  // Increased padding for better readability
   .style('border-radius', '8px')  // Rounded corners
-  .style('font-size', '14px')     // Larger font size for better readability
-  .style('font-family', '"Roboto", sans-serif')  // Modern font family
+  .style('font-size', '13px')     // Larger font size for better readability
+  .style('font-family', 'Helvetica')  // Modern font family
   .style('box-shadow', '0 4px 6px rgba(0, 0, 0, 0.2)')  // Subtle shadow
   .style('transition', 'opacity 0.2s ease')  // Smooth opacity transition for fade-in/out
   .style('pointer-events', 'none')
@@ -158,8 +159,8 @@
       .selectAll('text')
         .attr('transform', 'rotate(-40)')
         .style('text-anchor', 'end')
-        .style('font-size', '12px') // Set font size for x-axis labels
-        .style('font-family', '"Roboto", sans-serif')
+        .style('font-size', '13px') // Set font size for x-axis labels
+        .style('font-family', 'Helvetica')
         .style('fill', '#fff')
         .attr('dx', '-0.5em')
         .attr('dy', '0.25em');
@@ -168,8 +169,8 @@
     g.append('g')
       .call(d3.axisLeft(y).ticks(6))
       .selectAll('text')
-        .style('font-size', '10px') // Set font size for y-axis labels
-        .style('font-family', '"Roboto", sans-serif')
+        .style('font-size', '11px') // Set font size for y-axis labels
+        .style('font-family', 'Helvetica')
         .style('fill', '#fff')
 
 
@@ -177,8 +178,8 @@
   .attr('x', - (height /2000))  // Position the label at the center of the Y axis (adjust the positioning)
   .attr('y', margin.left-50)  // Positioning the label at the top of the Y axis (above the axis)
   .style('text-anchor', 'right')
-  .style('font-size', '12px')
-  .style('font-family', '"Roboto", sans-serif')
+  .style('font-size', '14px')
+  .style('font-family', 'Helvetica')
   .style('fill', '#fff')
   .text('Total Population');
 
@@ -186,6 +187,8 @@
 </script>
 
 <div bind:this={container} class="chart-container">
+  <p>Data source: Social Explorer, U.S. Decennial Census</p>
+  <div style="margin-top: 2rem;"></div>
   <h1>Racial Demographics in Middlesex County for {year}</h1>
   <svg bind:this={svgElement}></svg>
 </div>
@@ -197,6 +200,13 @@
     padding: 0.5rem;
     border-radius: 8px;
     box-sizing: border-box;
+  }
+
+  .chart-container p{
+font-family: helvetica;
+font-size: 80%;
+font-style: italic;
+color: darkgrey;
   }
 
   :global(svg) {
@@ -240,7 +250,7 @@
     padding: 10px 15px;
     border-radius: 8px;
     font-size: 14px;
-    font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
+    font-family: 'Helvetica';
     box-shadow: 0 4px 6px rgba(190, 48, 48, 0.2);
     transition: opacity 0.2s ease;
   }
@@ -259,8 +269,8 @@
   h1{
     font-size: 1rem;
     margin-right: 10px;
-    font-size: 85%;
-    font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
+    font-size: 100%;
+    font-family: Helvetica;
     color: #eee;
   }
 </style>

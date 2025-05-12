@@ -44,6 +44,7 @@ declare module '$env/static/private' {
 	export const COMMAND_MODE: string;
 	export const npm_config_globalconfig: string;
 	export const SSH_AUTH_SOCK: string;
+	export const VSCODE_PROFILE_INITIALIZED: string;
 	export const __CF_USER_TEXT_ENCODING: string;
 	export const npm_execpath: string;
 	export const PATH: string;
@@ -60,7 +61,6 @@ declare module '$env/static/private' {
 	export const EDITOR: string;
 	export const npm_package_name: string;
 	export const LANG: string;
-	export const LOCAL_GIT_DIRECTORY: string;
 	export const npm_config_npm_version: string;
 	export const VSCODE_GIT_ASKPASS_EXTRA_ARGS: string;
 	export const XPC_FLAGS: string;
@@ -70,6 +70,7 @@ declare module '$env/static/private' {
 	export const VSCODE_INJECTION: string;
 	export const HOME: string;
 	export const SHLVL: string;
+	export const HOME: string;
 	export const VSCODE_GIT_ASKPASS_MAIN: string;
 	export const npm_config_cache: string;
 	export const LOGNAME: string;
@@ -131,6 +132,7 @@ declare module '$env/dynamic/private' {
 		COMMAND_MODE: string;
 		npm_config_globalconfig: string;
 		SSH_AUTH_SOCK: string;
+		VSCODE_PROFILE_INITIALIZED: string;
 		__CF_USER_TEXT_ENCODING: string;
 		npm_execpath: string;
 		PATH: string;
@@ -147,7 +149,6 @@ declare module '$env/dynamic/private' {
 		EDITOR: string;
 		npm_package_name: string;
 		LANG: string;
-		LOCAL_GIT_DIRECTORY: string;
 		npm_config_npm_version: string;
 		VSCODE_GIT_ASKPASS_EXTRA_ARGS: string;
 		XPC_FLAGS: string;
@@ -157,6 +158,7 @@ declare module '$env/dynamic/private' {
 		VSCODE_INJECTION: string;
 		HOME: string;
 		SHLVL: string;
+		HOME: string;
 		VSCODE_GIT_ASKPASS_MAIN: string;
 		npm_config_cache: string;
 		LOGNAME: string;
