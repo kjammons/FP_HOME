@@ -184,12 +184,7 @@ let finalSummaryVisible = false;
 {/if}
 
 <style>
-  :global(body) {
-    margin: 0;
-    padding: 0;
-    font-family: raleway;
-    color: #333;
-  }
+
 
   .sidebar {
     flex: none;
