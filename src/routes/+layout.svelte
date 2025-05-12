@@ -5,6 +5,7 @@
 
     const pages = [
       { url: '',               title: 'Home' },
+      { url: 'start_here',               title: 'Start Here' },
       { url: 'covenants',      title: 'Covenants' },
       { url: 'timeline',       title: 'Timeline' },
       { url: 'white_homeownership', title: 'Homeownership Map' },
@@ -33,7 +34,7 @@
 
 
 {#if $page.url.pathname !== '/'}
-  <nav style="background: #faf3e0; padding: 0.5rem 1rem;">
+  <nav style="background: #000; padding: 0.5rem 1rem;">
     <ul style="list-style:none; display:flex; gap:1.5rem; margin:0; padding:0">
       {#each pages as p}
         <li>
@@ -55,7 +56,7 @@
     a {
       text-decoration: none;
       font-family: 'Courier', monospace;
-      color: black;
+      color: #A91B0D;
       padding-bottom: 0.2rem;
     }
     a.current {

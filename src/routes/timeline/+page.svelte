@@ -8,7 +8,7 @@ import mapPreview from '$lib/assets/images/map.png';
     import { fade } from 'svelte/transition';
 
 const backgroundUrl = `${base}/data/1226-454.jpg`;
-const landingUrl =  `${base}/data/Middlesexmap.jpg`;
+const landingUrl =  `${base}/images/Middlesex map.png`;
 
 let showLanding = true;
 let sentinel;
@@ -94,7 +94,7 @@ let finalSummaryVisible = false;
       'In this period, the NAACP prominently sued the Boston Housing Authority (1988), alleging <span style="font-weight:bold; color:#A91B0D;">widespread racial discrimination in their administration of public housing.</span> NAACP lawyers pointed to highly segregated waiting lists, which disproportionately assigned Black applicants to developments in poor condition or high-crime areas, while reserving better-maintained units in white neighborhoods for white families. ',
     ],
     1990: [
-      'In the 1990s, the U.S. Department of Housing and Urban Development (HUD) finds evidence of <span style="font-weight:bold; color:#A91B0D;">systemic discrimination within Boston’s public housing system.</span> In 1992, data from the Home Mortgage Disclosure Act (HMDA) revealed <span style="font-weight:bold; color:#A91B0D;">significant disparities in mortgage denial rates between Black and white applicants,</span> prompting the creation of community reinvestment agreements aimed at addressing these inequities. <span style="font-weight:bold; color:#A91B0D;">Despite these interventions, the Black-white homeownership gap remained substantial by the end of the decade, highlighting the enduring impact of structural barriers to housing equity.</span>'
+      'In the 1990s, the U.S. Department of Housing and Urban Development (HUD) finds evidence of <span style="font-weight:bold; color:#A91B0D;">systemic discrimination within Boston’s public housing system.</span> In 1992, data from the Home Mortgage Disclosure Act (HMDA) revealed <span style="font-weight:bold; color:#A91B0D;">significant disparities in mortgage denial rates between black and white applicants,</span> prompting the creation of community reinvestment agreements aimed at addressing these inequities. <span style="font-weight:bold; color:#A91B0D;">Despite these interventions, the black-white homeownership gap remained substantial by the end of the decade, highlighting the enduring impact of structural barriers to housing equity.</span>'
     ],
     2000: [
       'Massachusetts’ Chapter 40B, also known as <span style="font-weight:bold; color:#A91B0D;">the Affordable Housing Act,</span> sought to expand low-income housing across municipalities that had historically resisted such development. However, <span style="font-weight:bold; color:#A91B0D;">during the housing bubble of the late 1990s,</span> home prices in the region surged dramatically, displacing many working-class residents. Between 1995 and 2005, median home prices in suburban towns such as Belmont, Arlington, and Lexington skyrocketed from approximately $200,000 to over $500,000, <span style="font-weight:bold; color:#A91B0D;">exacerbating the wealth gap and deepening existing economic and racial segregation.</span>  '
@@ -110,8 +110,8 @@ let finalSummaryVisible = false;
   const extraContent = {
   1950: "In 1950, census data reflected a binary classification of 'white' versus 'non-white.” This reinforced racial hierarchies and obscured the distinct experiences of individual racial groups. ",
   1970: "As a result of post-war policies aimed at spurring homeownership, 59% of Middlesex County households are owner-occupied, close to the national average. However, homeownership in Middlesex County was overwhelmingly limited to white residents, resulting from a combination of discriminatory housing policies, lending practices, and local exclusionary zoning.",
-  1990: "In this period, we observe that the Asian population surpasses the Black population in Middlesex County. Following the Vietnam War, Cambodian genocide, and Laotian civil war, the U.S. accepted large numbers of refugees from Southeast Asia. Geographies like Lowell and Lynn became key resettlement areas. At this time, white homeownership is 37% points higher than Black homeownership, reflecting a persistent and growing trend of racial disparity in homeownership rate.",
-  2010: "From 1980-2010, white homeownership increased by 8% percentage points while that of Black households remained constant overtime (dropping at 25% in 1990). During this period, the total homeownership rate in Middlesex County aligns with both state and national trends, at around 60%.",
+  1990: "In this period, we observe that the Asian population surpasses the Black population in Middlesex County. Following the Vietnam War, Cambodian genocide, and Laotian civil war, the U.S. accepted large numbers of refugees from Southeast Asia. Geographies like Lowell and Lynn became key resettlement areas. At this time, white homeownership is 37% points higher than black homeownership, reflecting a persistent and growing trend of racial disparity in homeownership rate.",
+  2010: "From 1980-2010, white homeownership increased by 8% points while that of Black households remained constant overtime (dropping at 25% in 1990). During this period, the total homeownership rate in Middlesex County aligns with both state and national trends, at around 60%.",
   2020: "In 2020, only about 5% of Middlesex County's population identified as Black or African American, compared to 25% in Suffolk County (Boston). This is only one example of how urban-suburban racial geographies in Massachusetts remain evident.  "
 };
 
@@ -292,7 +292,7 @@ let finalSummaryVisible = false;
 }
 section {
   display: flex;
-  flex-direction: column; 
+  flex-direction: column;
   align-items: flex-start;
   justify-content: center;
   padding: 2rem 0;
