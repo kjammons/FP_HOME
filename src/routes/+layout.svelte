@@ -55,7 +55,7 @@
     a {
       text-decoration: none;
       font-family: 'Courier', monospace;
-      color: #A91B0D;
+      color: black;
       padding-bottom: 0.2rem;
     }
     a.current {
@@ -64,6 +64,12 @@
       border-bottom: 2px solid #333;
     }
 
+    :global(body) {
+      background-color: #000;
+      color: #fff;
+      margin: 0;
+      padding: 0;
+    }
     .route-loader {
     position: fixed;
     top: 0;
