@@ -87,7 +87,7 @@ const otherKey = "j_SHARE_OWNER_OTHER";
 
   const { width, height, margin, barHeight, barPadding } = chartSettings;
 const svgWidth = responsiveWidth();
-const svgHeight = height;
+const svgHeight = height+1;
 const innerWidth = svgWidth - margin.left - margin.right;
 const innerHeight = svgHeight - margin.top - margin.bottom;
   const halfWidth = innerWidth / 2;
@@ -185,7 +185,7 @@ const filteredValues = values.filter(d => d.pop > 0);
     const maxVal = d3.max(values, d => d.pop);
    
     const width = Math.min(800, window.innerWidth * 0.9);  // responsive width
-  const height = 300;
+  const height = filteredValues.length * 40 + 60; 
 
   const margin = { top: 20, right: 20, bottom: 20, left: 20 };
   const innerWidth = width - margin.left - margin.right;
@@ -381,10 +381,14 @@ g.selectAll('text')
   }
 
   .income-chart-container {
-    margin-top: -130px;
+    margin-top: -110px;
     padding: 10px;
   }
 
+  .bargraph-container {
+    margin-top: 40px;
+    padding: 10px;
+  }
   .no-data-text {
     font-family: 'Helvetica';
     text-anchor: middle;
