@@ -226,6 +226,9 @@ let finalSummaryVisible = false;
   }
 
   section.active,
+  section.intro {
+    opacity: 1;
+  }
 
   .description {
     max-width: 600px;
