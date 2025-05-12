@@ -8,7 +8,8 @@ import mapPreview from '$lib/assets/images/map.png';
     import { fade } from 'svelte/transition';
 
 const backgroundUrl = `${base}/data/1226-454.jpg`;
-const landingUrl =  `${base}/images/Middlesex map.png`;
+const landingUrl =  `${base}/data/Middlesexmap.jpg`;
+
 
 let showLanding = true;
 let sentinel;
@@ -225,9 +226,6 @@ let finalSummaryVisible = false;
   }
 
   section.active,
-  section.intro {
-    opacity: 1;
-  }
 
   .description {
     max-width: 600px;
