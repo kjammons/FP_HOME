@@ -8,7 +8,7 @@ import mapPreview from '$lib/assets/images/map.png';
     import { fade } from 'svelte/transition';
 
 const backgroundUrl = `${base}/data/1226-454.jpg`;
-const landingUrl =  `${base}/data/Middlesexmap.jpg`;
+const landingUrl =  `${base}/images/Middlesex map.png`;
 
 let showLanding = true;
 let sentinel;
