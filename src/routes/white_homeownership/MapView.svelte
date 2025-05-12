@@ -58,9 +58,6 @@
   };
 
   $: selectedRateType = showShare ? raceFields[selectedRace].share : raceFields[selectedRace].diff;
-  $: if (!showShare && selectedRace === 'White') {
-    selectedRace = 'Black';
-  }
   $: tooltipLabel = showShare ? `Share of ${selectedRace} Homeowners` : `Difference: ${selectedRace} vs. White Homeownership Rate`;
 
   onMount(async () => {
@@ -229,15 +226,15 @@ let content = `<strong>${city}</strong><br/>`;
 
 if (showShare) {
   // Racial share case
-  content += `Share of ${selectedRace} homeowners: ${isNaN(val) ? 'N/A' : (val * 100).toFixed(2) + '%'}`;
+  content += `Share of ${selectedRace} homeowners: ${isNaN(val) ? 'N/A' : (val * 100).toFixed(1) + '%'}`;
 } else {
   // Difference-from-white case
   if (!isFinite(val) || val === 0) {
     content += `Data unavailable or there is no ${selectedRace} homeownership in this city.`;
   } else if (val > 0) {
-    content += `${selectedRace} homeownership rate is ${(val*100).toFixed(2)} percentage points higher than White.`;
+    content += `${selectedRace} homeownership rate is ${(val*100).toFixed(1)} percentage points higher than White.`;
   } else if (val < 0) {
-    content += `White homeownership rate is ${(Math.abs(val)*100).toFixed(2)} percentage points higher than ${selectedRace}.`;
+    content += `White homeownership rate is ${(Math.abs(val)*100).toFixed(1)} percentage points higher than ${selectedRace}.`;
   } else {
     content += `${selectedRace} and White homeownership rates are equal.`;
   }
@@ -272,13 +269,8 @@ d3.select(tooltipEl)
           .style('opacity', 0.7);
       })
       .on('click', (evt, d) => {
-        const town = d.properites.TOWN20;
-        if(['WAYLAND' , 'WESTON'].includes(town)){
-          evt.stopPropagation();
-          return;
-        }
         evt.stopPropagation();
-        selectedCity.set(town);
+        selectedCity.set(d.properties.TOWN20);
       });
 
     // clear selection on background click
@@ -326,9 +318,7 @@ d3.select(tooltipEl)
   <label for="race-select">Select  group by race:</label>
   <select id="race-select" bind:value={selectedRace}>
     {#each Object.keys(raceFields) as race}
-    {#if !(race === 'White' && !showShare)}
       <option value={race}>{race}</option>
-      {/if}
     {/each}
   </select>
 
