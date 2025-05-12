@@ -249,6 +249,7 @@
   
     .deed-text h2 {
       margin-top: 0;
+      color: black;
       font-size: 1.3rem;
     }
   
