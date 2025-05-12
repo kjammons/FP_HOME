@@ -44,7 +44,9 @@
         The modules are designed to serve different purposes and can be deployed or interacted with alone or as part of the series. The authors have provided a suggested “workflow” for the content, but purposefully have granted users the agency to follow or diverge from this order.
       </p>
   
-      <p><strong>Please begin the series.</strong></p>
+      <a class="explore-button" href="covenants">
+        Click here to begin the series. 
+    </a>
     </div>
   </main>
   
@@ -54,8 +56,6 @@
       line-height: 1.6;
       margin: 0;
       padding: 2rem;
-      background-color: #f9f9f9;
-      color: #333;
     }
   
     .covenants-content h2 {
@@ -67,5 +67,19 @@
       margin-left: 1.5rem;
       list-style-type: disc;
     }
+
+    .explore-button {
+    display: inline-block;
+    margin-top: 1rem;
+    padding: 0.75rem 1.25rem;
+    background: #b30000;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 4px;
+    font-weight: bold;
+  }
+  .explore-button:hover {
+    background: #b30000;
+  }
   </style>
   
