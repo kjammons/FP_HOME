@@ -280,7 +280,6 @@
   
     .modal h2 {
       margin: 0 0 10px;
-      color: black;
       font-size: 18px;
     }
   
