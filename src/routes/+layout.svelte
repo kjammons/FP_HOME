@@ -66,7 +66,7 @@
 
     :global(body) {
       background-color: #000;
-      color: #fff;
+      color: #A91B0D;
       margin: 0;
       padding: 0;
     }
